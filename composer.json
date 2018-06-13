@@ -1,0 +1,22 @@
+{
+    "name": "jomino/my-slim3-boilerplate",
+    "version": "1.0.0",
+    "description": "",
+    "require": {
+        "slim/slim": "^3.8",
+        "slim/twig-view": "^2.2",
+        "monolog/monolog": "^1.23",
+        "illuminate/database": "5.6.*",
+        "illuminate/translation": "^5.4",
+        "robmorgan/phinx": "^0.10"
+    },
+    "autoload": {
+    	"psr-4": {
+    		"App\\": "app/",
+    		"Core\\": "src/",
+            "Util\\": "util/"
+    	}
+    },
+    "minimum-stability" : "dev",
+    "prefer-stable" : true
+}
