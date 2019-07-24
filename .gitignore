@@ -1,1 +1,6 @@
-app/Parameters.php
+/app/Parameters.php
+/vendor/*
+/logs/*
+!/logs/.gitkeep
+/files/*
+!/files/.gitkeep
