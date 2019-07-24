@@ -1,2 +1,2 @@
-# my-slim3-boilerplate
-test assembling slim3 puzzle
+# stripe-payments
+php review from the demo https://github.com/stripe/stripe-payments-demo
