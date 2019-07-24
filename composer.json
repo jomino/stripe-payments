@@ -1,7 +1,7 @@
 {
-    "name": "jomino/my-slim3-boilerplate",
+    "name": "jomino/stripe-payments",
     "version": "1.0.0",
-    "description": "",
+    "description": "Php review from the demo https://github.com/stripe/stripe-payments-demo",
     "require": {
         "slim/slim": "^3.8",
         "slim/twig-view": "^2.2",
