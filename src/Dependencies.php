@@ -10,11 +10,12 @@ class Dependencies
         $container = $app->getContainer();
 
         // View
-        $container['view'] = function ($container) {
-            $twig = new \Slim\Views\Twig($container->settings['view']['path'], $container->settings['view']['twig']);
-            $twig->addExtension(new \Slim\Views\TwigExtension($container->router, $container->request->getUri()));
-            $twig->addExtension(new \Util\TranslatorExtension($container->trans));
-            $twig->addExtension(new \Twig_Extension_Debug());
+        $twig = new \Slim\Views\Twig($container->settings['view']['path'], $container->settings['view']['twig']);
+        $twig->addExtension(new \Slim\Views\TwigExtension($container->router, $container->request->getUri()));
+        $twig->addExtension(new \Util\TranslatorExtension($container->trans));
+        $twig->addExtension(new \Twig_Extension_Debug());
+
+        $container['view'] = function ($container) use($twig) {
             return $twig;
         };
 
@@ -34,11 +35,13 @@ class Dependencies
         $capsule->bootEloquent();
 
         $container['db'] = function ($container) use($capsule) {
-            return $capsule;
+            return $capsule->getConnection()->query();
         };
 
-        $container['trans'] = function ($container) use($app) {
-            $loader = new \Illuminate\Translation\FileLoader(new \Illuminate\Filesystem\Filesystem(), $container->settings['localisation']['path']);
+        // Translation
+        $loader = new \Illuminate\Translation\FileLoader(new \Illuminate\Filesystem\Filesystem(), $container->settings['localisation']['path']);
+
+        $container['trans'] = function ($container) use($app,$loader) {
             $translator = new \Illuminate\Translation\Translator($loader, $app->language);
             return $translator;
         };

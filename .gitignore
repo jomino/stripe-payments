@@ -1,3 +1,4 @@
+phinx.yml
 /app/Parameters.php
 /vendor/*
 /logs/*
