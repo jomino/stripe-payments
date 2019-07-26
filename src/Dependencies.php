@@ -9,10 +9,16 @@ class Dependencies
 
         $container = $app->getContainer();
 
+        // CSRF protection
+        $container['csrf'] = function ($container) {
+            return new \Slim\Csrf\Guard;
+        };
+
         // View
         $twig = new \Slim\Views\Twig($container->settings['view']['path'], $container->settings['view']['twig']);
         $twig->addExtension(new \Slim\Views\TwigExtension($container->router, $container->request->getUri()));
         $twig->addExtension(new \Util\TranslatorExtension($container->trans));
+        $twig->addExtension(new \Util\CsrfExtension($container->csrf));
         $twig->addExtension(new \Twig_Extension_Debug());
 
         $container['view'] = function ($container) use($twig) {
