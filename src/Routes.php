@@ -24,7 +24,7 @@ class Routes
 
         $app->get('/{path:' . implode('|', array_keys($paths)) . '}/{file:[^/]+}',
             function ($request, $response, $args) use ($paths) {
-                $resource = __DIR__ . '../assets/' . $args['path'] . '/' . $args['file'];
+                $resource = '../assets/' . $args['path'] . '/' . $args['file'];
                 if (!is_file($resource)) {
                     $notFoundHandler = $this->get('notFoundHandler');
                     return $notFoundHandler($request, $response);
