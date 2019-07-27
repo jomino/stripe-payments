@@ -17,7 +17,7 @@ class Routes
         })->add($container->get('csrf'));
 
         $paths = [
-          'javascript' => 'text/javascript',
+          'js' => 'text/javascript',
           'css' => 'text/css',
           'images' => FILEINFO_MIME_TYPE
         ];
