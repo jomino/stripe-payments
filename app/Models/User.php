@@ -14,4 +14,10 @@ class User extends \Illuminate\Database\Eloquent\Model
         'pkey' => 'string',
         'skey' => 'string'
     ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('active', 1);
+    }
+    
 }

@@ -18,9 +18,9 @@ class NewUserController extends \Core\Controller
             $agence = $parsedBody['agence'];
             $email = $parsedBody['email'];
             $token = \Util\UuidGenerator::v4();
-            // $user_id = $this->saveNewUser($token);
+            $user_id = $this->saveNewUser($token,$agence,$email);
             $register_link = $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
-                'id' => '1', // $user_id
+                'id' => $user_id,
                 'token' => '?'.$token
             ]);
             return $this->view->render($response, 'Home/newuser.html.twig',[
@@ -32,6 +32,6 @@ class NewUserController extends \Core\Controller
     }
 
     private function saveNewUser($token){
-        // todo
+        return '1';
     }
 }
