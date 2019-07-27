@@ -13,10 +13,24 @@ class NewUserController extends \Core\Controller
                 'email' => 'email@example.com'
             ]);
         }else{
+            $token = \Util\UUID::v4();
+            $parsedBody = $request->getParsedBody();
+            $agence = $parsedBody['agence'];
+            $email = $parsedBody['email'];
+            // $user_id = $this->saveNewUser($token);
+            $register_link = $request->getScheme().'://'.$request->getHost().'/'.$this->router->pathFor('register',[
+                'id' => '1', // $user_id
+                'token' => '?'.$token
+            ]);
             return $this->view->render($response, 'Home/newuser.html.twig',[
-                'email' => 'email@example.com',
-                'generated_link' => 'uuid4...'
+                'agence' => $agence,
+                'email' => $email,
+                'generated_link' => $register_link
             ]);
         }
+    }
+
+    private function saveNewUser($token){
+        // todo
     }
 }

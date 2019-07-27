@@ -1,4 +1,7 @@
 <h1>Success !!</h1><br>
 <p>New user added</p>
+<p>Agence: {{ agence }}</p>
 <p>E-mail: {{ email }}</p>
-<p>Link: {{ generated_link }}</p>
+<p>Link: <a href="{{ generated_link }}">{{ generated_link }}</a></p>
+<p><a href="{{ path_for('adduser') }}">Add new user</a></p>
+
