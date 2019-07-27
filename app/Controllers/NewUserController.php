@@ -19,7 +19,7 @@ class NewUserController extends \Core\Controller
             $email = $parsedBody['email'];
             $token = \Util\UuidGenerator::v4();
             // $user_id = $this->saveNewUser($token);
-            $register_link = $uri->getScheme().'://'.rtrim($uri->getHost(),'/').'/'.$this->router->pathFor('register',[
+            $register_link = $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
                 'id' => '1', // $user_id
                 'token' => '?'.$token
             ]);
