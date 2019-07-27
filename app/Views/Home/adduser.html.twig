@@ -23,11 +23,11 @@
 	.form-control:focus{
 		border-color: #5cb85c;
 	}
-    .form-control, .btn{        
+    .form-control, .btn{
+		margin-top: 20px;    
         border-radius: 3px;
     }
 	.signup-form{
-		margin: 0 auto;
 		padding: 4px 0;
 	}
 	.signup-form h2{
@@ -72,8 +72,7 @@
 	}
 	.signup-form .btn{        
         font-size: 16px;
-        font-weight: bold;		
-		min-width: 140px;
+        font-weight: bold;
         outline: none !important;
     }
 	.signup-form .row div:first-child{
@@ -81,21 +80,7 @@
 	}
 	.signup-form .row div:last-child{
 		padding-left: 10px;
-	}    	
-    .signup-form a{
-		color: #fff;
-		text-decoration: underline;
-	}
-    .signup-form a:hover{
-		text-decoration: none;
-	}
-	.signup-form form a{
-		color: #5cb85c;
-		text-decoration: none;
-	}	
-	.signup-form form a:hover{
-		text-decoration: underline;
-	}  
+	} 
 </style>
 </head>
 <body>
@@ -106,7 +91,7 @@
 			<input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
 			<h2>Ajouter un utilisateur</h2>
 			<div class="form-group">
-				<input type="text" class="form-control" name="name" placeholder="Agence" required="required"></div>
+				<input type="text" class="form-control" name="name" placeholder="Agence" required="required">
 				<input type="email" class="form-control" name="email" placeholder="Email" required="required">
 				<button type="submit" class="btn btn-success btn-lg btn-block">Envoyer</button>
 			</div>
