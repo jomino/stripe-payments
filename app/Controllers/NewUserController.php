@@ -13,12 +13,13 @@ class NewUserController extends \Core\Controller
                 'email' => 'email@example.com'
             ]);
         }else{
-            $token = \Util\UuidGenerator::v4();
+            $uri = $request->getUri();
             $parsedBody = $request->getParsedBody();
             $agence = $parsedBody['agence'];
             $email = $parsedBody['email'];
+            $token = \Util\UuidGenerator::v4();
             // $user_id = $this->saveNewUser($token);
-            $register_link = $request->getScheme().'://'.$request->getHost().'/'.$this->router->pathFor('register',[
+            $register_link = $uri->getScheme().'://'.$uri->getHost().'/'.$this->router->pathFor('register',[
                 'id' => '1', // $user_id
                 'token' => '?'.$token
             ]);
