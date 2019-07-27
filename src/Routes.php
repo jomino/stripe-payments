@@ -10,9 +10,9 @@ class Routes
         $container = $app->getContainer();
 
         $app->get('/', \App\Controllers\HomeController::class);
-        $app->get('/adduser', \App\Controllers\AddUserController::class)->setName('adduser');
 
         $app->group( '', function($app){
+            $app->get('/adduser', \App\Controllers\AddUserController::class)->setName('adduser');
             $app->post('/newuser', \App\Controllers\NewUserController::class)->setName('newuser');
         })->add($container->get('csrf'));
 
