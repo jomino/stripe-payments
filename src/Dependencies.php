@@ -11,7 +11,12 @@ class Dependencies
 
         // CSRF protection
         $container['csrf'] = function ($container) {
-            return new \Slim\Csrf\Guard;
+            $guard = new \Slim\Csrf\Guard();
+            $guard->setFailureCallable(function ($request, $response, $next) {
+                $request = $request->withAttribute("csrf_status", false);
+                return $next($request, $response);
+            });
+            return $guard;
         };
 
         // Translation

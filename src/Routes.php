@@ -6,6 +6,33 @@ class Routes
 {
     public function __construct($app)
     {
+
+        $container = $app->getContainer();
+
         $app->get('/', \App\Controllers\HomeController::class);
+        $app->get('/adduser', \App\Controllers\AddUserController::class)->setName('adduser');
+
+        $app->group( '', function($app){
+            $app->post('/newuser', \App\Controllers\NewUserController::class)->setName('newuser');
+        })->add($container->get('csrf'));
+
+        $paths = [
+          'javascript' => 'text/javascript',
+          'css' => 'text/css',
+          'images' => FILEINFO_MIME_TYPE
+        ];
+        
+        $app->get('/{path:' . implode('|', array_keys($paths)) . '}/{file:[^/]+}',
+            function (Request $request, Response $response, array $args) use ($paths) {
+                $resource = '../assets/' . $args['path'] . '/' . $args['file'];
+                if (!is_file($resource)) {
+                    $notFoundHandler = $this->get('notFoundHandler');
+                    return $notFoundHandler($request, $response);
+                }
+                return $response->write(file_get_contents($resource))
+                    ->withHeader('Content-Type', $paths[$args['path']]);
+            }
+        );
+
     }
 }
