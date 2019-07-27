@@ -35,17 +35,14 @@ class RegisterUserController extends \Core\Controller
     {
         try{
             $user = User::find($user_id);
-            $this->logger->info('['.self::class.'::validAndSave] user:'.print_r((array) $user,true));
-            if($user->token == $token){
+            if($user->uuid == $token){
                 $user->active = 1;
                 $user->save();
                 return $user;
             }else{
-                $this->logger->info('['.self::class.'::validAndSave] '.$token.'!='.$user->token);
                 return null;
             }
         }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
-            $this->logger->info('['.self::class.'::validAndSave] ModelNotFoundException');
             return null;
         }
     }
