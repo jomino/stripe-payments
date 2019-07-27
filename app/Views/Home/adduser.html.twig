@@ -100,21 +100,23 @@
 </style>
 </head>
 <body>
-<div class="signup-form col-xs-4 col-xs-offset-4">
-	<form action="{{ path_for('newuser') }}" method="post">
-		<input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
-		<input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
-		<h2>Ajouter un utilisateur</h2>
-        <div class="form-group">
-			<input type="text" class="form-control" name="name" placeholder="Agence" required="required"></div>
-        </div>
-        <div class="form-group">
-        	<input type="email" class="form-control" name="email" placeholder="Email" required="required">
-        </div>
-		<div class="form-group">
-            <button type="submit" class="btn btn-success btn-lg btn-block">Envoyer</button>
-        </div>
-    </form>
+<div class="row">
+	<div class="signup-form col-xs-4 col-xs-offset-4">
+		<form action="{{ path_for('newuser') }}" method="post">
+			<input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
+			<input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
+			<h2>Ajouter un utilisateur</h2>
+			<div class="form-group">
+				<input type="text" class="form-control" name="name" placeholder="Agence" required="required"></div>
+			</div>
+			<div class="form-group">
+				<input type="email" class="form-control" name="email" placeholder="Email" required="required">
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-success btn-lg btn-block">Envoyer</button>
+			</div>
+		</form>
+	</div>
 </div>
 </body>
 </html>                            
