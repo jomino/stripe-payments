@@ -6,35 +6,39 @@ use \App\Models\User;
 
 class NewUserController extends \Core\Controller
 {
+    
     public function __invoke($request, $response, $args)
     {
+
+        $parsedBody = $request->getParsedBody();
+
+        $agence = $parsedBody['agence'];
+        $email = $parsedBody['email'];
+
+        $datas = [
+            'agence' => $agence,
+            'email' => $email,
+            'generated_link' => 'error'
+        ];
+
         if(false === $request->getAttribute('csrf_status')){
-            return $this->view->render($response, 'Home/newuser-fail.html.twig',[
-                'email' => 'email@example.com'
-            ]);
+
+            return $this->view->render($response, 'Home/newuser-fail.html.twig', $datas);
+
         }else{
-            $uri = $request->getUri();
-            $parsedBody = $request->getParsedBody();
-            $agence = $parsedBody['agence'];
-            $email = $parsedBody['email'];
+
             $token = \Util\UuidGenerator::v4();
+
             if($user_id=$this->saveNewUser($token,$agence,$email)){
-                $register_link = $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
+                $uri = $request->getUri();
+                $datas['generated_link'] = $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
                     'id' => $user_id,
                     'token' => '?'.$token
                 ]);
-                return $this->view->render($response, 'Home/newuser.html.twig',[
-                    'agence' => $agence,
-                    'email' => $email,
-                    'generated_link' => $register_link
-                ]);
-            }else{
-                return $this->view->render($response, 'Home/newuser.html.twig',[
-                    'agence' => $agence,
-                    'email' => $email,
-                    'generated_link' => 'unknow'
-                ]);
             }
+
+            return $this->view->render($response, 'Home/newuser.html.twig', $datas);
+
         }
     }
 
