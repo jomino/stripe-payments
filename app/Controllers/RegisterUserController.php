@@ -8,7 +8,8 @@ class RegisterUserController extends \Core\Controller
 {
     public function __invoke($request, $response, $args)
     {
-        $token = (string) ltrim($request->getQuery(),'?');
+        $uri = $request->getUri();
+        $token = (string) ltrim($uri->getQuery(),'?');
         if(empty($token) || strlen($token)<2){
             $token = ltrim($args['token'],'?');
         }
