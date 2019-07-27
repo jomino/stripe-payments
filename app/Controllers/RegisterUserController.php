@@ -14,6 +14,8 @@ class RegisterUserController extends \Core\Controller
             $token = ltrim($args['token'],'?');
         }
         $user_id = (int) $args['id'];
+        $this->logger->info('['.self::class.'::__invoke] user_id=>'.$user_id);
+        $this->logger->info('['.self::class.'::__invoke] token=>'.$token);
         if($user=$this->validAndSave($token,$user_id)){
             return $this->view->render($response, 'Home/register.html.twig',[
                 'agence' => $user->name,
@@ -33,14 +35,17 @@ class RegisterUserController extends \Core\Controller
     {
         try{
             $user = User::find($user_id);
+            $this->logger->info('['.self::class.'::validAndSave] user:'.print_r((array) $user,true));
             if($user->token == $token){
                 $user->active = 1;
                 $user->save();
                 return $user;
             }else{
+                $this->logger->info('['.self::class.'::validAndSave] '.$token.'!='.$user->token);
                 return null;
             }
         }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+            $this->logger->info('['.self::class.'::validAndSave] ModelNotFoundException');
             return null;
         }
     }
