@@ -18,20 +18,36 @@ class NewUserController extends \Core\Controller
             $agence = $parsedBody['agence'];
             $email = $parsedBody['email'];
             $token = \Util\UuidGenerator::v4();
-            $user_id = $this->saveNewUser($token,$agence,$email);
-            $register_link = $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
-                'id' => $user_id,
-                'token' => '?'.$token
-            ]);
-            return $this->view->render($response, 'Home/newuser.html.twig',[
-                'agence' => $agence,
-                'email' => $email,
-                'generated_link' => $register_link
-            ]);
+            if($user_id=$this->saveNewUser($token,$agence,$email)){
+                $register_link = $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
+                    'id' => $user_id,
+                    'token' => '?'.$token
+                ]);
+                return $this->view->render($response, 'Home/newuser.html.twig',[
+                    'agence' => $agence,
+                    'email' => $email,
+                    'generated_link' => $register_link
+                ]);
+            }else{
+                return $this->view->render($response, 'Home/newuser.html.twig',[
+                    'agence' => $agence,
+                    'email' => $email,
+                    'generated_link' => 'unknow'
+                ]);
+            }
         }
     }
 
-    private function saveNewUser($token){
-        return '1';
+    private function saveNewUser($token,$agence,$email)
+    {
+
+        $user = new User();
+        $user->name = $agence;
+        $user->email = $email;
+        $user->uuid = $token;
+
+        $user->save();
+
+        return $user->id;
     }
 }

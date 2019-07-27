@@ -13,10 +13,35 @@ class RegisterUserController extends \Core\Controller
         if(empty($token) || strlen($token)<2){
             $token = ltrim($args['token'],'?');
         }
-        return $this->view->render($response, 'Home/register.html.twig',[
-            'agence' => 'agence',
-            'email' => 'email',
-            'token' => $token
-        ]);
+        $user_id = (int) $args['id'];
+        if($user=$this->validAndSave($token,$user_id)){
+            return $this->view->render($response, 'Home/register.html.twig',[
+                'agence' => $user->name,
+                'email' => $user->email,
+                'token' => $user->uuid
+            ]);
+        }else{
+            return $this->view->render($response, 'Home/register-fail.html.twig',[
+                'agence' => $user->name??'unknow',
+                'email' => $user->email??'unknow',
+                'token' => $user->uuid??'unknow'
+            ]);
+        }
+    }
+
+    private function validAndSave($token,$user_id)
+    {
+        try{
+            $user = User::find($user_id);
+            if($user->token == $token){
+                $user->active = 1;
+                $user->save();
+                return $user;
+            }else{
+                return null;
+            }
+        }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+            return null;
+        }
     }
 }
