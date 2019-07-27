@@ -15,7 +15,7 @@
 
 namespace Util;
 
-class UUID
+class UuidGenerator
 {
 	/**
 	 * Generate v3 UUID

@@ -13,7 +13,7 @@ class NewUserController extends \Core\Controller
                 'email' => 'email@example.com'
             ]);
         }else{
-            $token = \Util\UUID::v4();
+            $token = \Util\UuidGenerator::v4();
             $parsedBody = $request->getParsedBody();
             $agence = $parsedBody['agence'];
             $email = $parsedBody['email'];
