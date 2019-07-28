@@ -14,10 +14,10 @@ class PhpMailer
     private $sender = 'jomino.domino@gmail.com';
 
     private $defaultOptions = [
-        'Host' => 'smtp.gmail.com',
+        'Host' => \App\Parameters::EMAIL['host'],
+        'Username' => \App\Parameters::EMAIL['username'],
+        'Password' => \App\Parameters::EMAIL['password'],
         'SMTPAuth' => true,
-        'Username' => 'jomino.domino@gmail.com',
-        'Password' => 'jomdom64',
         'SMTPSecure' => 'tls',
         'Port' => 587
     ];
