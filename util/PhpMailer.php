@@ -11,6 +11,8 @@ class PHPMailer
     private $mailer;
     private $debugLevel = 2;
 
+    private $sender = 'jomino.domino@gmail.com';
+
     private $defaultOptions = [
         'Host' => 'smtp.gmail.com',
         'SMTPAuth' => true,
@@ -30,7 +32,7 @@ class PHPMailer
 
     }
 
-    public function send($from,$to,$subject,$body)
+    public function send($to,$subject,$body)
     {
         $mail = $this->mailer;
 
@@ -45,9 +47,9 @@ class PHPMailer
         try { 
         
             //Recipients
-            $mail->setFrom($from);
+            $mail->setFrom($this->sender);
             $mail->addAddress($to); 
-            $mail->addReplyTo($from);
+            $mail->addReplyTo($this->sender);
         
             // Content
             $mail->isHTML(true);

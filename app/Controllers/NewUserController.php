@@ -34,14 +34,15 @@ class NewUserController extends \Core\Controller
                     'token' => '?'.$token
                 ]);
                 $datas['generated_link'] = $generated_link;
-                if(!$this->sendUserMail($generated_link,$user)){
-                    //todo: push error message
-                    $datas['error'] = 'Impossible d\'envoyer l\'e-mail à l\'adresse '.$email;
+                $sended = $this->sendUserMail($generated_link,$user);
+                if(is_string($sended)){
+                    $datas['error'] = 'Impossible d\'envoyer l\'e-mail à l\'adresse '.$user->email;
                     $datas['error'] .= '<br>Conserver le lien pour une utilisation ultérieur.';
+                    $datas['error'] .= '<br>'.$sended;
                 }
             }else{
                 $datas['error'] = 'Impossible d\'écrire dans la base de donnée.';
-                $datas['error'] .= '<br>Contacter Olivier ...';
+                $datas['error'] .= '<br>Contactez votre administrateur ...';
             }
 
             return $this->view->render($response, 'Home/newuser.html.twig', $datas);
@@ -65,8 +66,17 @@ class NewUserController extends \Core\Controller
 
     private function sendUserMail($link,$user)
     {
-        //todo: send mail
-        return true;
+        $_tpl = 'Email/email-inlined.html.twig';
+        $_subject = 'Inscription au service Stripe-Payments d\'Ipefix';
+        
+        $_content = $this->view->fetch( $_tpl, [
+            'agence' => $user->name,
+            'link' => $link,
+        ]);
+
+        $mailer = new \Util\PHPMailer();
+        return $mailer->send($user->email,$_subject,$_content);
+
     }
 
 }
