@@ -9,7 +9,8 @@
         "monolog/monolog": "^1.23",
         "illuminate/database": "5.6.*",
         "illuminate/translation": "^5.4",
-        "robmorgan/phinx": "^0.10"
+        "robmorgan/phinx": "^0.10",
+        "phpmailer/phpmailer": "~6.0"
     },
     "autoload": {
     	"psr-4": {
