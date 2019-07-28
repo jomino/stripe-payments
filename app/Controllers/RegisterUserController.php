@@ -12,26 +12,24 @@ class RegisterUserController extends \Core\Controller
         $token = (string) ltrim($uri->getQuery(),'?');
         if(empty($token) || strlen($token)<2){ $token = ltrim($args['token'],'?'); }
         $user_id = (int) $args['id'];
-        if(!empty($token) && $user=$this->validate($token,$user_id)){
+        if(!empty($token) && ($user=$this->validate($token,$user_id) )){
+            $datas = [
+                'agence' => $user->name,
+                'email' => $user->email,
+                'generated_link' => $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
+                    'id' => $user->id,
+                    'token' => '?'.$token
+                ]
+            )];
             if($request->isGet()){
-                return $this->view->render($response, 'Home/register.html.twig',[
-                    'agence' => $user->name,
-                    'email' => $user->email,
-                    'generated_link' => $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
-                        'id' => $user->id,
-                        'token' => '?'.$token
-                    ])
-                ]);
+                return $this->view->render($response, 'Home/register.html.twig', $datas);
             }else{
                 if(false === $request->getAttribute('csrf_status')){
                     return $response->withStatus(498);
                 }else{
                     $parsedBody = $request->getParsedBody();
                     if($this->register($user,$parsedBody)){
-                        return $this->view->render($response, 'Home/registered.html.twig',[
-                            'agence' => $user->name,
-                            'email' => $user->email
-                        ]);
+                        return $this->view->render($response, 'Home/registered.html.twig', $datas);
                     }else{
                         return $this->view->render($response, 'Home/registered-fail.html.twig',[
                             'agence' => $user->name??'unknow',
