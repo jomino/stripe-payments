@@ -74,7 +74,7 @@ class NewUserController extends \Core\Controller
             'link' => $link,
         ]);
 
-        $mailer = new \Util\PHPMailer();
+        $mailer = new \Util\PhpMailer();
         return $mailer->send($user->email,$_subject,$_content);
 
     }
