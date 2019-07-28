@@ -11,11 +11,10 @@ class Routes
 
         $app->get('/', \App\Controllers\HomeController::class);
 
-        $app->get('/register/{id:[0-9]+}/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\RegisterUserController::class)->setName('register');
-
         $app->group( '', function($app){
             $app->get('/adduser', \App\Controllers\AddUserController::class)->setName('adduser');
             $app->post('/newuser', \App\Controllers\NewUserController::class)->setName('newuser');
+            $app->map(['GET','POST'], '/register/{id:[0-9]+}/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\RegisterUserController::class)->setName('register');
         })->add($container->get('csrf'));
 
         $paths = [

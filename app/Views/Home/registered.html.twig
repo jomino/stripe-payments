@@ -86,22 +86,10 @@
 <body>
     <div class="row">
         <div class="col-xs-4 col-xs-offset-4">
-            <form action="{{ path_for('adduser') }}" method="get">
-                {% if error %}
-                    <h2>Error</h2>
-                    <p class="error">
-                        {{ error }}<br>
-                        {% if generated_link %}
-                            <a href="{{ generated_link }}">{{ generated_link }}</a>
-                        {% endif %}
-                    </p>
-                {% else %}
-                    <h2>Success</h2>
-                    <p class="success">E-mail envoyer</p>
-                {% endif %}
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success btn-lg btn-block">Ajouter un nouvel utilisateur</button>
-                </div>
+            <form action="#">
+                <h2>Success</h2>
+                <p class="success">Votre compte est à jour.</p>
+                <p class="success">Merci blabla ...</p>
             </form>
         </div>
     </div>

@@ -6,7 +6,7 @@ use \App\Models\User;
 
 class NewUserController extends \Core\Controller
 {
-    
+
     public function __invoke($request, $response, $args)
     {
 
@@ -17,8 +17,7 @@ class NewUserController extends \Core\Controller
 
         $datas = [
             'agence' => $agence,
-            'email' => $email,
-            'generated_link' => 'error'
+            'email' => $email
         ];
 
         if(false === $request->getAttribute('csrf_status')){
@@ -31,10 +30,19 @@ class NewUserController extends \Core\Controller
 
             if($user_id=$this->saveNewUser($token,$agence,$email)){
                 $uri = $request->getUri();
-                $datas['generated_link'] = $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
+                $generated_link = $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
                     'id' => $user_id,
                     'token' => '?'.$token
                 ]);
+                if(!$this->sendUserMail($generated_link,$email)){
+                    //todo: push error message
+                    $datas['error'] = 'Impossible d\'envoyer l\'e-mail à l\'adresse '.$email;
+                    $datas['error'] .= '<br>Conserver le lien pour une utilisation ultérieur.';
+                    $datas['generated_link'] = $generated_link;
+                }
+            }else{
+                $datas['error'] = 'Impossible d\'écrire dans la base de donnée.';
+                $datas['error'] .= '<br>Contactez Olivier ...';
             }
 
             return $this->view->render($response, 'Home/newuser.html.twig', $datas);
@@ -54,4 +62,11 @@ class NewUserController extends \Core\Controller
 
         return $user->id;
     }
+
+    private function sendUserMail($link,$email)
+    {
+        //todo: send mail
+        return true;
+    }
+
 }
