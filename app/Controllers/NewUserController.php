@@ -21,9 +21,8 @@ class NewUserController extends \Core\Controller
         ];
 
         if(false === $request->getAttribute('csrf_status')){
-
-            return $this->view->render($response, 'Home/newuser-fail.html.twig', $datas);
-
+            //return $this->view->render($response, 'Home/newuser-fail.html.twig', $datas);
+            return $response->withStatus(498);
         }else{
 
             $token = \Util\UuidGenerator::v4();

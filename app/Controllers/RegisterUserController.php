@@ -14,28 +14,31 @@ class RegisterUserController extends \Core\Controller
         $user_id = (int) $args['id'];
         if(!empty($token) && $user=$this->validate($token,$user_id)){
             if($request->isGet()){
-                $generated_link = $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
-                    'id' => $user->id,
-                    'token' => '?'.$token
-                ]);
                 return $this->view->render($response, 'Home/register.html.twig',[
                     'agence' => $user->name,
                     'email' => $user->email,
-                    'generated_link' => $generated_link
+                    'generated_link' => $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
+                        'id' => $user->id,
+                        'token' => '?'.$token
+                    ])
                 ]);
             }else{
-                $parsedBody = $request->getParsedBody();
-                if($this->register($user,$parsedBody)){
-                    return $this->view->render($response, 'Home/registered.html.twig',[
-                        'agence' => $user->name,
-                        'email' => $user->email
-                    ]);
+                if(false === $request->getAttribute('csrf_status')){
+                    return $response->withStatus(498);
                 }else{
-                    return $this->view->render($response, 'Home/registered-fail.html.twig',[
-                        'agence' => $user->name??'unknow',
-                        'email' => $user->email??'unknow',
-                        'token' => $user->uuid??'unknow'
-                    ]);
+                    $parsedBody = $request->getParsedBody();
+                    if($this->register($user,$parsedBody)){
+                        return $this->view->render($response, 'Home/registered.html.twig',[
+                            'agence' => $user->name,
+                            'email' => $user->email
+                        ]);
+                    }else{
+                        return $this->view->render($response, 'Home/registered-fail.html.twig',[
+                            'agence' => $user->name??'unknow',
+                            'email' => $user->email??'unknow',
+                            'token' => $user->uuid??'unknow'
+                        ]);
+                    }
                 }
             }
         }else{
