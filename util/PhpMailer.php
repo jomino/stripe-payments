@@ -9,9 +9,9 @@ class PhpMailer
 {
 
     private $mailer;
-    private $debugLevel = 2;
+    private $debugLevel = 0;
 
-    private $sender = 'jomino.domino@gmail.com';
+    private $sender = \App\Parameters::EMAIL['username'];
 
     private $defaultOptions = [
         'Host' => \App\Parameters::EMAIL['host'],
