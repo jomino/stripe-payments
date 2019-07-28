@@ -28,6 +28,9 @@ class Settings
                 ],
                 'db' => [
                     'env' => \App\Parameters::DATABASE
+                ],
+                'assets' => [
+                    'path' => __DIR__ . '/../assets'
                 ]
             ]
         ];
