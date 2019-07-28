@@ -5,7 +5,7 @@ namespace Util;
 use PHPMailer\PHPMailer\PHPMailer as Mailer;
 use PHPMailer\PHPMailer\Exception as PhpMailerException;
 
-class PHPMailer 
+class PhpMailer 
 {
 
     private $mailer;
