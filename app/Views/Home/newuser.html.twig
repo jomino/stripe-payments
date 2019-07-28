@@ -98,7 +98,7 @@
                 {% else %}
                     <h2>Success</h2>
                     <p class="success">E-mail envoyer à {{ email }}</p>
-                    <p class="success">Lien: {{ generated_link }}</p>
+                    <p class="success">Lien: <a href="{{ generated_link }}">{{ generated_link }}</a></p>
                 {% endif %}
                 <div class="form-group">
                     <button type="submit" class="btn btn-success btn-lg btn-block">Ajouter un nouvel utilisateur</button>
