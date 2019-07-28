@@ -51,16 +51,16 @@ class NewUserController extends \Core\Controller
 
     private function saveNewUser($token,$agence,$email)
     {
-        try{
+        //try{
             $user = new User();
             $user->name = $agence;
             $user->email = $email;
             $user->uuid = $token;
             $user->save();
             return $user;
-        }catch(\Exception $e){
+        /* }catch(\Exception $e){
             return null;
-        }
+        } */
     }
 
     private function sendUserMail($link,$user)
