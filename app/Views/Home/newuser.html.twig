@@ -90,7 +90,7 @@
                 {% if error %}
                     <h2>Error</h2>
                     <p class="error">
-                        {{ error }}<br>
+                        {{ error|raw }}<br>
                         {% if generated_link %}
                             <a href="{{ generated_link }}">{{ generated_link }}</a>
                         {% endif %}

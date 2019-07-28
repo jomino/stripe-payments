@@ -41,7 +41,7 @@ class NewUserController extends \Core\Controller
                 }
             }else{
                 $datas['error'] = 'Impossible d\'écrire dans la base de donnée.';
-                $datas['error'] .= '<br>Contactez Olivier ...';
+                $datas['error'] .= '<br>Contacter Olivier ...';
             }
 
             return $this->view->render($response, 'Home/newuser.html.twig', $datas);
