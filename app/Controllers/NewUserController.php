@@ -27,17 +27,17 @@ class NewUserController extends \Core\Controller
 
             $token = \Util\UuidGenerator::v4();
 
-            if($user_id=$this->saveNewUser($token,$agence,$email)){
+            if($user=$this->saveNewUser($token,$agence,$email)){
                 $uri = $request->getUri();
                 $generated_link = $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
-                    'id' => $user_id,
+                    'id' => $user->id,
                     'token' => '?'.$token
                 ]);
-                if(!$this->sendUserMail($generated_link,$email)){
+                $datas['generated_link'] = $generated_link;
+                if(!$this->sendUserMail($generated_link,$user)){
                     //todo: push error message
                     $datas['error'] = 'Impossible d\'envoyer l\'e-mail à l\'adresse '.$email;
                     $datas['error'] .= '<br>Conserver le lien pour une utilisation ultérieur.';
-                    $datas['generated_link'] = $generated_link;
                 }
             }else{
                 $datas['error'] = 'Impossible d\'écrire dans la base de donnée.';
@@ -51,18 +51,19 @@ class NewUserController extends \Core\Controller
 
     private function saveNewUser($token,$agence,$email)
     {
-
-        $user = new User();
-        $user->name = $agence;
-        $user->email = $email;
-        $user->uuid = $token;
-
-        $user->save();
-
-        return $user->id;
+        try{
+            $user = new User();
+            $user->name = $agence;
+            $user->email = $email;
+            $user->uuid = $token;
+            $user->save();
+            return $user;
+        }catch(\Exception $e){
+            return null;
+        }
     }
 
-    private function sendUserMail($link,$email)
+    private function sendUserMail($link,$user)
     {
         //todo: send mail
         return true;

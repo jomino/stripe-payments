@@ -11,7 +11,7 @@ class RegisterUserController extends \Core\Controller
         $uri = $request->getUri();
         $token = (string) ltrim($uri->getQuery(),'?');
         if(empty($token) || strlen($token)<2){ $token = ltrim($args['token'],'?'); }
-        $user_id = (int) $args['id'];
+        $user_id = (int) $args['id']??0;
         if(!empty($token) && ($user=$this->validate($token,$user_id) )){
             $datas = [
                 'agence' => $user->name,
@@ -27,16 +27,10 @@ class RegisterUserController extends \Core\Controller
                 if(false === $request->getAttribute('csrf_status')){
                     return $response->withStatus(498);
                 }else{
-                    $parsedBody = $request->getParsedBody();
-                    if($this->register($user,$parsedBody)){
-                        return $this->view->render($response, 'Home/registered.html.twig', $datas);
-                    }else{
-                        return $this->view->render($response, 'Home/registered-fail.html.twig',[
-                            'agence' => $user->name??'unknow',
-                            'email' => $user->email??'unknow',
-                            'token' => $user->uuid??'unknow'
-                        ]);
-                    }
+                    $body = $request->getParsedBody();
+                    if($this->register($user,$body)){ $_tpl = 'registered'; }
+                    else{ $_tpl = 'registered-fail'; }
+                    return $this->view->render($response, sprintf('Home/%s.html.twig',$_tpl), $datas);
                 }
             }
         }else{
