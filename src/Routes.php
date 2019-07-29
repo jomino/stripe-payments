@@ -19,6 +19,13 @@ class Routes
         
         $app->post('/webhook/{id:[0-9]+}/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\StripeWebhookController::class)->setName('webhook');
 
+        $app->get('/debug', function($request, $response, $args){
+            $route = $request->getAttribute('route');
+            $body = $response->getBody();
+            $body->write(print_r($route,true));
+            return $response;
+        });
+
         $paths = [
           'js' => 'text/javascript',
           'css' => 'text/css',
