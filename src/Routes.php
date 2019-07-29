@@ -17,7 +17,7 @@ class Routes
             $app->map(['GET','POST'], '/register/{id:[0-9]+}/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\RegisterUserController::class)->setName('register');
         })->add($container->get('csrf'));
         
-        $app->post('/webhook/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\StripeWebhookController::class)->setName('webhook');
+        $app->post('/webhook/{id:[0-9]+}/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\StripeWebhookController::class)->setName('webhook');
 
         $paths = [
           'js' => 'text/javascript',

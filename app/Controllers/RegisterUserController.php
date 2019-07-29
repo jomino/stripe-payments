@@ -13,26 +13,24 @@ class RegisterUserController extends \Core\Controller
         if(empty($token) || strlen($token)<2){ $token = ltrim($args['token'],'?'); }
         $user_id = (int) $args['id']??0;
         if(!empty($token) && ($user=$this->validate($token,$user_id) )){
-            $datas = [
-                'agence' => $user->name,
-                'email' => $user->email,
-                'generated_link' => $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
-                    'id' => $user->id,
-                    'token' => '?'.$token
-                ]
-            )];
+            $datas = [ 'agence' => $user->name, 'email' => $user->email ];
             if($request->isGet()){
-                return $this->view->render($response, 'Home/register.html.twig', $datas);
+                $template_name = $route_name = 'register';
             }else{
                 if(false === $request->getAttribute('csrf_status')){
                     return $response->withStatus(498);
                 }else{
-                    $body = $request->getParsedBody();
-                    if($this->register($user,$body)){ $_tpl = 'registered'; }
-                    else{ $_tpl = 'registered-fail'; }
-                    return $this->view->render($response, sprintf('Home/%s.html.twig',$_tpl), $datas);
+                    $route_name = 'webhook';
+                    if($this->register($user,$request->getParsedBody())){ $template_name = 'registered'; }
+                    else{ $template_name = 'registered-fail'; }
                 }
             }
+            return $this->view->render($response, sprintf('Home/%s.html.twig',$template_name), array_merge($datas,[
+                'generated_link' => $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor($route_name,[
+                    'id' => $user->id,
+                    'token' => '?'.$user->uuid
+                ])
+            ]));
         }else{
             return $this->view->render($response, 'Home/register-fail.html.twig',[
                 'agence' => $user->name??'unknow',
