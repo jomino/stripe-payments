@@ -1,5 +1,6 @@
 phinx.yml
-/app/Parameters.php
+/app/Parameters*
+!/app/Parameters.php.dist
 /vendor/*
 /logs/*
 !/logs/.gitkeep
