@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Parameters;
-use Util\Tools;
+use App\Parameters as Parameters;
+use Util\Tools as Tools;
 
-use Carbon\Carbon;
+use Carbon\Carbon as Carbon;
 
 class LoginController extends \Core\Controller  
 {
@@ -17,7 +17,7 @@ class LoginController extends \Core\Controller
         $hash = hash('sha256', $pass_phrase);
         if($cookie=='none'){
             if($parsedBody['login']==Parameters::SECURITY['login']){
-                $dtc = Carbon::now(new DateTimeZone('Europe/Brussels'));
+                $dtc = Carbon::now(new \DateTimeZone('Europe/Brussels'));
                 $dtc->addMinutes(30);
                 $response = \Dflydev\FigCookies\FigResponseCookies::set($response, \Dflydev\FigCookies\SetCookie::create(Parameters::SECURITY['cookie'])
                     ->withPath('/')
