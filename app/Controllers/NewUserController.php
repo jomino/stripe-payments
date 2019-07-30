@@ -21,8 +21,9 @@ class NewUserController extends \Core\Controller
         ];
 
         if(false === $request->getAttribute('csrf_status')){
-            //return $this->view->render($response, 'Home/newuser-fail.html.twig', $datas);
             return $response->withStatus(498);
+        }elseif(false === $request->getAttribute(\App\Parameters::SECURITY['status'])){
+            return $response->withRedirect($this->router->pathFor('home'));
         }else{
 
             $token = \Util\UuidGenerator::v4();

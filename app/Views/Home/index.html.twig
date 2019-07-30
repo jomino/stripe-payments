@@ -14,13 +14,11 @@
 <body>
 <div class="row">
 	<div class="signup-form col-xs-4 col-xs-offset-4">
-		<form action="{{ path_for('adduser') }}" method="post">
-			<input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
-			<input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
+		<form action="{{ path_for('login') }}" method="post">
 			<h2>Welcom</h2>
 			<div class="form-group">
-				<input type="text" class="form-control" name="skey" placeholder="Enter your key here" required="required">
-				<button type="submit" class="btn btn-success btn-lg btn-block">Entrer</button>
+				<input type="email" class="form-control" name="login" placeholder="E-mail" required="required">
+				<button type="submit" class="btn btn-success btn-lg btn-block">Enter</button>
 			</div>
 		</form>
 	</div>

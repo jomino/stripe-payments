@@ -22,4 +22,11 @@ class Parameters
         'username' => '',
         'password' => ''
     ];
+
+    const SECURITY = [
+        'status' => 'login_status',
+        'cookie' => 'X-Auth',
+        'secret' => 'wra6hIfraxuVlSw3MiDrUchL',
+        'login' => 'olivier@ipefix.com'
+    ];
 }

@@ -9,13 +9,14 @@ class Routes
 
         $container = $app->getContainer();
 
-        $app->get('/', \App\Controllers\HomeController::class);
+        $app->get('/', \App\Controllers\HomeController::class)->setName('home');
+        $app->get('/login', \App\Controllers\LoginController::class)->setName('login');
 
         $app->group( '', function($app){
-            $app->get('/adduser', \App\Controllers\AddUserController::class)->setName('adduser');
+            $app->map(['GET','POST'], \App\Controllers\AddUserController::class)->setName('adduser');
             $app->post('/newuser', \App\Controllers\NewUserController::class)->setName('newuser');
             $app->map(['GET','POST'], '/register/{id:[0-9]+}/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\RegisterUserController::class)->setName('register');
-        })->add($container->get('csrf'));
+        })->add($container->get('csrf'))->add(new \App\Middleware\LoginMiddleware());
         
         $app->post('/webhook/{id:[0-9]+}/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\StripeWebhookController::class)->setName('webhook');
 
