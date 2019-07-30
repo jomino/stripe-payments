@@ -7,7 +7,8 @@ class Tools
 
     public static function cookieGetValue($cookie)
     {
-        return strtr($cookie,strpos($cookie,'='));
+        $key_value = explode('=',$cookie);
+        return $key_value[1];
     }
 
 }
