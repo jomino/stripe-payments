@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use Dflydev\FigCookies\SetCookie;
 use Dflydev\FigCookies\FigRequestCookies;
 
-class LoginController extends \Core\Controller
+class LoginController extends \Core\Controller  
 {
     public function __invoke($request, $response, $args)
     {
