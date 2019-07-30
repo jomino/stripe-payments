@@ -26,7 +26,7 @@ class Parameters
     const SECURITY = [
         'status' => 'login_status',
         'cookie' => 'X-Auth',
-        'secret' => 'wra6hIfraxuVlSw3MiDrUchL',
-        'login' => 'olivier@ipefix.com'
+        'secret' => '',
+        'login' => ''
     ];
 }
