@@ -1,2 +1,29 @@
-<h1>Hello</h1><br>
-- <a href="{{ path_for('adduser') }}">Ajouter un utilisateur Stripe</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<base href="/">
+<title>Welcome</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="css/application.css">
+<script src="js/bootstrap.min.js"></script> 
+</head>
+<body>
+<div class="row">
+	<div class="signup-form col-xs-4 col-xs-offset-4">
+		<form action="{{ path_for('adduser') }}" method="post">
+			<input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
+			<input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
+			<h2>Welcom</h2>
+			<div class="form-group">
+				<input type="text" class="form-control" name="skey" placeholder="Enter your key here" required="required">
+				<button type="submit" class="btn btn-success btn-lg btn-block">Entrer</button>
+			</div>
+		</form>
+	</div>
+</div>
+</body>
+</html>
