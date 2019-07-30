@@ -1,6 +1,6 @@
 <?php
 
-namespace Middleware;
+namespace App\Middleware;
 
 use App\Parameters;
 
