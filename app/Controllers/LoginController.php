@@ -7,15 +7,12 @@ use Util\Tools;
 
 use Carbon\Carbon;
 
-use Dflydev\FigCookies\SetCookie;
-use Dflydev\FigCookies\FigRequestCookies;
-
 class LoginController extends \Core\Controller  
 {
     public function __invoke($request, $response, $args)
     {
         $parsedBody = $request->getParsedBody();
-        $cookie = Tools::cookieGetValue(FigRequestCookies::get($request, Parameters::SECURITY['cookie'], 'none'));
+        $cookie = Tools::cookieGetValue(\Dflydev\FigCookies\FigRequestCookies::get($request, Parameters::SECURITY['cookie'], 'none'));
         $pass_phrase = Parameters::SECURITY['login'].'-'.Parameters::SECURITY['secret'];
         $hash = hash('sha256', $pass_phrase);
         $this->logger->info('cookie name: '.Parameters::SECURITY['cookie']);
@@ -24,7 +21,7 @@ class LoginController extends \Core\Controller
         if($cookie=='none'){
             if($parsedBody['login']==Parameters::SECURITY['login']){
                 $dtc = Carbon::now()->add(15,'minutes');
-                $response = FigResponseCookies::set($response, SetCookie::create(Parameters::SECURITY['cookie'])
+                $response = \Dflydev\FigCookies\FigResponseCookies::set($response, \Dflydev\FigCookies\SetCookie::create(Parameters::SECURITY['cookie'])
                     ->withPath('/')
                     ->withValue($hash)
                     ->withExpires($dtc->toRfc7231String())
