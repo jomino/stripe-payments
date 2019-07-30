@@ -12,19 +12,21 @@ class LoginController extends \Core\Controller
         $hash = hash('sha256', $pass_phrase);
         if($cookie=='none'){
             if($parsedBody['login']==\App\Parameters::SECURITY['login']){
-                $dtc = \Carbon\Carbon::now(new \DateTimeZone('Europe/Brussels'));
-                $dtc->addMinutes(30);
                 $response = \Dflydev\FigCookies\FigResponseCookies::set($response, \Dflydev\FigCookies\SetCookie::create(\App\Parameters::SECURITY['cookie'])
                     ->withPath('/')
                     ->withValue($hash)
-                    ->withExpires($dtc->toCookieString())
+                    ->withMaxAge(30*60)
                     ->withDomain($request->getUri()->getHost())
+                    ->withSecure(true)
+                    ->withHttpOnly(true)
                 );
             }else{
+                $response = \Dflydev\FigCookies\FigResponseCookies::remove($response, \App\Parameters::SECURITY['cookie']);
                 return $response->withStatus(403);
             }
         }else{
             if($cookie!=$hash){
+                $response = \Dflydev\FigCookies\FigResponseCookies::remove($response, \App\Parameters::SECURITY['cookie']);
                 return $response->withStatus(403);
             }
         }
