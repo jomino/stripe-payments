@@ -17,6 +17,9 @@ class LoginController extends \Core\Controller
         $cookie = FigRequestCookies::get($request, Parameters::SECURITY['cookie'], 'none');
         $pass_phrase = Parameters::SECURITY['login'].'-'.Parameters::SECURITY['secret'];
         $hash = hash('sha256', $pass_phrase);
+        $this->logger->info('cookie name: '.Parameters::SECURITY['cookie']);
+        $this->logger->info('cookie value: '.$cookie);
+        $this->logger->info('login value: '.$parsedBody['login']);
         if($cookie=='none'){
             if($parsedBody['login']==Parameters::SECURITY['login']){
                 $dtc = Carbon::now()->add(15,'minutes');
