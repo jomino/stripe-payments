@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Parameters;
+use Util\Tools;
 
 use Carbon\Carbon;
 
@@ -14,7 +15,7 @@ class LoginController extends \Core\Controller
     public function __invoke($request, $response, $args)
     {
         $parsedBody = $request->getParsedBody();
-        $cookie = FigRequestCookies::get($request, Parameters::SECURITY['cookie'], 'none');
+        $cookie = Tools::cookieGetValue(FigRequestCookies::get($request, Parameters::SECURITY['cookie'], 'none'));
         $pass_phrase = Parameters::SECURITY['login'].'-'.Parameters::SECURITY['secret'];
         $hash = hash('sha256', $pass_phrase);
         $this->logger->info('cookie name: '.Parameters::SECURITY['cookie']);
