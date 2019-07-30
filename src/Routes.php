@@ -13,7 +13,7 @@ class Routes
         $app->get('/login', \App\Controllers\LoginController::class)->setName('login');
 
         $app->group( '', function($app){
-            $app->map(['GET','POST'], \App\Controllers\AddUserController::class)->setName('adduser');
+            $app->map(['GET','POST'], '/adduser', \App\Controllers\AddUserController::class)->setName('adduser');
             $app->post('/newuser', \App\Controllers\NewUserController::class)->setName('newuser');
             $app->map(['GET','POST'], '/register/{id:[0-9]+}/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\RegisterUserController::class)->setName('register');
         })->add($container->get('csrf'))->add(new \App\Middleware\LoginMiddleware());
