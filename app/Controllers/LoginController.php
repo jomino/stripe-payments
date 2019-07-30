@@ -15,16 +15,14 @@ class LoginController extends \Core\Controller
         $cookie = Tools::cookieGetValue(\Dflydev\FigCookies\FigRequestCookies::get($request, Parameters::SECURITY['cookie'], 'none'));
         $pass_phrase = Parameters::SECURITY['login'].'-'.Parameters::SECURITY['secret'];
         $hash = hash('sha256', $pass_phrase);
-        $this->logger->info('cookie name: '.Parameters::SECURITY['cookie']);
-        $this->logger->info('cookie value: '.$cookie);
-        $this->logger->info('login value: '.$parsedBody['login']);
         if($cookie=='none'){
             if($parsedBody['login']==Parameters::SECURITY['login']){
-                $dtc = Carbon::now()->add(15,'minutes');
+                $dtc = Carbon::now(new DateTimeZone('Europe/Brussels'));
+                $dtc->addMinutes(30);
                 $response = \Dflydev\FigCookies\FigResponseCookies::set($response, \Dflydev\FigCookies\SetCookie::create(Parameters::SECURITY['cookie'])
                     ->withPath('/')
                     ->withValue($hash)
-                    ->withExpires($dtc->toRfc7231String())
+                    ->withExpires($dtc->toCookieString())
                     ->withDomain($request->getUri()->getHost())
                 );
             }else{
