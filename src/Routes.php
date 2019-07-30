@@ -10,7 +10,7 @@ class Routes
         $container = $app->getContainer();
 
         $app->get('/', \App\Controllers\HomeController::class)->setName('home');
-        $app->get('/login', \App\Controllers\LoginController::class)->setName('login');
+        $app->post('/login', \App\Controllers\LoginController::class)->setName('login');
 
         $app->group( '', function($app){
             $app->map(['GET','POST'], '/adduser', \App\Controllers\AddUserController::class)->setName('adduser');
