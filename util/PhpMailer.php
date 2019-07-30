@@ -11,7 +11,7 @@ class PhpMailer
     private $mailer;
     private $debugLevel = 0;
 
-    private $sender = \App\Parameters::EMAIL['username'] . '<Ipefix Service>';
+    private $sender = \App\Parameters::EMAIL['username'];
 
     private $defaultOptions = [
         'Host' => \App\Parameters::EMAIL['host'],
@@ -47,7 +47,7 @@ class PhpMailer
         try { 
         
             //Recipients
-            $mail->setFrom($this->sender);
+            $mail->setFrom($this->sender, 'Ipefix Service');
             $mail->addAddress($to); 
             $mail->addReplyTo($this->sender);
         
