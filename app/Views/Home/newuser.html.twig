@@ -23,29 +23,20 @@
                             <blockquote>
                                 <p class="text-danger small">{{ error|raw }}</p>
                             </blockquote>
-                            {% if generated_link %}
-                            <p class="text-default">
-                                Néanmoins, l'utilisateur est inscrit.<br>
-                                Ci-dessous, le lien permettant de finaliser l'opération:<br>
-                                <blockquote>
-                                    <a class="small" href="{{ generated_link }}" target="_blank">{{ generated_link }}</a>
-                                </blockquote>
-                                Copiez le manuellement et faite lui parvenir ou,<br>
-                                si vous connaissé ses identifiants,<br>
-                                accédez vous même à la page et inscrivez le en son nom.
-                            </p>
-                            {% endif %}
                         </div>
                     </div>
                 {% else %}
                     <h2>Success</h2>
                     <div class="panel panel-success">
                         <div class="panel-body">
-                            Voici le lien à insérer pour initier toute<br>
+                            Voici l'adresse du lien pour initier toute<br>
                             transaction de payement depuis le site client.
                             <blockquote>
-                                <code>&lt;a href="{{ generated_link }}" data-amount="..."&gt;Acheter&lt;/a&gt;</code>
+                                <code>{{ generated_link }}</code>
                             </blockquote>
+                            Celui-ci se présente sous la forme:<br>
+                            &lt;a href="https://..." data-amount="nnnn" class="stripe-payment-btn"&gt;Acheter&lt;/a&gt;<br>
+                            dont le montant "nnnn" (attr. data-amount) est exprimé en centimes.
                         </div>
                     </div>
                 {% endif %}

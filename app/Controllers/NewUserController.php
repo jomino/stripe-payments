@@ -30,16 +30,19 @@ class NewUserController extends \Core\Controller
 
             if($user=$this->saveNewUser($token,$agence,$email)){
                 $uri = $request->getUri();
-                $generated_link = $uri->getScheme().'://'.rtrim($uri->getHost(),'/').$this->router->pathFor('register',[
+                $generated_link = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor('register',[
                     'id' => $user->id,
-                    'token' => '?'.$token
+                    'token' => '?'.$user->uuid
                 ]);
-                $datas['generated_link'] = $generated_link;
                 $sended = $this->sendUserMail($generated_link,$user);
                 if(is_string($sended)){
-                    $datas['error'] = 'Impossible d\'envoyer l\'e-mail à l\'adresse '.$user->email;
-                    $datas['error'] .= '<br>Conserver le lien pour une utilisation ultérieur.';
+                    $datas['error'] = 'Impossible d\'envoyer l\'e-mail à l\'adresse '.$email;
                     $datas['error'] .= '<br>'.$sended;
+                    $user->delete();
+                }else{
+                    $datas['generated_link'] = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor('payment',[
+                        'token' => '?'.$user->uuid
+                    ]);
                 }
             }else{
                 $datas['error'] = 'Impossible d\'écrire dans la base de donnée.';
