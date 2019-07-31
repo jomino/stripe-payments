@@ -57,6 +57,7 @@ class NewUserController extends \Core\Controller
     private function saveNewUser($token,$agence,$email)
     {
         try{
+            //todo verify for duplicate e-mail & name
             $user = new User();
             $user->name = $agence;
             $user->email = $email;
