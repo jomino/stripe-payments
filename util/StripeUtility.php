@@ -5,7 +5,8 @@ namespace Util;
 class StripeUtility
 {
 
-    private static $WEBHOOK_ENABLE_EVENTS = ["charge.failed", "charge.succeeded"];
+    const EVENT_CHARGE_FAILED = 'charge.failed';
+    const EVENT_CHARGE_SUCCEEDED = 'charge.succeeded';
 
     public static function createWebhook($api_key,$wh_url)
     {
@@ -13,7 +14,7 @@ class StripeUtility
 
         $response = \Stripe\WebhookEndpoint::create([
           "url" => $wh_url,
-          "enabled_events" => self::$WEBHOOK_ENABLE_EVENTS
+          "enabled_events" => [EVENT_CHARGE_FAILED,EVENT_CHARGE_SUCCEEDED]
         ]);
 
         return $response;
