@@ -17,15 +17,39 @@
         <div class="signup-form col-xs-4 col-xs-offset-4">
             <form action="{{ path_for('adduser') }}" method="get">
                 {% if error %}
-                    <h2>Error</h2>
-                    <p class="error">
-                        {{ error|raw }}<br>
-                        {% if generated_link %}
-                            <a href="{{ generated_link }}">{{ generated_link }}</a>
-                        {% endif %}
-                    </p>
+                    <h2>Erreur</h2>
+                    <div class="panel panel-danger">
+                        <div class="panel-body">
+                            <blockquote>
+                                <p class="text-danger small">{{ error|raw }}</p>
+                            </blockquote>
+                            {% if generated_link %}
+                            <p class="text-default">
+                                Néanmoins, l'utilisateur est inscrit.<br>
+                                Ci-dessous, le lien permettant de finaliser l'opération:<br>
+                                <blockquote>
+                                    <a class="small" href="{{ generated_link }}" target="_blank">{{ generated_link }}</a>
+                                </blockquote>
+                                Copiez le manuellement et faite lui parvenir ou,<br>
+                                si vous connaissé ses identifiants,<br>
+                                accédez vous même à la page et inscrivez le en son nom.
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
                 {% else %}
                     <h2>Success</h2>
+                    <div class="panel panel-success">
+                        <div class="panel-body">
+                            Un e-mail a été envoyé à {{ email }} contenant<br>
+                            le lien permettant de finaliser l'opération.<br>
+                            <blockquote>
+                                <a class="small" href="{{ generated_link }}" target="_blank">{{ generated_link }}</a>
+                            </blockquote>
+                            Si vous connaissé ses identifiants,<br>
+                            accédez vous même à la page et inscrivez le en son nom.
+                        </div>
+                    </div>
                     <p class="success">E-mail envoyer à {{ email }}</p>
                     <p class="success">Lien: <a href="{{ generated_link }}">{{ generated_link }}</a></p>
                 {% endif %}

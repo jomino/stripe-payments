@@ -19,6 +19,16 @@
 			<input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
 			<input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
 			<h2>Ajouter un utilisateur</h2>
+            <div class="panel panel-default">
+                <div class="panel-body">
+					Inscrivez l'adresse du site internet client<br>
+					devant bénéficier du service et<br>
+					entrez son adresse e-mail de contact.<br>
+                    Un courriel lui sera automatiquement envoyé<br>
+					contenant le lien d'ou il pourra inscrire<br>
+					les identifiants "Stripe" nécéssaires aux transactions.
+                </div>
+            </div>
 			<div class="form-group">
 				<input type="text" class="form-control" name="agence" placeholder="Agence" required="required">
 				<input type="email" class="form-control" name="email" placeholder="Email" required="required">

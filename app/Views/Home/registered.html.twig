@@ -16,13 +16,15 @@
     <div class="row">
         <div class="signup-form col-xs-4 col-xs-offset-4">
             <form action="#">
-                <h2>Success</h2>
-                <p class="success">Merci {{ email }}, vos données ont étés misent à jour.</p>
-                <p class="success">Si vous voulez conserver une trace des transactions</p>
-                <p class="success">dans votre interface de gestion,</p>
-                <p class="success">veuillez copier ce lien dans votre accompte Stripe.</p>
-                <p class="success"><code>{{ generated_link }}</code></p>
-                <p class="success">Vous pouvez fermer cette page.</p>
+                <h2>Merci</h2>
+				<div class="panel panel-success">
+					<div class="panel-body">
+						Vos données ont étés misent à jour.<br>
+						Pour être tenu informé des transactions,<br>
+						consultez votre "Dashboard" Stripe.<br>
+						Vous pouvez <a href="this.onclick=(e=>window.open('','_self').close(););">fermer</a> cette page.
+					</div>
+				</div>
             </form>
         </div>
     </div>

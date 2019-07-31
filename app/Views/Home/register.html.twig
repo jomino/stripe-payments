@@ -18,7 +18,16 @@
 		<form action="{{ generated_link }}" method="post">
 			<input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
 			<input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
-			<h2>Enregistrez vos identifiants Stripe</h2>
+			<h2>Enregistrement</h2>
+            <div class="panel panel-default">
+                <div class="panel-body">
+					Veuillez fournir vos clefs publique et privée,<br>
+                    vous les trouverez dans votre "Dashboard" Stripe<br>
+					à la rubrique correspondante.<br>
+                    Ces dernières seront immédiatement encodées de façon crypté,<br>
+					garantissant ainsi leur intégrité.
+                </div>
+            </div>
 			<div class="form-group">
 				<input type="text" class="form-control" name="pkey" placeholder="Clefs publique" required="required">
 				<input type="password" class="form-control" name="skey" placeholder="Clefs secrete" required="required" autocomplete="off">
