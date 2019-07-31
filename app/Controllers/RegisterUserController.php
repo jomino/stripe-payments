@@ -82,7 +82,7 @@ class RegisterUserController extends \Core\Controller
                 return true;
             }
         }
-
+        //todo return error info
         return false;
 
     }
