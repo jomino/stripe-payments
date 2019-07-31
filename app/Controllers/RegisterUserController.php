@@ -75,4 +75,10 @@ class RegisterUserController extends \Core\Controller
         return false;
 
     }
+
+    private function setupWebhook($user,$url)
+    {
+        $response = (array) \Util\StripeUtility::createWebhook($user->skey,$url);
+        $this->logger->info(print_r($response,true));
+    }
 }
