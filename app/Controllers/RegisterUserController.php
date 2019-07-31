@@ -85,10 +85,11 @@ class RegisterUserController extends \Core\Controller
 
     }
 
-    private function setupWebhook($key,$url)
+    private function setupWebhook($user,$url)
     {
+        $key = $user->skey;
         $response = \Util\StripeUtility::createWebhook($key,$url);
-        $this->logger->info(print_r($response,true));
+        print($response);
         return !empty($response);
     }
 }

@@ -11,12 +11,12 @@ class StripeUtility
     {
         \Stripe\Stripe::setApiKey($api_key);
 
-        $raw = \Stripe\WebhookEndpoint::create([
+        $response = \Stripe\WebhookEndpoint::create([
           "url" => $wh_url,
           "enabled_events" => self::$WEBHOOK_ENABLE_EVENTS
         ]);
 
-        return json_decode((string) $raw,true);
+        return $response;
 
     }
 
