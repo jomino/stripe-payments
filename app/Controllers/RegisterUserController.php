@@ -58,9 +58,11 @@ class RegisterUserController extends \Core\Controller
                 //todo: add active==0 ctrl
                 return $user;
             }else{
+                //todo return error info
                 return null;
             }
         }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+            //todo return error info
             return null;
         }
     }
