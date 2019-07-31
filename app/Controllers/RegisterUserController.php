@@ -16,21 +16,30 @@ class RegisterUserController extends \Core\Controller
             $datas = [ 'agence' => $user->name, 'email' => $user->email ];
             if($request->isGet()){
                 $template_name = $route_name = 'register';
+                array_merge( $datas, [
+                    'generated_link' => $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor($route_name,[
+                        'id' => $user->id,
+                        'token' => '?'.$user->uuid
+                    ])
+                ]);
             }else{
                 if(false === $request->getAttribute('csrf_status')){
                     return $response->withStatus(498);
                 }else{
+                    $datas = [];
                     $route_name = 'webhook';
-                    if($this->register($user,$request->getParsedBody())){ $template_name = 'registered'; }
-                    else{ $template_name = 'registered-fail'; }
+                    if($this->register($user,$request->getParsedBody())){
+                        $template_name = 'registered';
+                        $webhook_url = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor( $route_name, [
+                            'token' => '?'.$user->uuid
+                        ]);
+                        if(!$this->setupWebhook($user->skey,$webhook_url)){
+                            $template_name = 'registered-fail';
+                        }
+                    }else{ $template_name = 'registered-fail'; }
                 }
             }
-            return $this->view->render($response, sprintf('Home/%s.html.twig',$template_name), array_merge($datas,[
-                'generated_link' => $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor($route_name,[
-                    'id' => $user->id,
-                    'token' => '?'.$user->uuid
-                ])
-            ]));
+            return $this->view->render($response, sprintf('Home/%s.html.twig',$template_name), $datas);
         }else{
             return $this->view->render($response, 'Home/register-fail.html.twig',[
                 'agence' => $user->name??'unknow',
@@ -76,9 +85,10 @@ class RegisterUserController extends \Core\Controller
 
     }
 
-    private function setupWebhook($user,$url)
+    private function setupWebhook($key,$url)
     {
-        $response = (array) \Util\StripeUtility::createWebhook($user->skey,$url);
+        $response = (array) \Util\StripeUtility::createWebhook($key,$url);
         $this->logger->info(print_r($response,true));
+        return !empty($response);
     }
 }

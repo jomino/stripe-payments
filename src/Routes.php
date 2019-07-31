@@ -19,7 +19,7 @@ class Routes
             $app->get('/register/{id:[0-9]+}/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\RegisterUserController::class)->setName('register');
         })->add($container->get('csrf'))->add(new \App\Middleware\LoginMiddleware());
         
-        $app->post('/webhook/{id:[0-9]+}/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\StripeWebhookController::class)->setName('webhook');
+        $app->post('/1/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\StripeWebhookController::class)->setName('webhook');
 
         $app->post('/0/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\StripePaymentController::class)->setName('payment');
 
