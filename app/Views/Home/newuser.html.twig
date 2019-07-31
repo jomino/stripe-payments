@@ -41,17 +41,13 @@
                     <h2>Success</h2>
                     <div class="panel panel-success">
                         <div class="panel-body">
-                            Un e-mail a été envoyé à {{ email }} contenant<br>
-                            le lien permettant de finaliser l'opération.<br>
+                            Voici le lien à insérer pour initier toute<br>
+                            transaction de payement depuis le site client.
                             <blockquote>
-                                <a class="small" href="{{ generated_link }}" target="_blank">{{ generated_link }}</a>
+                                <code>&lt;a href="{{ generated_link }}" data-amount="..."&gt;Acheter&lt;/a&gt;</code>
                             </blockquote>
-                            Si vous connaissé ses identifiants,<br>
-                            accédez vous même à la page et inscrivez le en son nom.
                         </div>
                     </div>
-                    <p class="success">E-mail envoyer à {{ email }}</p>
-                    <p class="success">Lien: <a href="{{ generated_link }}">{{ generated_link }}</a></p>
                 {% endif %}
                 <div class="form-group">
                     <button type="submit" class="btn btn-success btn-lg btn-block">Ajouter un nouvel utilisateur</button>
