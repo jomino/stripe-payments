@@ -9,12 +9,14 @@ class Parameters
     ];
 
     const DATABASE = [
-        'host' => '',
-        'dbname' => '',
-        'user' => '',
+        'driver' => 'mysql',
+        'host' => 'localhost',
+        'database' => 'stripe_payments',
+        'username' => '',
         'password' => '',
-        'charset' => '',
-        'driver' => ''
+        'charset' => 'utf8',
+        'collation' => 'utf8_unicode_ci',
+        'prefix' => ''
     ];
 
     const EMAIL = [
