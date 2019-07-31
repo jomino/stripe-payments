@@ -16,7 +16,7 @@ class StripeUtility
           "enabled_events" => self::$WEBHOOK_ENABLE_EVENTS
         ]);
 
-        return $raw;
+        return json_decode((string) $raw,true);
 
     }
 
