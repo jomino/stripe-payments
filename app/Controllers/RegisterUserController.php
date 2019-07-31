@@ -33,7 +33,7 @@ class RegisterUserController extends \Core\Controller
                         $webhook_url = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor( $route_name, [
                             'token' => '?'.$user->uuid
                         ]);
-                        if(!$this->setupWebhook($user->skey,$webhook_url)){
+                        if(!$this->setupWebhook($user,$webhook_url)){
                             $template_name = 'registered-fail';
                         }
                     }else{ $template_name = 'registered-fail'; }
