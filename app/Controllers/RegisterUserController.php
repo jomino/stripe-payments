@@ -41,6 +41,7 @@ class RegisterUserController extends \Core\Controller
             }
             return $this->view->render($response, sprintf('Home/%s.html.twig',$template_name), $datas);
         }else{
+            //todo return error info
             return $this->view->render($response, 'Home/register-fail.html.twig',[
                 'agence' => $user->name??'unknow',
                 'email' => $user->email??'unknow',
