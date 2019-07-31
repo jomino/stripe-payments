@@ -14,7 +14,7 @@ class StripeUtility
 
         $response = \Stripe\WebhookEndpoint::create([
           "url" => $wh_url,
-          "enabled_events" => [EVENT_CHARGE_FAILED,EVENT_CHARGE_SUCCEEDED]
+          "enabled_events" => [static::EVENT_CHARGE_FAILED,static::EVENT_CHARGE_SUCCEEDED]
         ]);
 
         return $response;
