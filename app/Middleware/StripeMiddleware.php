@@ -10,7 +10,8 @@ class StripeMiddleware
     }
 
     public function __invoke($request, $response, $next){
-        \Stripe\Stripe::setApiKey(\App\Parameters::STRIPE['sk']);
+        $logger = $this->app->getContainer()->get('logger');
+        \Stripe\Stripe::setLogger($logger);
         return $next($request, $response);
     }
 
