@@ -93,11 +93,10 @@ class RegisterUserController extends \Core\Controller
         $key = $user->skey;
         $response = \Util\StripeUtility::createWebhook($key,$url);
         if(!empty($response)){
-            $user->wkey = $response->id;
+            $user->wkey = $response->secret;
             $user->save();
             return true;
         }
-        print($response);
         return false;
     }
 }
