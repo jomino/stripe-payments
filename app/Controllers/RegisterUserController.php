@@ -97,6 +97,7 @@ class RegisterUserController extends \Core\Controller
             $user->save();
             return true;
         }
+        print($response);
         return false;
     }
 }
