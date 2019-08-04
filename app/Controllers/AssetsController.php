@@ -35,7 +35,8 @@ class AssetsController extends \Core\Controller
             $content .= 'window.PUBLISHABLE_KEY_ERROR=false;';
         }else{
             $content = 'window.PUBLISHABLE_KEY_ERROR=true;'."\n";
-            $content .= 'window.KEY_ERROR_VALUE="user_not_found";';
+            $content .= 'window.KEY_ERROR_VALUE="user_not_found";'."\n";
+            $content .= 'window.KEY_ERROR_NAME="'.$name.'";';
         }
         return $content;
     }
