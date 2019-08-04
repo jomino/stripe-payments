@@ -6,7 +6,7 @@ class ReferrerMiddleware
 {
 
     public function __invoke($request, $response, $next){
-        $session = $this->get('session');
+        $session = $this->container->get('session');
         if(!$session->exists('referrer')){
             $referrer = $request->getHeaderLine('Referer');
             if(empty($referrer)){
