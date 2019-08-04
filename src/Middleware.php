@@ -19,7 +19,7 @@ class Middleware
 
         $app->add(new \Util\AcceptLanguage($app));
         $app->add(new \App\Middleware\StripeMiddleware($app));
-        $app->add(new \App\Middleware\ReferrerMiddleware($app));
+        
     }
 
 }

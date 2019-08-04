@@ -27,7 +27,7 @@ class Routes
 
         $app->group( '/payment', function($app){
             $app->get('/choice', \App\Controllers\StripePaymentController::class.':choice')->setName('payment-choice');
-        });
+        })->add(new \App\Middleware\ReferrerMiddleware($app));
         
         $app->get('/infos', function($request, $response, $args){
             /* ob_start();
