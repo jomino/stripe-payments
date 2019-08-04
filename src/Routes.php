@@ -23,24 +23,15 @@ class Routes
 
         $app->post('/0/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\StripePaymentController::class)->setName('payment');
 
-        $paths = [
-          'js' => 'text/javascript',
-          'css' => 'text/css',
-          'images' => FILEINFO_MIME_TYPE
-        ];
+        $app->get('/{path:js|css|images}/{file:[^/]+}', \App\Controllers\AssetsController::class);
 
-        $app->get('/{path:' . implode('|', array_keys($paths)) . '}/{file:[^/]+}',
-            function ($request, $response, $args) use ($paths) {
-                $assets = $this->get('settings')['assets'];
-                $resource = $assets['path'] . '/' . $args['path'] . '/' . $args['file'];
-                if (!is_file($resource)) {
-                    $notFoundHandler = $this->get('notFoundHandler');
-                    return $notFoundHandler($request, $response);
-                }
-                return $response->write(file_get_contents($resource))
-                    ->withHeader('Content-Type', $paths[$args['path']]);
-            }
-        );
+        $app->get('/infos', function($request, $response, $args){
+            ob_start();
+            phpinfo();
+            $content = ob_get_contents();
+            ob_end_flush();
+            return $response->write($content);
+        });
 
     }
 }
