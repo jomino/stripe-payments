@@ -9,6 +9,11 @@ class Dependencies
 
         $container = $app->getContainer();
 
+        // session
+        $container['session'] = function ($container) {
+            return new \SlimSession\Helper;
+        };
+
         // CSRF protection
         $container['csrf'] = function ($container) {
             $guard = new \Slim\Csrf\Guard();
