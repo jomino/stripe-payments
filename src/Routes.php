@@ -34,7 +34,7 @@ class Routes
             phpinfo();
             $content = ob_get_contents();
             ob_end_flush(); */
-            $content = $request->getAttribute('referrer');
+            $content = $request->getAttribute('referrer');  
             return $response->write('Referer: '.$content);
         });
 
