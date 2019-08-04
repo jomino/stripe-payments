@@ -4,9 +4,8 @@ namespace App\Controllers;
 
 class StripePaymentController extends \Core\Controller
 {
-    public function __invoke($request, $response, $args)
+    public function choice($request, $response, $args)
     {
-        $notFoundHandler = $this->get('notFoundHandler');
-        return $notFoundHandler($request, $response);
+        return $this->view->render($response, 'Home/payselect.html.twig');
     }
 }

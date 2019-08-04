@@ -23,8 +23,12 @@ class Routes
 
         $app->post('/0/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\StripePaymentController::class)->setName('payment');
 
-        $app->get('/{path:js|css|images}/{file:[^/]+}', \App\Controllers\AssetsController::class);
+        $app->get('/{path:js|css|fonts|images}/{file:[^/]+}', \App\Controllers\AssetsController::class);
 
+        $app->group( '/payment', function($app){
+            $app->get('/choice', \App\Controllers\StripePaymentController::class.':choice')->setName('payment-choice');
+        });
+        
         $app->get('/infos', function($request, $response, $args){
             ob_start();
             phpinfo();
