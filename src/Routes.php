@@ -30,11 +30,12 @@ class Routes
         });
         
         $app->get('/infos', function($request, $response, $args){
-            ob_start();
+            /* ob_start();
             phpinfo();
             $content = ob_get_contents();
-            ob_end_flush();
-            return $response->write($content);
+            ob_end_flush(); */
+            $content = $request->getAttribute('referrer');
+            return $response->write('Referer: '.$content);
         });
 
     }
