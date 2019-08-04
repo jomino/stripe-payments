@@ -5,6 +5,13 @@ namespace App\Middleware;
 class ReferrerMiddleware
 {
 
+    public $container;
+
+    public function __construct($app)
+    {
+        $this->container = $app->getContainer();
+    }
+
     public function __invoke($request, $response, $next){
         $session = $this->container->get('session');
         if(!$session->exists('referrer')){
