@@ -60,13 +60,30 @@ body{
 .signup-form .form-group{
     margin-bottom: 20px;
 }
-.signup-form input[type="checkbox"]{
-    margin-top: 3px;
+.signup-form input[type="radio"]{
+    margin-top: 9px;
 }
 .signup-form .btn{        
     font-size: 16px;
     font-weight: bold;
     outline: none !important;
+}
+.signup-form input.field {
+    padding: 0 15px;
+    background: transparent;
+    font-weight: 400;
+    color: #63738a;
+    outline: none !important;
+    cursor: text;
+}
+.signup-form input.field::-webkit-input-placeholder {
+    color: #aab7c4;
+}
+.signup-form input.field::-moz-placeholder {
+    color: #aab7c4;
+}
+.signup-form input.field:-ms-input-placeholder {
+    color: #aab7c4;
 }
 .signup-form .row div:first-child{
     padding-right: 10px;
@@ -74,6 +91,11 @@ body{
 .signup-form .row div:last-child{
     padding-left: 10px;
 } 
+.signup-form .img-thumbnail {
+    max-width: 100px !important;
+    max-height: 33px !important;
+    line-height: 33px !important;
+}
 
 .bs-wizard {margin-top: 40px;}
 .bs-wizard {border-bottom: solid 1px #e0e0e0; padding: 0 0 10px 0;}
@@ -93,13 +115,3 @@ body{
 .bs-wizard > .bs-wizard-step:first-child  > .progress {left: 50%; width: 50%;}
 .bs-wizard > .bs-wizard-step:last-child  > .progress {width: 50%;}
 .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot{ pointer-events: none; }
-
-.signup-form .img-thumbnail {
-    max-width: 100px !important;
-    max-height: 33px !important;
-    line-height: 33px !important;
-}
-
-.signup-form input[name="payment-type"]{
-    margin-top: 9px;
-}
