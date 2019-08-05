@@ -27,10 +27,8 @@ class Routes
         $app->post('/1/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\StripeWebhookController::class)->setName('webhook');
 
         // Payments
-        $app->group( '/0/{token:\??[0-9a-zA-Z-]*}', function($app){
-            $app->get('', \App\Controllers\StripePaymentController::class)->setName('payment-start');
-            $app->post('', \App\Controllers\StripePaymentController::class)->setName('payment-source');
-        });
+        $app->get('/0/{token:[0-9a-zA-Z-]*}/{amount:[0-9]*}', \App\Controllers\StripePaymentController::class)->setName('payment-start');
+        $app->post('', \App\Controllers\StripePaymentController::class)->setName('payment-source');
         
         // Infos/Debug
         $app->get('/infos', function($request, $response, $args){
