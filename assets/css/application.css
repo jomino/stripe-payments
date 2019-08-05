@@ -94,7 +94,7 @@ body{
 .bs-wizard > .bs-wizard-step:last-child  > .progress {width: 50%;}
 .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot{ pointer-events: none; }
 
-.signup-form li > img {
-    max-width: 200px !important;
-    line-height: 33px;
+.signup-form .img-thumbnail {
+    max-width: 100px !important;
+    line-height: 33px !important;
 }
