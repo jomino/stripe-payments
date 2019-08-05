@@ -40,8 +40,9 @@ class NewUserController extends \Core\Controller
                     $datas['error'] .= '<br>'.$sended;
                     $user->delete();
                 }else{
-                    $datas['generated_link'] = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor('payment',[
-                        'token' => $user->uuid
+                    $datas['generated_link'] = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor('payment-start',[
+                        'token' => $user->uuid,
+                        'amount' => ''
                     ]);
                 }
             }else{
