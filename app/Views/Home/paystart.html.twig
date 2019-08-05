@@ -35,19 +35,21 @@
                     <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <div class="radio">
+                            <div class="radio form-control">
                                 <label>
-                                    <input type="radio" class="form-control" name="payment-type" value="card" checked>
+                                    <input type="radio" name="payment-type" value="card" checked>
                                     <img src="images/card.png" alt="card-logo" class="img-thumbnail">&nbsp;&nbsp;Visa / Master-Card
                                 </label>
                             </div>
                         </li>
                         <li class="list-group-item">
                             <div class="radio">
-                                <label>
-                                    <input type="radio" class="form-control" name="payment-type" value="bancontact">
-                                    <img src="images/bancontact.png" alt="bancontact-logo" class="img-thumbnail">&nbsp;&nbsp;Bancontact
-                                </label>
+                                <div class="form-control">
+                                    <label>
+                                        <input type="radio" name="payment-type" value="bancontact">
+                                        <img src="images/bancontact.png" alt="bancontact-logo" class="img-thumbnail">&nbsp;&nbsp;Bancontact
+                                    </label>
+                                </div>
                             </div>
                         </li>
                         <li class="list-group-item">
