@@ -30,7 +30,7 @@
         </div>
         <div class="row">
             <div class="signup-form col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
-                <form action="{{ path_for('identify') }}" method="post" name="pay-choice-form">
+                <form action="{{ path_for('payment_identify') }}" method="post" name="pay-choice-form">
                     <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
                     <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
                     <ul class="list-group">

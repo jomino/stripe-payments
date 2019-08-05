@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="signup-form col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
-            <form action="{{ path_for('source') }}" method="post" name="pay-identify-form">
+            <form action="{{ path_for('payment_source') }}" method="post" name="pay-identify-form">
                 <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
                 <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
                 <input type="hidden" name="payment-type" value="{{session.payment_type}}">
