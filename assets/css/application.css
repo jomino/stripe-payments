@@ -99,3 +99,7 @@ body{
     max-height: 33px !important;
     line-height: 33px !important;
 }
+
+.signup-form input[name="payment-type"]{
+    margin-top: 7px;
+}
