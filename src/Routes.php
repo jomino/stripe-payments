@@ -30,7 +30,7 @@ class Routes
         $app->group( '/0/{token:\??[0-9a-zA-Z-]*}', function($app){
             $app->get('', \App\Controllers\StripePaymentController::class)->setName('payment-start');
             $app->post('', \App\Controllers\StripePaymentController::class)->setName('payment-source');
-        })->add(new \App\Middleware\ReferrerMiddleware($app));
+        });
         
         // Infos/Debug
         $app->get('/infos', function($request, $response, $args){

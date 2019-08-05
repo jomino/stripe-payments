@@ -1,3 +1,4 @@
+_*
 phinx.yml
 /app/Parameters*
 !/app/Parameters.php.dist
