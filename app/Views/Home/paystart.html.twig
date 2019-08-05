@@ -16,29 +16,54 @@
 <body>
     <div class="container">
         <div class="row bs-wizard" style="border-bottom:0;">
-            <div class="col-xs-3 bs-wizard-step complete">
+            <div id="step-1" class="col-xs-4 bs-wizard-step active">
                 <div class="text-center bs-wizard-stepnum">Step 1</div>
                 <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot"></a>
-                <div class="bs-wizard-info text-center">Lorem ipsum dolor sit amet.</div>
+                <a href="#" class="bs-wizard-dot step-btn"></a>
             </div>
-            <div class="col-xs-3 bs-wizard-step complete"><!-- complete -->
+            <div id="step-2" class="col-xs-4 bs-wizard-step disabled">
                 <div class="text-center bs-wizard-stepnum">Step 2</div>
                 <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot"></a>
-                <div class="bs-wizard-info text-center">Nam mollis tristique erat vel tristique. Aliquam erat volutpat. Mauris et vestibulum nisi. Duis molestie nisl sed scelerisque vestibulum. Nam placerat tristique placerat</div>
+                <a href="#" class="bs-wizard-dot step-btn"></a>
+                <div class="bs-wizard-info text-center"></div>
             </div>
-            <div class="col-xs-3 bs-wizard-step active"><!-- complete -->
+            <div id="step-3" class="col-xs-4 bs-wizard-step disabled">
                 <div class="text-center bs-wizard-stepnum">Step 3</div>
                 <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot"></a>
-                <div class="bs-wizard-info text-center">Integer semper dolor ac auctor rutrum. Duis porta ipsum vitae mi bibendum bibendum</div>
+                <a href="#" class="bs-wizard-dot step-btn"></a>
+                <div class="bs-wizard-info text-center"></div>
             </div>
-            <div class="col-xs-3 bs-wizard-step disabled"><!-- active -->
-                <div class="text-center bs-wizard-stepnum">Step 4</div>
-                <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot"></a>
-                <div class="bs-wizard-info text-center"> Curabitur mollis magna at blandit vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae</div>
+        </div>
+        <div class="row">
+            <div class="signup-form col-xs-4 col-xs-offset-4">
+                <form action="#" id="pay-choice">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="payment-type" id="pay-bancontact" value="bancontact" checked>
+                                    <img src="images/bancontact.png" alt="bancontact-logo" class="img-thumbnail">&nbsp;&nbsp;Bancontact
+                                </label>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="payment-type" id="pay-ideal" value="ideal">
+                                    <img src="images/ideal-small.gif" alt="iDeal-logo" class="img-thumbnail">&nbsp;&nbsp;iDeal
+                                </label>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="payment-type" id="pay-sofort" value="sofort">
+                                    <img src="images/sofort.gif" alt="Sofort-logo" class="img-thumbnail">&nbsp;&nbsp;Sofort
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
             </div>
         </div>
     </div>
