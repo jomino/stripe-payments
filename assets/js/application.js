@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    if(window.PUBLISHABLE_KEY_ERROR==true){
+    if(!!window.PUBLISHABLE_KEY_ERROR || window.PUBLISHABLE_KEY_ERROR==true){
         $('#pay-carousel-bystep').hide();
         $('.alert').show();
         return;
@@ -10,6 +10,7 @@ $(document).ready(function(){
 
     var carouselStepTo = function(step){
         $('.carousel').carousel(step);
+        $('.carousel').carousel('pause');
     };
 
     $('form[name="pay-choice-form"]').on('submit',function(e){

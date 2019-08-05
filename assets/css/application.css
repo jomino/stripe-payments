@@ -68,29 +68,6 @@ body{
     font-weight: bold;
     outline: none !important;
 }
-.signup-form input.field {
-    padding: 0 15px;
-    background: transparent;
-    font-weight: 400;
-    color: #63738a;
-    outline: none !important;
-    cursor: text;
-}
-.signup-form input.field::-webkit-input-placeholder {
-    color: #aab7c4;
-}
-.signup-form input.field::-moz-placeholder {
-    color: #aab7c4;
-}
-.signup-form input.field:-ms-input-placeholder {
-    color: #aab7c4;
-}
-.signup-form .row div:first-child{
-    padding-right: 10px;
-}
-.signup-form .row div:last-child{
-    padding-left: 10px;
-} 
 .signup-form .img-thumbnail {
     max-width: 100px !important;
     max-height: 33px !important;
