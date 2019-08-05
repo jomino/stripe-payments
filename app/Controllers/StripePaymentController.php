@@ -8,8 +8,10 @@ class StripePaymentController extends \Core\Controller
     {
         $uri = $request->getUri();
         $token = (string) ltrim($uri->getQuery(),'?');
+        $amount = $args['amount'];
         if(empty($token) || strlen($token)<2){ $token = ltrim($args['token'],'?'); }
         $this->session->set('referrer',$token);
+        $this->session->set('amount',$amount);
         return $this->view->render($response, 'Home/paystart.html.twig');
     }
 }
