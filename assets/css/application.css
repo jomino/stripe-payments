@@ -95,6 +95,6 @@ body{
 .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot{ pointer-events: none; }
 
 .signup-form li > img {
-    max-width: 200px;
-    max-height: 50px;
+    max-width: 200px !important;
+    line-height: 33px;
 }
