@@ -19,96 +19,100 @@
             <div id="step-1" class="col-xs-4 bs-wizard-step active">
                 <div class="text-center bs-wizard-stepnum">Step 1</div>
                 <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot step-btn"></a>
+                <a href="#" class="bs-wizard-dot step-btn" data-step="0"></a>
             </div>
             <div id="step-2" class="col-xs-4 bs-wizard-step disabled">
                 <div class="text-center bs-wizard-stepnum">Step 2</div>
                 <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot step-btn"></a>
-                <div class="bs-wizard-info text-center"></div>
+                <a href="#" class="bs-wizard-dot step-btn" data-step="1"></a>
             </div>
             <div id="step-3" class="col-xs-4 bs-wizard-step disabled">
                 <div class="text-center bs-wizard-stepnum">Step 3</div>
                 <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot step-btn"></a>
-                <div class="bs-wizard-info text-center"></div>
+                <a href="#" class="bs-wizard-dot step-btn" data-step="2"></a>
             </div>
         </div>
-        <div class="row">
-            <div class="signup-form col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
-                <form action="#" id="pay-choice-form" name="pay-choice-form">
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="payment-type" value="card" checked>
-                                    <img src="images/cards.png" alt="cards-logo" class="img-thumbnail">&nbsp;&nbsp;Visa / Master-Card
-                                </label>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="payment-type" value="bancontact">
-                                    <img src="images/bancontact.png" alt="bancontact-logo" class="img-thumbnail">&nbsp;&nbsp;Bancontact
-                                </label>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="payment-type" value="ideal">
-                                    <img src="images/ideal-small.gif" alt="iDeal-logo" class="img-thumbnail">&nbsp;&nbsp;iDeal
-                                </label>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="payment-type" value="sofort">
-                                    <img src="images/sofort.gif" alt="Sofort-logo" class="img-thumbnail">&nbsp;&nbsp;Sofort
-                                </label>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success btn-lg btn-block">Suivant</button>
-                    </div>
-                </form>
-            </div>
-            <div class="hidden signup-form col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
-                <form action="#" id="pay-identify-form" name="pay-identify-form">
-                    <div class="form-group">
-                        <label>
-                            <span>Name</span>
-                            <input name="name" class="field" placeholder="Jenny Rosen" required>
-                        </label>
-                        <label>
-                            <span>Email</span>
-                            <input name="email" type="email" class="field" placeholder="jenny@example.com" required>
-                        </label>
-                        <label>
-                            <span>Address</span>
-                            <input name="address" class="field" placeholder="185 Berry Street Suite 550">
-                        </label>
-                        <label>
-                            <span>City</span>
-                            <input name="city" class="field" placeholder="San Francisco">
-                        </label>
-                        <label class="state">
-                            <span>State</span>
-                            <input name="state" class="field" placeholder="CA">
-                        </label>
-                        <label class="zip">
-                            <span>ZIP</span>
-                            <input name="postal_code" class="field" placeholder="94107">
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success btn-lg btn-block">Suivant</button>
-                    </div>
-                </form>
-            </div>
+        <div id="pay-carousel-bystep" class="carousel slide">
+            <div class="carousel-inner" role="listbox">
+                <div id="pay-choice-main" class="item signup-form col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2 active">
+                    <form action="#" id="pay-choice-form" name="pay-choice-form">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="payment-type" value="card" checked>
+                                        <img src="images/cards.png" alt="cards-logo" class="img-thumbnail">&nbsp;&nbsp;Visa / Master-Card
+                                    </label>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="payment-type" value="bancontact">
+                                        <img src="images/bancontact.png" alt="bancontact-logo" class="img-thumbnail">&nbsp;&nbsp;Bancontact
+                                    </label>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="payment-type" value="ideal">
+                                        <img src="images/ideal-small.gif" alt="iDeal-logo" class="img-thumbnail">&nbsp;&nbsp;iDeal
+                                    </label>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="payment-type" value="sofort">
+                                        <img src="images/sofort.gif" alt="Sofort-logo" class="img-thumbnail">&nbsp;&nbsp;Sofort
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success btn-lg btn-block">Suivant</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="pay-identify-main" class="item signup-form col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
+                    <form action="#" id="pay-identify-form" name="pay-identify-form">
+                        <div class="form-group">
+                            <label>
+                                <span>Name</span>
+                                <input name="name" class="field" placeholder="Jenny Rosen" required>
+                            </label>
+                            <label>
+                                <span>Email</span>
+                                <input name="email" type="email" class="field" placeholder="jenny@example.com" required>
+                            </label>
+                            <label>
+                                <span>Address</span>
+                                <input name="address" class="field" placeholder="185 Berry Street Suite 550">
+                            </label>
+                            <label>
+                                <span>City</span>
+                                <input name="city" class="field" placeholder="San Francisco">
+                            </label>
+                            <label class="state">
+                                <span>State</span>
+                                <input name="state" class="field" placeholder="CA">
+                            </label>
+                            <label class="zip">
+                                <span>ZIP</span>
+                                <input name="postal_code" class="field" placeholder="94107">
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success btn-lg btn-block">Suivant</button>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- carrousel inner -->
+        </div>
+        <div class="hidden alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
+            Un problème est survenu, veuillez prendre contact avec l'administrateur di site.
         </div>
     </div>
     <script src="js/application.js"></script> 
