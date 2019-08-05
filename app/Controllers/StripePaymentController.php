@@ -19,14 +19,12 @@ class StripePaymentController extends \Core\Controller
     {
         $payment_type = $request->getParsedBodyParam('payment-type');
         $this->setSessionVar('payment_type',$payment_type);
-        $notFoundHandler = $this->notFoundHandler;
-        return $notFoundHandler($request, $response);
+        return $this->view->render($response, 'Home/payidentify.html.twig');
     }
 
     public function source($request, $response, $args)
     {
-        $notFoundHandler = $this->notFoundHandler;
-        return $notFoundHandler($request, $response);
+        return $this->view->render($response, 'Home/payredir.html.twig');
     }
 
     public function result($request, $response, $args)
