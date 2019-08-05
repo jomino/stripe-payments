@@ -37,6 +37,7 @@ class Dependencies
             $twig->addExtension(new \Slim\Views\TwigExtension($container->router, $container->request->getUri()));
             $twig->addExtension(new \Util\TranslatorExtension($container->trans));
             $twig->addExtension(new \Util\CsrfExtension($container->csrf));
+            $twig->addExtension(new \Util\SessionExtension($container->session));
             $twig->addExtension(new \Twig_Extension_Debug());
             return $twig;
         };

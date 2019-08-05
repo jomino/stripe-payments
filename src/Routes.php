@@ -27,9 +27,12 @@ class Routes
         $app->post('/1/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\StripeWebhookController::class)->setName('webhook');
 
         // Payments
-        $app->get('/{token:[0-9a-zA-Z-]*}/{amount:[0-9]*}', \App\Controllers\StripePaymentController::class)->setName('payment-start');
-        $app->post('/source', \App\Controllers\StripePaymentController::class)->setName('payment-source');
-        
+        $app->group( '', function($app){
+            $app->get('/{token:[0-9a-zA-Z-]*}/{amount:[0-9]*}', \App\Controllers\StripePaymentController::class.':start')->setName('payment-start');
+            $app->post('/identify', \App\Controllers\StripePaymentController::class.':identify')->setName('payment-identify');
+            $app->post('/source', \App\Controllers\StripePaymentController::class.':source')->setName('payment-source');
+            $app->get('/result/{token:[0-9a-zA-Z-]*}', \App\Controllers\StripePaymentController::class.':result')->setName('payment-result');
+        })->add($container->get('csrf'));
         // Infos/Debug
         $app->get('/infos', function($request, $response, $args){
             ob_start();
