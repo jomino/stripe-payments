@@ -96,5 +96,6 @@ body{
 
 .signup-form .img-thumbnail {
     max-width: 100px !important;
+    max-height: 33px !important;
     line-height: 33px !important;
 }
