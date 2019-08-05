@@ -18,6 +18,11 @@ $(document).ready(function(){
         carouselStepTo(1);
     });
 
+    $('form[name="pay-identify-form"]').on('submit',function(e){
+        e.preventDefault();
+        return false;
+    });
+
     $('a.step-btn').on( 'click', function(){
         e.preventDefault();
         var step = parseInt($(this).data('step'));
