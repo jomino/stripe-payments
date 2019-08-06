@@ -9,10 +9,9 @@ class StripeWebhookController extends \Core\Controller
     public function __invoke($request, $response, $args)
     {
         $wh_evt = $request->getBody();
-        $parsed_body = $request->getParsedBody();
         $wh_sig = $request->getHeaderLine('stripe-signature');
 
-        $token = ltrim($parsed_body['token'],'?');
+        $token = ltrim($args['token'],'?');
         $user = User::where('uuid',$token)->first();
         $api_key = $user->skey;
         $wh_skey = $user->wkey;
