@@ -22,8 +22,11 @@ class StripeUtility
     const STATUS_SUCCEEDED = 'succeeded';
     const STATUS_FAILED = 'failed';
 
+    const EVENT_OBJECT_CHARGE = 'charge';
     const EVENT_CHARGE_FAILED = 'charge.failed';
     const EVENT_CHARGE_SUCCEEDED = 'charge.succeeded';
+
+    const EVENT_OBJECT_SOURCE = 'source';
     const EVENT_SOURCE_CHARGEABLE = 'source.chargeable';
     const EVENT_SOURCE_CANCELED = 'source.canceled';
     const EVENT_SOURCE_FAILED = 'source.failed';

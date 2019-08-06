@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use \App\Models\User;
+use \App\Models\Event;
 
 class StripeWebhookController extends \Core\Controller
 {
@@ -24,18 +25,26 @@ class StripeWebhookController extends \Core\Controller
             $result = [
                 'object' => $object['object'],
                 'type' => $type,
-                'status' => $object['status']
+                'status' => $object['status'],
+                'uuid' => $token
             ];
+
+            /* switch($object['object']){
+                case \Util\StripeUtility::EVENT_OBJECT_SOURCE:
+                    $result = array_merge($result,[
+
+                    ]);
+            } */
         
             return $response->withJson($result)->withStatus(200);
 
         }else{
             $result = [
-                'status' => 'failed',
+                'status' => 'failed'/* ,
                 'signature' => $wh_sig,
                 'uuid' => $token,
                 'skey' => $api_key,
-                'whsec' => $wh_skey
+                'whsec' => $wh_skey */
             ];
             return $response->withJson($result)->withStatus(403);
         }
