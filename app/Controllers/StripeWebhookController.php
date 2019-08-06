@@ -22,10 +22,23 @@ class StripeWebhookController extends \Core\Controller
             $type = $event['type'];
             $object = $event['data']['object'];
 
-        }else{
-            return $response->withJson([ 'status' => 'failed' ])->withStatus(403);
-        }
+            $result = [
+                'object' => $object['object'],
+                'type' => $type,
+                'status' => $object['redirect']['status']
+            ];
         
-        return $response->withJson([ 'status' => 'success' ])->withStatus(200);
+            return $response->withJson($result)->withStatus(200);
+
+        }else{
+            $result = [
+                'status' => 'failed',
+                'signature' => $wh_sig,
+                'uuid' => $token,
+                'skey' => $api_key,
+                'whsec' => $wh_skey
+            ];
+            return $response->withJson($result)->withStatus(403);
+        }
     }
 }
