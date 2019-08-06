@@ -24,7 +24,7 @@ class Routes
         })->add($container->get('csrf'))->add(new \App\Middleware\LoginMiddleware());
         
         // Webhook
-        $app->post('/1/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\StripeWebhookController::class)->setName('webhook');
+        $app->post('/1/{token:[0-9a-zA-Z-]*}', \App\Controllers\StripeWebhookController::class)->setName('webhook');
 
         // Payments
         $app->group( '', function($app){
