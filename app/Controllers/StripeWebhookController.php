@@ -24,7 +24,7 @@ class StripeWebhookController extends \Core\Controller
             $result = [
                 'object' => $object['object'],
                 'type' => $type,
-                'status' => $object['redirect']['status']
+                'status' => $object['status']
             ];
         
             return $response->withJson($result)->withStatus(200);
