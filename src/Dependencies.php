@@ -24,6 +24,11 @@ class Dependencies
             return $guard;
         };
 
+        // Language
+        $container['language'] = function ($container) use($app) {
+            return $app->language;
+        };
+
         // Translation
         $container['trans'] = function ($container) use($app) {
             $loader = new \Illuminate\Translation\FileLoader(new \Illuminate\Filesystem\Filesystem(), $container->settings['localisation']['path']);

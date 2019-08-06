@@ -1,3 +1,6 @@
 $(document).ready(function(){
-    // todo fetch for sourcing
+    $('a.step-btn').on('click',function(e){
+        e.preventDefault();
+        return false;
+    })
 });

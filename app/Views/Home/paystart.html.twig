@@ -21,14 +21,19 @@
                 <a href="#" class="bs-wizard-dot step-btn" data-step="0"></a>
             </div>
             <div id="step-2" class="col-xs-4 bs-wizard-step disabled">
-                <div class="text-center bs-wizard-stepnum">Identifiez vous</div>
+                <div class="text-center bs-wizard-stepnum">Identification</div>
                 <div class="progress"><div class="progress-bar"></div></div>
                 <a href="#" class="bs-wizard-dot step-btn" data-step="1"></a>
             </div>
             <div id="step-3" class="col-xs-4 bs-wizard-step disabled">
-                <div class="text-center bs-wizard-stepnum">Finaliser</div>
+                <div class="text-center bs-wizard-stepnum">Payement</div>
                 <div class="progress"><div class="progress-bar"></div></div>
                 <a href="#" class="bs-wizard-dot step-btn" data-step="2"></a>
+            </div>
+            <div id="step-4" class="col-xs-4 bs-wizard-step disabled">
+                <div class="text-center bs-wizard-stepnum">Finalisation</div>
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a href="#" class="bs-wizard-dot step-btn" data-step="3"></a>
             </div>
         </div>
         <div class="row">
@@ -40,27 +45,19 @@
                         <li class="list-group-item">
                             <div class="radio form-control">
                                 <label>
-                                    <input type="radio" name="payment-type" value="card" checked>
-                                    <img src="images/card.png" alt="card-logo" class="img-thumbnail">&nbsp;&nbsp;Visa / Master-Card
-                                </label>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="radio form-control">
-                                <label>
-                                    <input type="radio" name="payment-type" value="bancontact">
+                                    <input type="radio" name="payment-type" value="bancontact" checked>
                                     <img src="images/bancontact.png" alt="bancontact-logo" class="img-thumbnail">&nbsp;&nbsp;Bancontact
                                 </label>
                             </div>
                         </li>
-                        <li class="list-group-item">
+                        {# <li class="list-group-item">
                             <div class="radio form-control">
                                 <label>
                                     <input type="radio" name="payment-type" value="ideal">
                                     <img src="images/ideal-small.png" alt="iDeal-logo" class="img-thumbnail">&nbsp;&nbsp;iDeal
                                 </label>
                             </div>
-                        </li>
+                        </li> #}
                         <li class="list-group-item">
                             <div class="radio form-control">
                                 <label>
@@ -77,5 +74,6 @@
             </div>
         </div>
     </div>
+    <script src="js/application.js"></script>
 </body>
 </html>

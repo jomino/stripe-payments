@@ -12,7 +12,7 @@ class Event extends \Illuminate\Database\Eloquent\Model
         'name' => 'string',
         'email' => 'string',
         'amount' => 'integer',
-        'skey' => 'string',
-        'ckey' => 'string'
+        'skey' => 'string', // token: source.id [src_xxx...]
+        'ckey' => 'string' // token: charge.id [ch_xxx...]
     ];
 }

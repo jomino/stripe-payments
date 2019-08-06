@@ -25,12 +25,12 @@
                 <div class="progress"><div class="progress-bar"></div></div>
                 <a href="#" class="bs-wizard-dot step-btn" data-step="1"></a>
             </div>
-            <div id="step-3" class="col-xs-4 bs-wizard-step active">
+            <div id="step-3" class="col-xs-4 bs-wizard-step complete">
                 <div class="text-center bs-wizard-stepnum">Payement</div>
                 <div class="progress"><div class="progress-bar"></div></div>
                 <a href="#" class="bs-wizard-dot step-btn" data-step="2"></a>
             </div>
-            <div id="step-4" class="col-xs-4 bs-wizard-step disabled">
+            <div id="step-4" class="col-xs-4 bs-wizard-step active">
                 <div class="text-center bs-wizard-stepnum">Finalisation</div>
                 <div class="progress"><div class="progress-bar"></div></div>
                 <a href="#" class="bs-wizard-dot step-btn" data-step="3"></a>
@@ -38,14 +38,11 @@
         </div>
         <div class="signup-form col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
             <form action="#" name="pay-identify-form">
-                <input type="hidden" name="redir-url" value="{{redir_url}}">
-                <div class="well">
-                    <img src="images/{{session.payment_type}}.png" alt="img-logo" class="img-thumbnail">
-                </div>
+                <input type="hidden" name="payment-type" value="{{session.payment_type}}">
             </form>
         </div>
     </div>
     <script src="js/application.js"></script> 
-    <script src="js/redir.js"></script> 
+    <script src="js/result.js"></script> 
 </body>
 </html>

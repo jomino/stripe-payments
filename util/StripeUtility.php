@@ -4,9 +4,23 @@ namespace Util;
 
 class StripeUtility
 {
+    const METHOD_BANCONTACT = 'bancontact';
+    const METHOD_SOFORT = 'sofort';
+    const METHOD_IDEAL = 'ideal';
+
+    const DEFAULT_IDEAL_BANK = 'ing';
+
+    const DEFAULT_CURRENCY = 'eur';
+    const DEFAULT_COUNTRY = 'BE';
+
+    const SESSION_REFERRER = 'referrer';
+    const SESSION_AMOUNT = 'amount';
+    const SESSION_METHOD = 'payment_type';
+
     const STATUS_PENDING = 'pending';
     const STATUS_CHARGEABLE = 'chargeable';
     const STATUS_SUCCEEDED = 'succeeded';
+    const STATUS_FAILED = 'failed';
 
     const EVENT_CHARGE_FAILED = 'charge.failed';
     const EVENT_CHARGE_SUCCEEDED = 'charge.succeeded';
@@ -18,18 +32,21 @@ class StripeUtility
     {
         \Stripe\Stripe::setApiKey($api_key);
 
-        $response = \Stripe\WebhookEndpoint::create([
-            'url' => $wh_url,
-            'enabled_events' => [
-                static::EVENT_CHARGE_FAILED,
-                static::EVENT_CHARGE_SUCCEEDED,
-                static::EVENT_SOURCE_CHARGEABLE,
-                static::EVENT_SOURCE_CANCELED,
-                static::EVENT_SOURCE_FAILED
-            ]
-        ]);
-
-        return $response;
+        try {
+            $response = \Stripe\WebhookEndpoint::create([
+                'url' => $wh_url,
+                'enabled_events' => [
+                    static::EVENT_CHARGE_FAILED,
+                    static::EVENT_CHARGE_SUCCEEDED,
+                    static::EVENT_SOURCE_CHARGEABLE,
+                    static::EVENT_SOURCE_CANCELED,
+                    static::EVENT_SOURCE_FAILED
+                ]
+            ]);
+            return $response;
+        }catch (\Exception $e) {
+            return null;
+        }
 
     }
 
@@ -46,11 +63,11 @@ class StripeUtility
 
     }
 
-    public static function createSource($api_key,$type,$amount,$currency,$email,$name,$ret_url)
+    public static function createSource($api_key,$type,$amount,$currency,$email,$name,$ret_url,$options=[])
     {
         \Stripe\Stripe::setApiKey($api_key);
 
-        $response = \Stripe\Source::create([
+        $data = [
             'type' => $type,
             'amount' => $amount,
             'currency' => $currency,
@@ -61,10 +78,18 @@ class StripeUtility
             'redirect' => [
                 'return_url' => $ret_url
             ]
-        ]);
+        ];
 
-        return $response;
+        if(!empty($options)){
+            $data = array_merge_recursive($data,$options);
+        }
 
+        try{
+            $response = \Stripe\Source::create($data);
+            return $response;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     public static function createCharge($api_key,$amount,$currency,$wh_skey,$descr='')
