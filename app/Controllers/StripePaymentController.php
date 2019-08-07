@@ -112,7 +112,7 @@ class StripePaymentController extends \Core\Controller
     private function saveNewEvent($status,$uuid,$name,$email,$amount,$skey)
     {
         try{
-            $event = new Event();
+            $event = new \App\Models\Event();
             $event->status = $status;
             $event->uuid = $uuid;
             $event->name = $name;
