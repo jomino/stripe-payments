@@ -7,11 +7,13 @@ class StripePaymentController extends \Core\Controller
     public function start($request, $response, $args)
     {
         $uri = $request->getUri();
-        $token = (string) ltrim($uri->getQuery(),'?');
         $amount = $args['amount'];
+        $product = $args['product'];
+        $token = (string) ltrim($uri->getQuery(),'?');
         if(empty($token) || strlen($token)<2){ $token = ltrim($args['token'],'?'); }
         $this->setSessionVar(\Util\StripeUtility::SESSION_REFERRER,$token);
         $this->setSessionVar(\Util\StripeUtility::SESSION_AMOUNT,$amount);
+        $this->setSessionVar(\Util\StripeUtility::SESSION_PRODUCT,$product);
         return $this->view->render($response, 'Home/paystart.html.twig');
     }
 
@@ -121,13 +123,14 @@ class StripePaymentController extends \Core\Controller
             $s_token = \Util\UuidGenerator::v4();
             $type = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
             $amount = $this->session->get(\Util\StripeUtility::SESSION_AMOUNT);
+            $product = $this->session->get(\Util\StripeUtility::SESSION_PRODUCT);
             $currency = \Util\StripeUtility::DEFAULT_CURRENCY;
             $ret_url = $this->getReturnUrl($request->getUri(),$s_token);
             $options = $this->getSourceOptions($type,$user);
             $source = \Util\StripeUtility::createSource($user->skey,$type,$amount,$currency,$email,$name,$ret_url,$options);
             $src_id = $source->id;
             $src_status = $source->status==\Util\StripeUtility::STATUS_PENDING ? \Util\StripeUtility::STATUS_PENDING : \Util\StripeUtility::STATUS_FAILED;
-            $this->saveNewEvent($src_status,$user->uuid,$name,$email,$amount,$src_id,$s_token);
+            $this->saveNewEvent($src_status,$user->uuid,$name,$email,$amount,$product,$src_id,$s_token);
         }
         return $source;
     }
@@ -169,7 +172,7 @@ class StripePaymentController extends \Core\Controller
         }
     }
 
-    private function saveNewEvent($status,$uuid,$name,$email,$amount,$skey,$s_token)
+    private function saveNewEvent($status,$uuid,$name,$email,$amount,$product,$skey,$s_token)
     {
         try{
             $event = new \App\Models\Event();
@@ -178,6 +181,7 @@ class StripePaymentController extends \Core\Controller
             $event->name = $name;
             $event->email = $email;
             $event->amount = $amount;
+            $event->product = $product;
             $event->token = $s_token;
             $event->skey = $skey;
             $event->save();

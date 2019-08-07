@@ -15,6 +15,7 @@ class StripeUtility
 
     const SESSION_REFERRER = 'referrer';
     const SESSION_AMOUNT = 'amount';
+    const SESSION_PRODUCT = 'product_ref';
     const SESSION_METHOD = 'payment_type';
     const SESSION_TOKEN = 'event_token';
 
