@@ -24,6 +24,7 @@ class StripeUtility
     const STATUS_FAILED = 'failed';
 
     const EVENT_OBJECT_CHARGE = 'charge';
+    const EVENT_CHARGE_PENDING = 'charge.pending';
     const EVENT_CHARGE_FAILED = 'charge.failed';
     const EVENT_CHARGE_SUCCEEDED = 'charge.succeeded';
 
@@ -41,6 +42,7 @@ class StripeUtility
                 'url' => $wh_url,
                 'enabled_events' => [
                     static::EVENT_CHARGE_FAILED,
+                    static::EVENT_CHARGE_PENDING,
                     static::EVENT_CHARGE_SUCCEEDED,
                     static::EVENT_SOURCE_CHARGEABLE,
                     static::EVENT_SOURCE_CANCELED,
