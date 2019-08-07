@@ -113,8 +113,7 @@ class StripeWebhookController extends \Core\Controller
             $amount = $object['amount'];
             $currency = \Util\StripeUtility::DEFAULT_CURRENCY;
             $src_key = $object['id'];
-            $descr = $owner['email'].' '.$owner['name'];
-            $response = \Util\StripeUtility::createCharge($api_key,$amount,$currency,$src_key,$descr);
+            $response = \Util\StripeUtility::createCharge($api_key,$amount,$currency,$src_key);
             return $response;
         }catch (\Exception $e) {
             return null;

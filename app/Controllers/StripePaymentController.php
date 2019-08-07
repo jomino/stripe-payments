@@ -94,7 +94,7 @@ class StripePaymentController extends \Core\Controller
             $amount = $this->session->get(\Util\StripeUtility::SESSION_AMOUNT);
             $currency = \Util\StripeUtility::DEFAULT_CURRENCY;
             $ret_url = $this->getReturnUrl($request->getUri(),$s_token);
-            $options = $this->getSourceOptions($type);
+            $options = $this->getSourceOptions($type,$user);
             $source = \Util\StripeUtility::createSource($user->skey,$type,$amount,$currency,$email,$name,$ret_url,$options);
             $src_id = $source->id;
             $src_status = $source->status==\Util\StripeUtility::STATUS_PENDING ? \Util\StripeUtility::STATUS_PENDING : \Util\StripeUtility::STATUS_FAILED;
@@ -111,26 +111,30 @@ class StripePaymentController extends \Core\Controller
         ]);
     }
 
-    private function getSourceOptions($bank)
+    private function getSourceOptions($bank,$user)
     {
+        $statement_descriptor = \strtoupper($user->name);
         switch($bank){
             case \Util\StripeUtility::METHOD_BANCONTACT:
                 return [
                     \Util\StripeUtility::METHOD_BANCONTACT => [
-                        'preferred_language' => $this->language
+                        'preferred_language' => $this->language,
+                        'statement_descriptor' => $statement_descriptor
                     ]
                 ];
             case \Util\StripeUtility::METHOD_SOFORT:
                 return [
                     \Util\StripeUtility::METHOD_SOFORT => [
                         'country' => \Util\StripeUtility::DEFAULT_COUNTRY,
-                        'preferred_language' => $this->language
+                        'preferred_language' => $this->language,
+                        'statement_descriptor' => $statement_descriptor
                     ]
                 ];
             case \Util\StripeUtility::METHOD_IDEAL:
                 return [
                     \Util\StripeUtility::METHOD_IDEAL => [
-                        'bank' => \Util\StripeUtility::DEFAULT_IDEAL_BANK
+                        'bank' => \Util\StripeUtility::DEFAULT_IDEAL_BANK,
+                        'statement_descriptor' => $statement_descriptor
                     ]
                 ];
         }
