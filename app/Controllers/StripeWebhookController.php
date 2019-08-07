@@ -43,6 +43,8 @@ class StripeWebhookController extends \Core\Controller
                                     $event->ckey = $charge->id;
                                     $event->status = \Util\StripeUtility::STATUS_CHARGEABLE;
                                     $event->save();
+                                }else{
+                                    $this->logger->info();
                                 }
                             }
                             if($type==\Util\StripeUtility::EVENT_SOURCE_CANCELED || $type==\Util\StripeUtility::EVENT_SOURCE_FAILED){
@@ -67,37 +69,26 @@ class StripeWebhookController extends \Core\Controller
                         if($event->status==\Util\StripeUtility::STATUS_CHARGEABLE){
                             if($type==\Util\StripeUtility::EVENT_CHARGE_SUCCEEDED){
                                 $event->status = \Util\StripeUtility::STATUS_SUCCEEDED;
-                                $event->save();
                             }
                             if($type==\Util\StripeUtility::EVENT_CHARGE_PENDING){
                                 $event->status = \Util\StripeUtility::STATUS_WAITING;
-                                $event->save();
                             }
                             if($type==\Util\StripeUtility::EVENT_CHARGE_FAILED){
                                 $event->status = \Util\StripeUtility::STATUS_FAILED;
-                                $event->save();
                             }
+                            $event->save();
                         }else{
-                            $result = [
-                                'status' => 'failed',
-                                'error' => 'charge_already_succeeded'
-                            ];
+                            $result = ['status'=>'failed','error'=>'charge_already_succeeded'];
+                            $this->logger->info(self::class,$result);
                         }
                     }else{
-                        $result = [
-                            'status' => 'failed',
-                            'error' => 'event_not_found'
-                        ];
+                        $result = ['status'=>'failed','error'=>'event_not_found'];
+                        $this->logger->info(self::class,$result);
                     }
                 break;
                 default:
-                    $result = [
-                        'status' => 'success',
-                        'message' => 'event_not_registered'
-                    ];
+                    $result = ['status'=>'success','message'=>'event_not_registered'];
             }
-
-            $this->logger->info(self::class,$result);
         
             return $response->withJson($result)->withStatus(200);
 
@@ -135,5 +126,20 @@ class StripeWebhookController extends \Core\Controller
         }catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return null;
         }
+    }
+
+    private function sendUserMail($link,$user)
+    {
+        $_tpl = 'Email/email-inlined.html.twig';
+        $_subject = 'Inscription au service Stripe-Payments d\'Ipefix';
+        
+        $_content = $this->view->fetch( $_tpl, [
+            'agence' => $user->name,
+            'link' => $link,
+        ]);
+
+        $mailer = new \Util\PhpMailer();
+        return $mailer->send($user->email,$_subject,$_content);
+
     }
 }
