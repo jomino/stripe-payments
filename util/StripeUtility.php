@@ -20,6 +20,7 @@ class StripeUtility
 
     const STATUS_PENDING = 'pending';
     const STATUS_CHARGEABLE = 'chargeable';
+    const STATUS_WAITING = 'waiting';
     const STATUS_SUCCEEDED = 'succeeded';
     const STATUS_FAILED = 'failed';
 
