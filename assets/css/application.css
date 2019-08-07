@@ -7,6 +7,9 @@ body{
     color: #fff;
     background: #63738a;
     font-family: Source Code Pro, sans-serif;
+    font-style: normal;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
 }
 .form-control{
     box-shadow: none;
@@ -44,12 +47,12 @@ body{
     right: 0;
 }
 .signup-form .hint-text{
-    color: #999;
+    color: #666;
     margin-bottom: 30px;
     text-align: center;
 }
 .signup-form form{
-    color: #999;
+    color: #666;
     border-radius: 3px;
     margin-bottom: 15px;
     background: #f2f3f7;
