@@ -36,7 +36,7 @@ class StripeWebhookController extends \Core\Controller
 
             switch($object['object']){
                 case \Util\StripeUtility::EVENT_OBJECT_SOURCE:
-                    if($event=$this->getEvent($token,$object)){
+                    if($event=$this->getEvent($token,$object['id'])){
                         if($event->status==\Util\StripeUtility::STATUS_PENDING){
                             if($type==\Util\StripeUtility::EVENT_SOURCE_CHARGEABLE){
                                 if($charge=$this->createChargeFromSource($api_key,$object)){
@@ -63,7 +63,7 @@ class StripeWebhookController extends \Core\Controller
                     }
                 break;
                 case \Util\StripeUtility::EVENT_OBJECT_CHARGE:
-                    if($event=$this->getEvent($token,$object)){
+                    if($event=$this->getEvent($token,$object['payment_method'])){
                         if($event->status==\Util\StripeUtility::STATUS_CHARGEABLE){
                             if($type==\Util\StripeUtility::EVENT_CHARGE_SUCCEEDED){
                                 $event->status = \Util\StripeUtility::STATUS_SUCCEEDED;
@@ -109,7 +109,6 @@ class StripeWebhookController extends \Core\Controller
     private function createChargeFromSource($api_key,$object)
     {
         try{
-            $owner = $object['owner'];
             $amount = $object['amount'];
             $currency = \Util\StripeUtility::DEFAULT_CURRENCY;
             $src_key = $object['id'];
@@ -121,11 +120,11 @@ class StripeWebhookController extends \Core\Controller
 
     }
 
-    private function getEvent($token,$object)
+    private function getEvent($token,$skey)
     {
         try{
-            $event = Event::where('skey',$object['id'])->firstOrFail();
-            if($event->uuid==$token && $event->amount==$object['amount']){
+            $event = Event::where('skey',$skey)->firstOrFail();
+            if($event->uuid==$token){
                 return $event;
             }
             return null;
