@@ -69,6 +69,10 @@ class StripeWebhookController extends \Core\Controller
                                 $event->status = \Util\StripeUtility::STATUS_SUCCEEDED;
                                 $event->save();
                             }
+                            if($type==\Util\StripeUtility::EVENT_CHARGE_PENDING){
+                                $event->status = \Util\StripeUtility::STATUS_WAITING;
+                                $event->save();
+                            }
                             if($type==\Util\StripeUtility::EVENT_CHARGE_FAILED){
                                 $event->status = \Util\StripeUtility::STATUS_FAILED;
                                 $event->save();
