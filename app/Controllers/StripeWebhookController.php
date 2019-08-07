@@ -22,31 +22,108 @@ class StripeWebhookController extends \Core\Controller
             $type = $event['type'];
             $object = $event['data']['object'];
 
-            $result = [
-                'object' => $object['object'],
-                'type' => $type,
-                'status' => $object['status'],
-                'uuid' => $token
-            ];
+            $result = ['status' => 'success'];
 
-            /* switch($object['object']){
+            switch($object['object']){
                 case \Util\StripeUtility::EVENT_OBJECT_SOURCE:
-                    $result = array_merge($result,[
+                    if($event=$this->getSourceEvent($token,$object)){
+                        if($event->status==\Util\StripeUtility::STATUS_PENDING){
+                            if($type==\Util\StripeUtility::EVENT_SOURCE_CHARGEABLE){
+                                if($charge=$this->createChargeFromSource($api_key,$object)){
+                                    $event->ckey = $charge->id;
+                                    $event->status = \Util\StripeUtility::STATUS_CHARGEABLE;
+                                    $event->save();
+                                }
+                            }
+                            if($type==\Util\StripeUtility::EVENT_SOURCE_CANCELED || $type==\Util\StripeUtility::EVENT_SOURCE_FAILED){
+                                $event->status = \Util\StripeUtility::STATUS_FAILED;
+                                $event->save();
+                            }
+                        }else{
+                            $result = [
+                                'status' => 'failed',
+                                'error' => 'source_already_charged'
+                            ];
+                        }
+                    }else{
+                        $result = [
+                            'status' => 'failed',
+                            'error' => 'database_not_ready'
+                        ];
+                    }
+                break;
+                case \Util\StripeUtility::EVENT_OBJECT_CHARGE:
+                    if($event=$this->getSourceEvent($token,$object)){
+                        if($event->status==\Util\StripeUtility::STATUS_CHARGEABLE){
+                            if($type==\Util\StripeUtility::EVENT_CHARGE_SUCCEEDED){
+                                $event->status = \Util\StripeUtility::STATUS_SUCCEEDED;
+                                $event->save();
+                            }
+                            if($type==\Util\StripeUtility::EVENT_CHARGE_FAILED){
+                                $event->status = \Util\StripeUtility::STATUS_FAILED;
+                                $event->save();
+                            }
+                        }else{
+                            $result = [
+                                'status' => 'failed',
+                                'error' => 'charge_already_succeeded'
+                            ];
+                        }
+                    }else{
+                        $result = [
+                            'status' => 'failed',
+                            'error' => 'database_not_ready'
+                        ];
+                    }
+                break;
+                default:
+                    $result = [
+                        'status' => 'success',
+                        'error' => 'event_not_registered'
+                    ];
+            }
 
-                    ]);
-            } */
+            $this->logger->info(self::class,$result);
         
             return $response->withJson($result)->withStatus(200);
 
         }else{
             $result = [
-                'status' => 'failed'/* ,
-                'signature' => $wh_sig,
-                'uuid' => $token,
-                'skey' => $api_key,
-                'whsec' => $wh_skey */
+                'status' => 'failed',
+                'error' => 'api_key_notfound'
             ];
             return $response->withJson($result)->withStatus(403);
         }
+    }
+
+    private function createChargeFromSource($api_key,$object)
+    {
+        try{
+            $owner = $object['owner'];
+            $amount = $object['amount'];
+            $currency = \Util\StripeUtility::DEFAULT_CURRENCY;
+            $src_key = $object['id'];
+            $descr = $owner['email'].' '.$owner['name'];
+            $response = \Util\StripeUtility::createCharge($api_key,$amount,$currency,$src_key,$descr);
+            return $response;
+        }catch (\Exception $e) {
+            return null;
+        }
+
+    }
+
+    private function getSourceEvent($token,$object)
+    {
+        if($event=Event::where('skey',$object['id'])->first()){
+            if($event->uuid==$token && $event->amount==$object['amount']){
+                return $event;
+            }
+        }
+        return null;
+    }
+
+    private function setSourceEvent($event,$charge)
+    {
+
     }
 }

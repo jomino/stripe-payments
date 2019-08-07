@@ -95,20 +95,22 @@ class StripeUtility
         }
     }
 
-    public static function createCharge($api_key,$amount,$currency,$wh_skey,$descr='')
+    public static function createCharge($api_key,$amount,$currency,$src_key,$descr='')
     {
         \Stripe\Stripe::setApiKey($api_key);
 
-        $response = \Stripe\Charge::create([
-            'amount' => $amount,
-            'currency' => $currency,
-            'description' => 'IPEFIX SOLUTION PAYMENT',
-            'source' => $wh_skey,
-            'statement_descriptor' => $descr
-        ]);
-
-        return $response;
-
+        try{
+            $response = \Stripe\Charge::create([
+                'amount' => $amount,
+                'currency' => $currency,
+                'description' => 'IPEFIX SOLUTION PAYMENT',
+                'source' => $src_key,
+                'statement_descriptor' => $descr
+            ]);
+            return $response;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
 }

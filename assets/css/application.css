@@ -73,6 +73,11 @@ body{
     max-height: 33px !important;
     line-height: 33px !important;
 }
+.signup-form img.center-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 .bs-wizard {margin-top: 40px;}
 .bs-wizard {border-bottom: solid 1px #e0e0e0; padding: 0 0 10px 0;}

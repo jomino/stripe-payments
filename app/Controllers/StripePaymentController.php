@@ -40,8 +40,14 @@ class StripePaymentController extends \Core\Controller
                     return $this->view->render($response, 'Home/payredir.html.twig',[
                         'redir_url' => $redir_url
                     ]);
+                }else{
+                    $this->logger->info('['.self::class.']cannot save new event');
                 }
+            }else{
+                $this->logger->info('['.self::class.']cannot create source');
             }
+        }else{
+            $this->logger->info('['.self::class.']cannot read user datas');
         }
     }
 

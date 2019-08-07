@@ -9,8 +9,6 @@
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/application.css">
-<script src="js/jquery-1.12.4.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -40,11 +38,14 @@
             <form action="#" name="pay-identify-form">
                 <input type="hidden" name="redir-url" value="{{redir_url}}">
                 <div class="well">
-                    <img src="images/{{session.payment_type}}.png" alt="img-logo" class="img-thumbnail">
+                    <img src="images/{{session.payment_type}}.png" alt="img-logo" class="center-img">
                 </div>
             </form>
         </div>
     </div>
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/loadingoverlay.min.js"></script>
     <script src="js/application.js"></script> 
     <script src="js/redir.js"></script> 
 </body>
