@@ -130,7 +130,7 @@ class StripeWebhookController extends \Core\Controller
 
     private function sendUserMail($link,$user)
     {
-        $_tpl = 'Email/email-inlined.html.twig';
+        $_tpl = 'Email/email-payment.html.twig';
         $_subject = 'Inscription au service Stripe-Payments d\'Ipefix';
         
         $_content = $this->view->fetch( $_tpl, [
