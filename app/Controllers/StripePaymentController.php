@@ -29,24 +29,53 @@ class StripePaymentController extends \Core\Controller
         if(!empty($name) && !empty($email)){
             if($user=$this->getUser()){
                 if($source=$this->getSource($request,$user,$email,$name)){
-                    $redir_url = $source->redirect->url;
-                    return $this->view->render($response, 'Home/payredir.html.twig',[
-                        'redir_url' => $redir_url
-                    ]);
+                    if($source->redirect->status==\Util\StripeUtility::STATUS_PENDING){
+                        $redir_url = $source->redirect->url;
+                        return $this->view->render($response, 'Home/payredir.html.twig',[
+                            'redir_url' => $redir_url
+                        ]);
+                    }else{
+                        $message = 'Vous avez déjà effectué ce payement.<br>';
+                        $message .= 'Pour poursuivre vos achats,<br>';
+                        $message .= 'fermez cet onglet et ';
+                        $message .= '<a href="//:'.$user->name.'" title="'.$user->name.'">';
+                        $message .= 'retournez vers le site marchant';
+                        $message .= '</a>';
+                    }
                 }else{
+                    $message = $this->getDefaultError($user);
                     $this->logger->info('['.self::class.']cannot read source datas');
                 }
             }else{
+                $message = $this->getDefaultError();
                 $this->logger->info('['.self::class.']cannot read user datas');
             }
         }else{
+            $message = $this->getDefaultError();
             $this->logger->info('['.self::class.']required client datas');
         }
+        return $this->view->render($response, 'Home/paymess.html.twig',[
+            'message' => $message
+        ]);
     }
 
     public function result($request, $response, $args)
     {
         return $this->view->render($response, 'Home/payresult.html.twig');
+    }
+
+    private function getDefaultError($user='')
+    {
+        $message = 'Une erreur inattendue est survenue.<br>';
+        $message .= 'Nous sommes actuellement dans l\'incapacité de <br>';
+        $message .= 'vous redirigé vers la page de votre banque.<br>';
+        $message .= 'Veuillez ré-essayer plus tard, merci.<br>';
+        if(!empty($user)){
+            $message .= '<a href="//:'.$user->name.'" title="'.$user->name.'">';
+            $message .= 'Retournez vers le site marchant';
+            $message .= '</a>';
+        }
+        return $message;
     }
 
     private function setSessionVar($name,$value)
