@@ -44,7 +44,7 @@ class AssetsController extends \Core\Controller
     private function getUser($token)
     {
         try{
-            $user = \App\Models\User::where('uuid',$token)->first();
+            $user = \App\Models\User::where('uuid',$token)->firstOrFail();
             return $user;
         }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
             return null;

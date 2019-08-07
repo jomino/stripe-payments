@@ -53,7 +53,7 @@ class RegisterUserController extends \Core\Controller
     private function validate($token,$user_id)
     {
         try{
-            $user = User::find($user_id);
+            $user = User::findOrFail($user_id);
             if($user->uuid == $token){
                 //todo: add date max ctrl
                 //todo: add active==0 ctrl

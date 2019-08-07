@@ -26,35 +26,27 @@ class StripePaymentController extends \Core\Controller
     {
         $name = $request->getParsedBodyParam('name');
         $email = $request->getParsedBodyParam('email');
-        if($user=$this->getUser()){
-            $type = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
-            $amount = $this->session->get(\Util\StripeUtility::SESSION_AMOUNT);
-            $currency = \Util\StripeUtility::DEFAULT_CURRENCY;
-            $ret_url = $this->getReturnUrl($request->getUri(),$user->uuid);
-            $options = $this->getSourceOptions($type);
-            if($source=\Util\StripeUtility::createSource($user->skey,$type,$amount,$currency,$email,$name,$ret_url,$options)){
-                $redir_url = $source->redirect->url;
-                $src_id = $source->id;
-                $src_status = $source->status==\Util\StripeUtility::STATUS_PENDING ? \Util\StripeUtility::STATUS_PENDING : \Util\StripeUtility::STATUS_FAILED;
-                if($this->saveNewEvent($src_status,$user->uuid,$name,$email,$amount,$src_id)){
+        if(!empty($name) && !empty($email)){
+            if($user=$this->getUser()){
+                if($source=$this->getSource($request,$user,$email,$name)){
+                    $redir_url = $source->redirect->url;
                     return $this->view->render($response, 'Home/payredir.html.twig',[
                         'redir_url' => $redir_url
                     ]);
                 }else{
-                    $this->logger->info('['.self::class.']cannot save new event');
+                    $this->logger->info('['.self::class.']cannot read source datas');
                 }
             }else{
-                $this->logger->info('['.self::class.']cannot create source');
+                $this->logger->info('['.self::class.']cannot read user datas');
             }
         }else{
-            $this->logger->info('['.self::class.']cannot read user datas');
+            $this->logger->info('['.self::class.']required client datas');
         }
     }
 
     public function result($request, $response, $args)
     {
-        $notFoundHandler = $this->notFoundHandler;
-        return $notFoundHandler($request, $response);
+        return $this->view->render($response, 'Home/payresult.html.twig');
     }
 
     private function setSessionVar($name,$value)
@@ -74,6 +66,41 @@ class StripePaymentController extends \Core\Controller
         }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
             return null;
         }
+    }
+
+    private function getCurrentEvent()
+    {
+        if($this->session->exists(\Util\StripeUtility::SESSION_TOKEN)){
+            $s_token = $this->session->get(\Util\StripeUtility::SESSION_TOKEN);
+            try{
+                $event = \App\Models\Event::where('token',$s_token)->firstOrFail();
+                return $event;
+            }catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    private function getSource($request,$user,$email,$name)
+    {
+        if($event=$this->getCurrentEvent()){
+            $src_key = $event->skey;
+            $api_key = $user->skey;
+            $source = \Util\StripeUtility::retrieveSource($api_key,$src_key);
+        }else{
+            $s_token = \Util\UuidGenerator::v4();
+            $type = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
+            $amount = $this->session->get(\Util\StripeUtility::SESSION_AMOUNT);
+            $currency = \Util\StripeUtility::DEFAULT_CURRENCY;
+            $ret_url = $this->getReturnUrl($request->getUri(),$s_token);
+            $options = $this->getSourceOptions($type);
+            $source = \Util\StripeUtility::createSource($user->skey,$type,$amount,$currency,$email,$name,$ret_url,$options);
+            $src_id = $source->id;
+            $src_status = $source->status==\Util\StripeUtility::STATUS_PENDING ? \Util\StripeUtility::STATUS_PENDING : \Util\StripeUtility::STATUS_FAILED;
+            $this->saveNewEvent($src_status,$user->uuid,$name,$email,$amount,$src_id,$s_token);
+        }
+        return $source;
     }
 
     private function getReturnUrl($uri,$uuid)
@@ -109,7 +136,7 @@ class StripePaymentController extends \Core\Controller
         }
     }
 
-    private function saveNewEvent($status,$uuid,$name,$email,$amount,$skey)
+    private function saveNewEvent($status,$uuid,$name,$email,$amount,$skey,$s_token)
     {
         try{
             $event = new \App\Models\Event();
@@ -118,8 +145,10 @@ class StripePaymentController extends \Core\Controller
             $event->name = $name;
             $event->email = $email;
             $event->amount = $amount;
+            $event->token = $s_token;
             $event->skey = $skey;
             $event->save();
+            $this->setSessionVar(\Util\StripeUtility::SESSION_TOKEN,$s_token);
             return true;
         }catch(\Exception $e){
             return false;

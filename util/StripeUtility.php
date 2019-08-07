@@ -16,6 +16,7 @@ class StripeUtility
     const SESSION_REFERRER = 'referrer';
     const SESSION_AMOUNT = 'amount';
     const SESSION_METHOD = 'payment_type';
+    const SESSION_TOKEN = 'event_token';
 
     const STATUS_PENDING = 'pending';
     const STATUS_CHARGEABLE = 'chargeable';
@@ -93,6 +94,19 @@ class StripeUtility
         } catch (\Exception $e) {
             return null;
         }
+    }
+
+    public static function retrieveSource($api_key,$skey)
+    {
+        \Stripe\Stripe::setApiKey($api_key);
+
+        try{
+            $response = \Stripe\Source::retrieve($skey);
+            return $response;
+        } catch (\Exception $e) {
+            return null;
+        }
+
     }
 
     public static function createCharge($api_key,$amount,$currency,$src_key,$descr='')

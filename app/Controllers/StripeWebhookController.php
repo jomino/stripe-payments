@@ -13,20 +13,30 @@ class StripeWebhookController extends \Core\Controller
         $wh_sig = $request->getHeaderLine('stripe-signature');
 
         $token = $args['token'];
-        $user = User::where('uuid',$token)->first();
+
+        try{
+            $user = User::where('uuid',$token)->firstOrFail();
+        }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+            $result = [
+                'status' => 'failed',
+                'error' => 'wh_not_registered'
+            ];
+            return $response->withJson($result)->withStatus(403);
+        }
+
         $api_key = $user->skey;
         $wh_skey = $user->wkey;
 
-        if($event=\Util\StripeUtility::createEvent($api_key,$wh_skey,$wh_sig,$wh_evt)){
+        if($event_req=\Util\StripeUtility::createEvent($api_key,$wh_skey,$wh_sig,$wh_evt)){
 
-            $type = $event['type'];
-            $object = $event['data']['object'];
+            $type = $event_req['type'];
+            $object = $event_req['data']['object'];
 
             $result = ['status' => 'success'];
 
             switch($object['object']){
                 case \Util\StripeUtility::EVENT_OBJECT_SOURCE:
-                    if($event=$this->getSourceEvent($token,$object)){
+                    if($event=$this->getEvent($token,$object)){
                         if($event->status==\Util\StripeUtility::STATUS_PENDING){
                             if($type==\Util\StripeUtility::EVENT_SOURCE_CHARGEABLE){
                                 if($charge=$this->createChargeFromSource($api_key,$object)){
@@ -53,7 +63,7 @@ class StripeWebhookController extends \Core\Controller
                     }
                 break;
                 case \Util\StripeUtility::EVENT_OBJECT_CHARGE:
-                    if($event=$this->getSourceEvent($token,$object)){
+                    if($event=$this->getEvent($token,$object)){
                         if($event->status==\Util\StripeUtility::STATUS_CHARGEABLE){
                             if($type==\Util\StripeUtility::EVENT_CHARGE_SUCCEEDED){
                                 $event->status = \Util\StripeUtility::STATUS_SUCCEEDED;
@@ -72,14 +82,14 @@ class StripeWebhookController extends \Core\Controller
                     }else{
                         $result = [
                             'status' => 'failed',
-                            'error' => 'database_not_ready'
+                            'error' => 'event_not_found'
                         ];
                     }
                 break;
                 default:
                     $result = [
                         'status' => 'success',
-                        'error' => 'event_not_registered'
+                        'message' => 'event_not_registered'
                     ];
             }
 
@@ -90,7 +100,7 @@ class StripeWebhookController extends \Core\Controller
         }else{
             $result = [
                 'status' => 'failed',
-                'error' => 'api_key_notfound'
+                'error' => 'invalid_request'
             ];
             return $response->withJson($result)->withStatus(403);
         }
@@ -112,18 +122,16 @@ class StripeWebhookController extends \Core\Controller
 
     }
 
-    private function getSourceEvent($token,$object)
+    private function getEvent($token,$object)
     {
-        if($event=Event::where('skey',$object['id'])->first()){
+        try{
+            $event = Event::where('skey',$object['id'])->firstOrFail();
             if($event->uuid==$token && $event->amount==$object['amount']){
                 return $event;
             }
+            return null;
+        }catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return null;
         }
-        return null;
-    }
-
-    private function setSourceEvent($event,$charge)
-    {
-
     }
 }
