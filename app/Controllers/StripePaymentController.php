@@ -23,6 +23,9 @@ class StripePaymentController extends \Core\Controller
 
     public function identify($request, $response, $args)
     {
+        if(false === $request->getAttribute('csrf_status')){
+            return $response->withStatus(498);
+        }
         $payment_type = $request->getParsedBodyParam('payment-type');
         $this->setSessionVar(\Util\StripeUtility::SESSION_METHOD,$payment_type);
         return $this->view->render($response, 'Home/payidentify.html.twig');
@@ -30,6 +33,9 @@ class StripePaymentController extends \Core\Controller
 
     public function source($request, $response, $args)
     {
+        if(false === $request->getAttribute('csrf_status')){
+            return $response->withStatus(498);
+        }
         $name = $request->getParsedBodyParam('name');
         $email = $request->getParsedBodyParam('email');
         if(!empty($name) && !empty($email)){
@@ -42,8 +48,8 @@ class StripePaymentController extends \Core\Controller
                         ]);
                     }else{
                         $message = 'Vous avez déjà effectué ce payement.<br>';
-                        $message .= 'Pour poursuivre vos achats,<br>';
-                        $message .= 'fermez cet onglet et ';
+                        $message .= 'Vous pouvez, ';
+                        $message .= 'fermez cet onglet ou ';
                         $message .= '<a href="//:'.$user->name.'" title="'.$user->name.'">';
                         $message .= 'retournez vers le site marchant';
                         $message .= '</a>';
