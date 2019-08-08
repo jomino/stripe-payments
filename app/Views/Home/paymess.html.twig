@@ -15,12 +15,11 @@
 <body>
     <div class="container">
         <div class="signup-form col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
-            <form action="#" name="pay-message-form">
-                <p>{{ message|raw }}</p>
+            <form action="{{ path_for('payment_source') }}" name="pay-message-form">
+                {{ message|raw }}
             </form>
         </div>
     </div>
-    <script src="js/application.js"></script> 
-    <script src="js/result.js"></script> 
+    <script src="js/application.js"></script>
 </body>
 </html>

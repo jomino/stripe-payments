@@ -46,13 +46,18 @@ class StripePaymentController extends \Core\Controller
                         return $this->view->render($response, 'Home/payredir.html.twig',[
                             'redir_url' => $redir_url
                         ]);
+                    }elseif(!empty($request->getParsedBodyParam('forced'))){
+                        $source = $this->createNewSource($request,$user,$email,$name);
+                        $redir_url = $source->redirect->url;
+                        return $this->view->render($response, 'Home/payredir.html.twig',[
+                            'redir_url' => $redir_url
+                        ]);
                     }else{
-                        $message = 'Vous avez déjà effectué ce payement.<br>';
-                        $message .= 'Vous pouvez, ';
-                        $message .= 'fermez cet onglet ou ';
-                        $message .= '<a href="//:'.$user->name.'" title="'.$user->name.'">';
-                        $message .= 'retournez vers le site marchant';
-                        $message .= '</a>';
+                        $message = '<p><span class="glyphicon glyphicon-warning-sign text-danger" aria-hidden="true"></span>';
+                        $message = 'Un achat similaire à déjà été effectué ce ... <br>';
+                        $message .= 'Vous pouvez fermez cette page ou continuer vos achat.</p>';
+                        $message .= '<input type="hidden" name="forced" value="force">'."\n";
+                        $message .= '<button type="submit" class="btn btn-success btn-lg btn-block">Continuer</button>';
                     }
                 }else{
                     $message = $this->getDefaultError($user);
@@ -151,21 +156,9 @@ class StripePaymentController extends \Core\Controller
     private function getSource($request,$user,$email,$name)
     {
         if($event=$this->getCurrentEvent()){
-            $src_key = $event->skey;
-            $api_key = $user->skey;
-            $source = \Util\StripeUtility::retrieveSource($api_key,$src_key);
+            $source = \Util\StripeUtility::retrieveSource($user->skey,$event->skey);
         }else{
-            $s_token = \Util\UuidGenerator::v4();
-            $method = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
-            $amount = $this->session->get(\Util\StripeUtility::SESSION_AMOUNT);
-            $product = $this->session->get(\Util\StripeUtility::SESSION_PRODUCT);
-            $currency = \Util\StripeUtility::DEFAULT_CURRENCY;
-            $ret_url = $this->getReturnUrl($request->getUri(),$s_token);
-            $options = $this->getSourceOptions($method,$user);
-            $source = \Util\StripeUtility::createSource($user->skey,$method,$amount,$currency,$email,$name,$ret_url,$options);
-            $src_id = $source->id;
-            $src_status = $source->status==\Util\StripeUtility::STATUS_PENDING ? \Util\StripeUtility::STATUS_PENDING : \Util\StripeUtility::STATUS_FAILED;
-            $this->createNewEvent($src_status,$user->uuid,$name,$email,$amount,$product,$method,$src_id,$s_token);
+            $source = $this->createNewSource($request,$user,$email,$name);
         }
         return $source;
     }
@@ -206,6 +199,22 @@ class StripePaymentController extends \Core\Controller
                 ];
         }
     }
+
+    private function createNewSource($request,$user,$email,$name)
+    {
+        $s_token = \Util\UuidGenerator::v4();
+        $method = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
+        $amount = $this->session->get(\Util\StripeUtility::SESSION_AMOUNT);
+        $product = $this->session->get(\Util\StripeUtility::SESSION_PRODUCT);
+        $currency = \Util\StripeUtility::DEFAULT_CURRENCY;
+        $ret_url = $this->getReturnUrl($request->getUri(),$s_token);
+        $options = $this->getSourceOptions($method,$user);
+        $source = \Util\StripeUtility::createSource($user->skey,$method,$amount,$currency,$email,$name,$ret_url,$options);
+        $src_id = $source->id;
+        $src_status = $source->status==\Util\StripeUtility::STATUS_PENDING ? \Util\StripeUtility::STATUS_PENDING : \Util\StripeUtility::STATUS_FAILED;
+        $this->createNewEvent($src_status,$user->uuid,$name,$email,$amount,$product,$method,$src_id,$s_token);
+        return $source;
+}
 
     private function createNewEvent($status,$uuid,$name,$email,$amount,$product,$method,$skey,$s_token)
     {
