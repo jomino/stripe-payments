@@ -156,7 +156,7 @@ class StripeWebhookController extends \Core\Controller
         $_tpl = $event_tpl[$status];
         $_subject = $subject_tpl[$status];
 
-        $event_date = Carbon::createFromFormat('Y-m-d h:i:s', $event->updated_at);
+        $event_date = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', $event->updated_at);
 
         $data = [
             'name' => $event->name,
