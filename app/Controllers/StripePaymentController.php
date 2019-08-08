@@ -121,16 +121,16 @@ class StripePaymentController extends \Core\Controller
             $source = \Util\StripeUtility::retrieveSource($api_key,$src_key);
         }else{
             $s_token = \Util\UuidGenerator::v4();
-            $type = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
+            $method = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
             $amount = $this->session->get(\Util\StripeUtility::SESSION_AMOUNT);
             $product = $this->session->get(\Util\StripeUtility::SESSION_PRODUCT);
             $currency = \Util\StripeUtility::DEFAULT_CURRENCY;
             $ret_url = $this->getReturnUrl($request->getUri(),$s_token);
-            $options = $this->getSourceOptions($type,$user);
-            $source = \Util\StripeUtility::createSource($user->skey,$type,$amount,$currency,$email,$name,$ret_url,$options);
+            $options = $this->getSourceOptions($method,$user);
+            $source = \Util\StripeUtility::createSource($user->skey,$method,$amount,$currency,$email,$name,$ret_url,$options);
             $src_id = $source->id;
             $src_status = $source->status==\Util\StripeUtility::STATUS_PENDING ? \Util\StripeUtility::STATUS_PENDING : \Util\StripeUtility::STATUS_FAILED;
-            $this->saveNewEvent($src_status,$user->uuid,$name,$email,$amount,$product,$src_id,$s_token);
+            $this->saveNewEvent($src_status,$user->uuid,$name,$email,$amount,$product,$method,$src_id,$s_token);
         }
         return $source;
     }
@@ -172,7 +172,7 @@ class StripePaymentController extends \Core\Controller
         }
     }
 
-    private function saveNewEvent($status,$uuid,$name,$email,$amount,$product,$skey,$s_token)
+    private function saveNewEvent($status,$uuid,$name,$email,$amount,$product,$method,$skey,$s_token)
     {
         try{
             $event = new \App\Models\Event();
@@ -182,6 +182,7 @@ class StripePaymentController extends \Core\Controller
             $event->email = $email;
             $event->amount = $amount;
             $event->product = $product;
+            $event->method = $method;
             $event->token = $s_token;
             $event->skey = $skey;
             $event->save();

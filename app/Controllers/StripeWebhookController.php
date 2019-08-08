@@ -9,6 +9,8 @@ class StripeWebhookController extends \Core\Controller
 {
     public function __invoke($request, $response, $args)
     {
+        $error = '';
+
         $wh_evt = $request->getBody();
         $wh_sig = $request->getHeaderLine('stripe-signature');
 
@@ -21,7 +23,7 @@ class StripeWebhookController extends \Core\Controller
                 'status' => 'failed',
                 'error' => 'wh_not_registered'
             ];
-            return $response->withJson($result)->withStatus(403);
+            return $response->withJson($result)->withStatus(200);
         }
 
         $api_key = $user->skey;
@@ -43,13 +45,16 @@ class StripeWebhookController extends \Core\Controller
                                     $event->ckey = $charge->id;
                                     $event->status = \Util\StripeUtility::STATUS_CHARGEABLE;
                                     $event->save();
-                                }else{
-                                    $this->logger->info();
                                 }
                             }
                             if($type==\Util\StripeUtility::EVENT_SOURCE_CANCELED || $type==\Util\StripeUtility::EVENT_SOURCE_FAILED){
                                 $event->status = \Util\StripeUtility::STATUS_FAILED;
                                 $event->save();
+                                $error = $type==\Util\StripeUtility::EVENT_SOURCE_CANCELED ? 'Payement annulé' : 'Payement rejeté';
+                                $send = $this->sendClientMail($event,$user,$error);
+                                if(is_string($send)){
+                                    $this->logger->info('['.(self::class).']',[$send]);
+                                }
                             }
                         }else{
                             $result = [
@@ -75,15 +80,20 @@ class StripeWebhookController extends \Core\Controller
                             }
                             if($type==\Util\StripeUtility::EVENT_CHARGE_FAILED){
                                 $event->status = \Util\StripeUtility::STATUS_FAILED;
+                                $error = 'Payement rejeté';
                             }
                             $event->save();
+                            $send = $this->sendClientMail($event,$user,$error);
+                            if(is_string($send)){
+                                $this->logger->info('['.self::class.']',[$send]);
+                            }
                         }else{
                             $result = ['status'=>'failed','error'=>'charge_already_succeeded'];
-                            $this->logger->info(self::class,$result);
+                            $this->logger->info('['.self::class.']',$result);
                         }
                     }else{
                         $result = ['status'=>'failed','error'=>'event_not_found'];
-                        $this->logger->info(self::class,$result);
+                        $this->logger->info('['.self::class.']',$result);
                     }
                 break;
                 default:
@@ -128,18 +138,44 @@ class StripeWebhookController extends \Core\Controller
         }
     }
 
-    private function sendUserMail($link,$user)
+    private function sendClientMail($event,$user,$error='')
     {
-        $_tpl = 'Email/email-payment.html.twig';
-        $_subject = 'Inscription au service Stripe-Payments d\'Ipefix';
+        $status = $event->status;
+        $event_tpl = [
+            \Util\StripeUtility::STATUS_SUCCEEDED => 'Email/email-pay-succeed.html.twig',
+            \Util\StripeUtility::STATUS_WAITING => 'Email/email-pay-pending.html.twig',
+            \Util\StripeUtility::STATUS_FAILED => 'Email/email-pay-rejected.html.twig'
+        ];
+
+        $subject_tpl = [
+            \Util\StripeUtility::STATUS_SUCCEEDED => $user->name.': Merci pour votre achat',
+            \Util\StripeUtility::STATUS_WAITING => $user->name.': Votre payement est en cours de traitement',
+            \Util\StripeUtility::STATUS_FAILED => $user->name.': Payement Annulé'
+        ];
+
+        $_tpl = $event_tpl[$status];
+        $_subject = $subject_tpl[$status];
+
+        $event_date = Carbon::createFromFormat('Y-m-d h:i:s', $event->updated_at);
+
+        $data = [
+            'name' => $event->name,
+            'method' => $event->method,
+            'client_name' => $user->name,
+            'client_email' => $user->email,
+            'amount' => $event->amount,
+            'token' => $event->token,
+            'datetime' => $event_date->format('d/m/Y h:i:s')
+        ];
+
+        if($status==\Util\StripeUtility::STATUS_FAILED){
+            $data['error'] = empty($error) ? '':$error;
+        }
         
-        $_content = $this->view->fetch( $_tpl, [
-            'agence' => $user->name,
-            'link' => $link,
-        ]);
+        $_content = $this->view->fetch($_tpl,$data);
 
         $mailer = new \Util\PhpMailer();
-        return $mailer->send($user->email,$_subject,$_content);
+        return $mailer->send($event->email,$_subject,$_content);
 
     }
 }
