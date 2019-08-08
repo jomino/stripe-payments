@@ -41,6 +41,11 @@
                 <form action="{{ path_for('payment_identify') }}" method="post" name="pay-choice-form">
                     <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
                     <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
+                    <h2>Choisissez</h2>
+                    <div class="well text-center">
+                        Vous voulez acheter: {{ product }}<br>
+                        Pour la somme de: {{ amount|raw }}
+                    </div>
                     <ul class="list-group">
                         <li class="list-group-item">
                             <div class="radio form-control">

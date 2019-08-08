@@ -40,7 +40,8 @@
             <form action="{{ path_for('payment_source') }}" method="post" name="pay-identify-form">
                 <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
                 <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
-                <input type="hidden" name="payment-type" value="{{session.payment_type}}">
+                <h2>Identifiez-vous</h2>
+                <img src="images/{{session.payment_type}}.png" alt="img-logo" class="center-img">
                 <div class="form-group">
                     <input name="name" class="form-control" placeholder="Nom*" required>
                     <input name="email" type="email" class="form-control" placeholder="E-mail*" required>

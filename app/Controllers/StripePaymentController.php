@@ -14,7 +14,11 @@ class StripePaymentController extends \Core\Controller
         $this->setSessionVar(\Util\StripeUtility::SESSION_REFERRER,$token);
         $this->setSessionVar(\Util\StripeUtility::SESSION_AMOUNT,$amount);
         $this->setSessionVar(\Util\StripeUtility::SESSION_PRODUCT,$product);
-        return $this->view->render($response, 'Home/paystart.html.twig');
+        $display_amount = number_format((float) $amount/100, 2, ',', ' ');
+        return $this->view->render($response, 'Home/paystart.html.twig',[
+            'product' => $product,
+            'amount' => $display_amount.' &euro;'
+        ]);
     }
 
     public function identify($request, $response, $args)
