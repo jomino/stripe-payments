@@ -153,8 +153,8 @@ class StripeWebhookController extends \Core\Controller
             \Util\StripeUtility::STATUS_FAILED => $user->name.': '.$error
         ];
 
-        $_tpl = $event_tpl[$status];
-        $_subject = $subject_tpl[$status];
+        $template = $event_tpl[$status];
+        $subject = $subject_tpl[$status];
 
         $event_date = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', $event->updated_at);
 
@@ -170,10 +170,10 @@ class StripeWebhookController extends \Core\Controller
             'error' => $error
         ];
         
-        $_content = $this->view->fetch($_tpl,$data);
+        $_content = $this->view->fetch($template,$data);
 
         $mailer = new \Util\PhpMailer();
-        return $mailer->send($event->email,$_subject,$_content);
+        return $mailer->send($event->email,$subject,$_content);
 
     }
 }
