@@ -38,12 +38,13 @@
         </div>
         <div class="signup-form col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
             <form action="#" name="pay-result-form">
-                <input type="hidden" name="payment-type" value="{{session.payment_type}}">
-                <p>Thank-you !!</p>
+                <div class="well">
+                        <span class="glyphicon glyphicon-{%- if status=='failed' -%}remove-circle text-danger{%- else -%}ok-circle text-success{%- endif -%}" aria-hidden="true"></span>
+                        {{ message|raw }}
+                </div>
             </form>
         </div>
     </div>
-    <script src="js/application.js"></script> 
-    <script src="js/result.js"></script> 
+    <script src="js/application.js"></script>
 </body>
 </html>

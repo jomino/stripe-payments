@@ -39,7 +39,7 @@ class StripePaymentController extends \Core\Controller
         $name = $request->getParsedBodyParam('name');
         $email = $request->getParsedBodyParam('email');
         if(!empty($name) && !empty($email)){
-            if($user=$this->getUser()){
+            if($user=$this->getCurrentUser()){
                 if($source=$this->getSource($request,$user,$email,$name)){
                     if($source->redirect->status==\Util\StripeUtility::STATUS_PENDING){
                         $redir_url = $source->redirect->url;
@@ -73,7 +73,32 @@ class StripePaymentController extends \Core\Controller
 
     public function result($request, $response, $args)
     {
-        return $this->view->render($response, 'Home/payresult.html.twig');
+        $event = $this->getCurrentEvent();
+        $user = $this->getCurrentUser();
+        $status = $event->status;
+        if($status==\Util\StripeUtility::STATUS_SUCCEEDED){
+            $message = 'Merci, votre payement nous est bien arrivé.<br>';
+        }
+        if($status==\Util\StripeUtility::STATUS_WAITING){
+            $message = 'Merci, votre payement est en cour de traitement.<br>';
+        }
+        if($status==\Util\StripeUtility::STATUS_FAILED){
+            $message = 'Désolé, votre payement ne nous est pas parvenu.<br>';
+        }
+        $event_date = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', $event->updated_at);
+        $amount = number_format((float) $event->amount/100, 2, ',', ' ');
+        $message .= 'Détail de la transaction -----------------------<br>';
+        $message .= '<strong>Produit:</strong> '.$event->product.'<br>';
+        $message .= '<strong>Methode de payement:</strong> '.$event->method.'<br>';
+        $message .= '<strong>Date de la transaction:</strong> '.$event_date->format('d/m/Y h:i:s').'<br>';
+        $message .= '<strong>Bénéficiaire:</strong> '.$user->name.'<br>';
+        $message .= '<strong>Montant du transfert:</strong> '.$amount.'<br>';
+        $message .= '<strong>Numéro de transaction:</strong> '.$event->token.'<br>';
+        $message .= '-------------------------------------------------<br>';
+        return $this->view->render($response, 'Home/payresult.html.twig',[
+            'message' => $message,
+            'status' => $status
+        ]);
     }
 
     private function getDefaultError($user='')
@@ -98,7 +123,7 @@ class StripePaymentController extends \Core\Controller
         $this->session->set($name,$value);
     }
 
-    private function getUser()
+    private function getCurrentUser()
     {
         $token = $this->session->get(\Util\StripeUtility::SESSION_REFERRER);
         try{
