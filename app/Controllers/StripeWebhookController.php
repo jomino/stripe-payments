@@ -150,7 +150,7 @@ class StripeWebhookController extends \Core\Controller
         $subject_tpl = [
             \Util\StripeUtility::STATUS_SUCCEEDED => $user->name.': Merci pour votre achat',
             \Util\StripeUtility::STATUS_WAITING => $user->name.': Votre payement est en cours de traitement',
-            \Util\StripeUtility::STATUS_FAILED => $user->name.': Payement Annulé'
+            \Util\StripeUtility::STATUS_FAILED => $user->name.': '.$error
         ];
 
         $_tpl = $event_tpl[$status];
@@ -166,12 +166,9 @@ class StripeWebhookController extends \Core\Controller
             'client_email' => $user->email,
             'amount' => $event->amount,
             'token' => $event->token,
-            'datetime' => $event_date->format('d/m/Y h:i:s')
+            'datetime' => $event_date->format('d/m/Y h:i:s'),
+            'error' => $error
         ];
-
-        if($status==\Util\StripeUtility::STATUS_FAILED){
-            $data['error'] = empty($error) ? '':$error;
-        }
         
         $_content = $this->view->fetch($_tpl,$data);
 
