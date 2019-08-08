@@ -165,7 +165,7 @@ class StripePaymentController extends \Core\Controller
             $source = \Util\StripeUtility::createSource($user->skey,$method,$amount,$currency,$email,$name,$ret_url,$options);
             $src_id = $source->id;
             $src_status = $source->status==\Util\StripeUtility::STATUS_PENDING ? \Util\StripeUtility::STATUS_PENDING : \Util\StripeUtility::STATUS_FAILED;
-            $this->saveNewEvent($src_status,$user->uuid,$name,$email,$amount,$product,$method,$src_id,$s_token);
+            $this->createNewEvent($src_status,$user->uuid,$name,$email,$amount,$product,$method,$src_id,$s_token);
         }
         return $source;
     }
@@ -207,7 +207,7 @@ class StripePaymentController extends \Core\Controller
         }
     }
 
-    private function saveNewEvent($status,$uuid,$name,$email,$amount,$product,$method,$skey,$s_token)
+    private function createNewEvent($status,$uuid,$name,$email,$amount,$product,$method,$skey,$s_token)
     {
         try{
             $event = new \App\Models\Event();
