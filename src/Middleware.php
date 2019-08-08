@@ -14,12 +14,13 @@ class Middleware
     {
         $app->add(new \Slim\Middleware\Session([
             'name' => 'application_session',
-            'autorefresh' => true
+            'autorefresh' => true,
+            'lifetime' => '10 minutes'
         ]));
 
         $app->add(new \Util\AcceptLanguage($app));
         $app->add(new \App\Middleware\StripeMiddleware($app));
-        
+
     }
 
 }
