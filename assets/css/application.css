@@ -11,6 +11,9 @@ body{
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
 }
+.header {
+    padding-top: 90px;
+}
 .form-control{
     box-shadow: none;
     color: #969fa4;

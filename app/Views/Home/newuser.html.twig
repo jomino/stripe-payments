@@ -14,6 +14,9 @@
 </head>
 <body>
     <div class="row">
+        <div class="header col-xs-4 col-xs-offset-4">
+            <h1><strong>Stripe Payment Admin</strong></h1>
+        </div>
         <div class="signup-form col-xs-4 col-xs-offset-4">
             <form action="{{ path_for('adduser') }}" method="get">
                 {% if error %}
@@ -35,7 +38,7 @@
                                 <code>{{ generated_link }}</code>
                             </blockquote>
                             Celui-ci se présente sous la forme:<br>
-                            &lt;a href="https://..." data-amount="nnnn" class="stripe-payment-btn"&gt;Acheter&lt;/a&gt;<br>
+                            &lt;a href="https://..."&gt;Acheter&lt;/a&gt;<br>
                             dont le montant "nnnn" (attr. data-amount) est exprimé en centimes.
                         </div>
                     </div>
