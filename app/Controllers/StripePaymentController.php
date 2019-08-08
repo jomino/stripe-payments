@@ -60,19 +60,21 @@ class StripePaymentController extends \Core\Controller
                         $message = 'Un achat similaire à déjà été effectué ce '.$dt_str.'<br>';
                         $message .= 'Vous pouvez fermez cette page ou continuer vos achat.</p>';
                         $message .= '<input type="hidden" name="forced" value="force">'."\n";
+                        $message .= '<input type="hidden" name="name" value="'.$name.'">'."\n";
+                        $message .= '<input type="hidden" name="email" value="'.$email.'">'."\n";
                         $message .= '<button type="submit" class="btn btn-success btn-lg btn-block">Continuer</button>';
                     }
                 }else{
                     $message = $this->getDefaultError($user);
-                    $this->logger->info('['.self::class.']cannot read source datas');
+                    $this->logger->info('['.self::class.'] cannot read source datas');
                 }
             }else{
                 $message = $this->getDefaultError();
-                $this->logger->info('['.self::class.']cannot read user datas');
+                $this->logger->info('['.self::class.'] cannot read user datas');
             }
         }else{
             $message = $this->getDefaultError();
-            $this->logger->info('['.self::class.']required client datas');
+            $this->logger->info('['.self::class.'] required client datas');
         }
         return $this->view->render($response, 'Home/paymess.html.twig',[
             'message' => $message
