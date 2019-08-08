@@ -55,7 +55,7 @@ class StripePaymentController extends \Core\Controller
                     }else{
                         $event = $this->getCurrentEvent();
                         $dt_evt = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', $event->updated_at);
-                        $dt_str = $dt_evt->format('d/m/Y à h:i:s');
+                        $dt_str = $dt_evt->format('l d/m/Y à h:i:s');
                         $message = '<p><span class="glyphicon glyphicon-warning-sign text-danger" aria-hidden="true"></span>';
                         $message = 'Un achat similaire à déjà été effectué ce '.$dt_str.'<br>';
                         $message .= 'Vous pouvez fermez cette page ou continuer vos achat.</p>';
