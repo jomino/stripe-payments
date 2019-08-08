@@ -54,8 +54,8 @@ class StripePaymentController extends \Core\Controller
                         ]);
                     }else{
                         $event = $this->getCurrentEvent();
-                        $dt_evt = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', $event->updated_at);
-                        $dt_str = $dt_evt->format('l d/m/Y à h:i:s');
+                        $dt_evt = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->updated_at);
+                        $dt_str = $dt_evt->format('l d/m/Y à H:i:s');
                         $message = '<p><span class="glyphicon glyphicon-warning-sign text-danger" aria-hidden="true"></span>';
                         $message = 'Un achat similaire à déjà été effectué ce '.$dt_str.'<br>';
                         $message .= 'Vous pouvez fermez cette page ou continuer vos achat.</p>';
@@ -95,7 +95,7 @@ class StripePaymentController extends \Core\Controller
         if($status==\Util\StripeUtility::STATUS_FAILED){
             $message = 'Désolé, votre payement ne nous est pas parvenu.<br>';
         }
-        $event_date = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', $event->updated_at);
+        $event_date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->updated_at);
         $amount = number_format((float) $event->amount/100, 2, ',', ' ');
         $message .= 'Détail de la transaction -----------------------<br>';
         $message .= '<strong>Produit:</strong> '.$event->product.'<br>';
