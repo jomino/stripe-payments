@@ -19,7 +19,8 @@ class PhpMailer
         'Password' => \App\Parameters::EMAIL['password'],
         'SMTPAuth' => true,
         'SMTPSecure' => 'tls',
-        'Port' => 587
+        'Port' => 587,
+        'CharSet' => 'UTF-8'
     ];
    
     public function __construct($options=[])
