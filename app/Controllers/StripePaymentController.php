@@ -53,8 +53,11 @@ class StripePaymentController extends \Core\Controller
                             'redir_url' => $redir_url
                         ]);
                     }else{
+                        $event = $this->getCurrentEvent();
+                        $dt_evt = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', $event->updated_at);
+                        $dt_str = $dt_evt->locale('fr_FR')->isoFormat('dddd').' '.$dt_evt->format('d/m/Y').' à '.$dt_evt->format('h:i:s');
                         $message = '<p><span class="glyphicon glyphicon-warning-sign text-danger" aria-hidden="true"></span>';
-                        $message = 'Un achat similaire à déjà été effectué ce ... <br>';
+                        $message = 'Un achat similaire à déjà été effectué ce '.$dt_str.'<br>';
                         $message .= 'Vous pouvez fermez cette page ou continuer vos achat.</p>';
                         $message .= '<input type="hidden" name="forced" value="force">'."\n";
                         $message .= '<button type="submit" class="btn btn-success btn-lg btn-block">Continuer</button>';
