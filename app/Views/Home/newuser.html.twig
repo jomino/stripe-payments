@@ -32,14 +32,11 @@
                     <h2>Success</h2>
                     <div class="panel panel-success">
                         <div class="panel-body">
-                            Voici l'adresse du lien pour initier toute<br>
-                            transaction de payement depuis le site client.
+                            <p class="text-justify">Voici l'adresse du lien pour initier toute transaction de payement depuis le site client.</p>
                             <blockquote>
                                 <code>{{ generated_link }}</code>
                             </blockquote>
-                            Celui-ci se présente sous la forme:<br>
-                            &lt;a href="https://..."&gt;Acheter&lt;/a&gt;<br>
-                            dont le montant "nnnn" (attr. data-amount) est exprimé en centimes.
+                            <p class="text-justify">Il suffit d'ajouter le prix (exprimé en centime) suivi d'une réference d'article au chemin ci-dessus</p>
                         </div>
                     </div>
                 {% endif %}
