@@ -18,6 +18,11 @@ class Middleware
             'lifetime' => '10 minutes'
         ]));
 
+        $app->add(function($request, $response, $next){
+            \Carbon\Carbon::setLocale('fr');
+            return $next($request, $response);
+        });
+
         $app->add(new \Util\AcceptLanguage($app));
         $app->add(new \App\Middleware\StripeMiddleware($app));
 
