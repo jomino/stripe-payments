@@ -74,15 +74,21 @@ class StripeWebhookController extends \Core\Controller
                         if($event->status==\Util\StripeUtility::STATUS_CHARGEABLE){
                             if($type==\Util\StripeUtility::EVENT_CHARGE_SUCCEEDED){
                                 $event->status = \Util\StripeUtility::STATUS_SUCCEEDED;
+                                $event->save();
+                                $send = $this->sendUserMail($event,$user);
+                                if(is_string($send)){
+                                    $this->logger->info('['.self::class.']',[$send]);
+                                }
                             }
                             if($type==\Util\StripeUtility::EVENT_CHARGE_PENDING){
                                 $event->status = \Util\StripeUtility::STATUS_WAITING;
+                                $event->save();
                             }
                             if($type==\Util\StripeUtility::EVENT_CHARGE_FAILED){
                                 $event->status = \Util\StripeUtility::STATUS_FAILED;
                                 $error = 'Payement rejeté';
+                                $event->save();
                             }
-                            $event->save();
                             $send = $this->sendClientMail($event,$user,$error);
                             if(is_string($send)){
                                 $this->logger->info('['.self::class.']',[$send]);
@@ -158,22 +164,50 @@ class StripeWebhookController extends \Core\Controller
 
         $event_date = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', $event->updated_at);
 
+        $amount = number_format((float) $event->amount/100, 2, ',', ' ');
+        
         $data = [
             'name' => $event->name,
             'product' => $event->product,
             'method' => $event->method,
             'client_name' => $user->name,
             'client_email' => $user->email,
-            'amount' => $event->amount,
+            'amount' => $amount.' &euro;',
             'token' => $event->token,
             'datetime' => $event_date->format('d/m/Y h:i:s'),
             'error' => $error
         ];
         
-        $_content = $this->view->fetch($template,$data);
+        $content = $this->view->fetch($template,$data);
 
         $mailer = new \Util\PhpMailer();
-        return $mailer->send($event->email,$subject,$_content);
+        return $mailer->send($event->email,$subject,$content);
 
+    }
+
+    private function sendUserMail($event,$user)
+    {
+        $template = 'Email/email-pay-recept.html.twig';
+        $subject = 'Un nouveau payement est arrivé';
+
+        $event_date = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', $event->updated_at);
+
+        $amount = number_format((float) $event->amount/100, 2, ',', ' ');
+        
+        $data = [
+            'product' => $event->product,
+            'method' => $event->method,
+            'client_name' => $event->name,
+            'client_email' => $event->email,
+            'amount' => $amount.' &euro;',
+            'token' => $event->token,
+            'datetime' => $event_date->format('d/m/Y h:i:s')
+        ];
+        
+        $content = $this->view->fetch($template,$data);
+
+
+        $mailer = new \Util\PhpMailer();
+        return $mailer->send($user->email,$subject,$content);
     }
 }

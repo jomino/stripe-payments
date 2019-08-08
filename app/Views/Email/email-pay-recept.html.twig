@@ -93,15 +93,15 @@
                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
                     <tr>
                       <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Bonjour {{ name }},</p>
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Votre virement banquaire est en cour de traitement.</p>
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Vous serez averti ultérieurement de tout changement de situation.</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Bonjour,</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Un nouveau payement vous est parvenu.</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Vous en trouverez trace dans votre interface Stripe.</p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">&nbsp;</p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Détail de la transaction -------------------------------------</p>
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><strong>Produit:</strong> {{ product }}<br><strong>Methode de payement:</strong> {{ method }}<br><strong>Date de la transaction:</strong> {{ datetime }}<br><strong>Bénéficiaire:</strong> {{ client_name }}<br><strong>Montant du transfert:</strong> {{ amount|raw }}<br><strong>Numéro de transaction:</strong> {{ token }}</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><strong>Produit:</strong> {{ product }}<br><strong>Methode de payement:</strong> {{ method }}<br><strong>Date de la transaction:</strong> {{ datetime }}<br><strong>Bénéficiaire:</strong> {{ client_name }}<br><strong>Montant du transfert:</strong> {{ amount }}<br><strong>Numéro de transaction:</strong> {{ token }}</p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">--------------------------------------------------------------</p>
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Pour tout complément d'information veuillez contacter <a href="mailto:{{ client_email }}" style="text-decoration: underline; font-size: 14px; text-align: center;">{{ client_email }}</a></p>
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Cordialement, {{ client_name }}</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Pour tout complément d'information veuillez contacter <a href="mailto:info@ipefix.com" style="text-decoration: underline; font-size: 14px; text-align: center;">info@ipefix.com</a></p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Cordialement, l'équipe d'Ipefix.</p>
                       </td>
                     </tr>
                   </table>
