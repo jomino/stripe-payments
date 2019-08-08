@@ -160,6 +160,7 @@ class StripeWebhookController extends \Core\Controller
 
         $data = [
             'name' => $event->name,
+            'product' => $event->product,
             'method' => $event->method,
             'client_name' => $user->name,
             'client_email' => $user->email,
