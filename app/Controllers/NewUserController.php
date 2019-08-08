@@ -21,7 +21,7 @@ class NewUserController extends \Core\Controller
         ];
 
         if(false === $request->getAttribute('csrf_status')){
-            return $response->withStatus(498);
+            return $response->withStatus(403);
         }elseif(false === $request->getAttribute(\App\Parameters::SECURITY['status'])){
             return $response->withRedirect($this->router->pathFor('home'));
         }else{

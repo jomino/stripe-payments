@@ -24,7 +24,7 @@ class RegisterUserController extends \Core\Controller
                 ]);
             }else{
                 if(false === $request->getAttribute('csrf_status')){
-                    return $response->withStatus(498);
+                    return $response->withStatus(403);
                 }else{
                     $datas = [];
                     $route_name = 'webhook';

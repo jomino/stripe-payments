@@ -24,7 +24,7 @@ class StripePaymentController extends \Core\Controller
     public function identify($request, $response, $args)
     {
         if(false === $request->getAttribute('csrf_status')){
-            return $response->withStatus(498);
+            return $response->withStatus(403);
         }
         $payment_type = $request->getParsedBodyParam('payment-type');
         $this->setSessionVar(\Util\StripeUtility::SESSION_METHOD,$payment_type);
@@ -34,7 +34,7 @@ class StripePaymentController extends \Core\Controller
     public function source($request, $response, $args)
     {
         if(false === $request->getAttribute('csrf_status')){
-            return $response->withStatus(498);
+            return $response->withStatus(403);
         }
         $name = $request->getParsedBodyParam('name');
         $email = $request->getParsedBodyParam('email');
