@@ -97,13 +97,16 @@ class StripePaymentController extends \Core\Controller
         $message .= '---------------------------------<br>';
         return $this->view->render($response, 'Home/payresult.html.twig',[
             'message' => $message,
-            'status' => $event->status
+            'status' => $event->status,
+            'check_url' => $this->router->pathFor( 'payment_check', [
+                'token' => $event->token
+            ])
         ]);
     }
 
     public function check($request, $response, $args)
     {
-        $event = $this->getCurrentEvent();
+        $event = $this->getCurrentEvent($args['token']);
         $status = $event->status;
         $title = '';
         if($status==\Util\StripeUtility::STATUS_SUCCEEDED){
@@ -153,16 +156,18 @@ class StripePaymentController extends \Core\Controller
         }
     }
 
-    private function getCurrentEvent()
+    private function getCurrentEvent($token='')
     {
-        if($this->session->exists(\Util\StripeUtility::SESSION_TOKEN)){
+        if(!empty($token)){
+            $s_token = $token;
+        }elseif($this->session->exists(\Util\StripeUtility::SESSION_TOKEN)){
             $s_token = $this->session->get(\Util\StripeUtility::SESSION_TOKEN);
-            try{
-                $event = \App\Models\Event::where('token',$s_token)->firstOrFail();
-                return $event;
-            }catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-                return null;
-            }
+        }
+        try{
+            $event = \App\Models\Event::where('token',$s_token)->firstOrFail();
+            return $event;
+        }catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return null;
         }
         return null;
     }
