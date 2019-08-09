@@ -87,24 +87,24 @@ class StripePaymentController extends \Core\Controller
         $user = $this->getCurrentUser();
         $status = $event->status;
         if($status==\Util\StripeUtility::STATUS_SUCCEEDED){
-            $title = 'Merci, votre payement nous est bien arrivé.<br>';
+            $title = 'Merci, votre payement nous est bien arrivé.';
         }
         if($status==\Util\StripeUtility::STATUS_WAITING){
-            $title = 'Merci, votre payement est en cour de traitement.<br>';
+            $title = 'Merci, votre payement est en cour de traitement.';
         }
         if($status==\Util\StripeUtility::STATUS_FAILED){
-            $title = 'Désolé, votre payement ne nous est pas parvenu.<br>';
+            $title = 'Désolé, votre payement ne nous est pas parvenu.';
         }
         $event_date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->updated_at);
         $amount = number_format((float) $event->amount/100, 2, ',', ' ');
-        $message = 'Détail de la transaction -----------------------<br>';
+        $message = 'Détail de la transaction ----------------<br>';
         $message .= '<strong>Produit:</strong> '.$event->product.'<br>';
         $message .= '<strong>Methode de payement:</strong> '.$event->method.'<br>';
         $message .= '<strong>Date de la transaction:</strong> '.$event_date->format('d/m/Y h:i:s').'<br>';
         $message .= '<strong>Bénéficiaire:</strong> '.$user->name.'<br>';
         $message .= '<strong>Montant du transfert:</strong> '.$amount.'<br>';
         $message .= '<strong>Numéro de transaction:</strong> '.$event->token.'<br>';
-        $message .= '-------------------------------------------------<br>';
+        $message .= '-----------------------------------------<br>';
         return $this->view->render($response, 'Home/payresult.html.twig',[
             'message' => $message,
             'status' => $status,
