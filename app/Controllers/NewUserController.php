@@ -39,14 +39,15 @@ class NewUserController extends \Core\Controller
                 if($this->sendUserMail($register_link,$user)){
                     $datas['generated_link'] = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor('payment_start',[
                         'token' => $user->uuid,
-                        'amount' => '',
-                        'product' => ''
+                        'amount' => '12300',
+                        'product' => 'my-product-to-sell'
                     ]);
                 }else{
-                    $datas['error'] = $this->getErrors();
                     $user->delete();
                 }
-            }else{
+            }
+            
+            if(sizeof($this->errors)>0){
                 $datas['error'] = $this->getErrors();
             }
 
@@ -70,7 +71,7 @@ class NewUserController extends \Core\Controller
                 return null;
             }
         }else{
-            $this->errors[] = 'Cette agence est déjà inscrite';
+            $this->errors[] = 'Ce client est déjà inscrit';
             return null;
         }
     }
@@ -78,11 +79,12 @@ class NewUserController extends \Core\Controller
     private function validateUser($agence)
     {
         try{
-            $user = User::where('name',$agence)->firstOrFail();
-            return false;
+            $count = User::where('name',$agence)->count();
+            return $count==0;
         }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
-            return true;
+            return false;
         }
+
     }
 
     private function sendUserMail($link,$user)
