@@ -35,12 +35,24 @@ class Routes
         
         $app->get('/result/{token:[0-9a-zA-Z-]*}', \App\Controllers\StripePaymentController::class.':result')->setName('payment_result');
         
-        // Infos/Debug
+        // Infos
         $app->get('/infos', function($request, $response, $args){
-            ob_start();
+            /* ob_start();
             phpinfo();
             $content = ob_get_contents();
-            ob_end_flush();
+            ob_end_flush(); */
+            return $response->withJson([
+                'status' => 'succeeded'
+            ]);
+        });
+        
+        // Debug
+        $app->get('/debug', function($request, $response, $args){
+            $view = $this->get('view');
+            return $view->render($response,'Home/test.html.twig',[
+                'message' => 'message come here',
+                'check_url' => 'https://stripe-payments.bleu-azur.be/infos'
+            ]);
         });
 
     }

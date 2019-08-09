@@ -89,6 +89,9 @@ body{
     font-weight: 600;
     font-size: 1.5em;
 }
+.signup-form div.check-loader {  
+    min-height: 30px;
+}
 
 .bs-wizard {margin-top: 40px;}
 .bs-wizard {border-bottom: solid 1px #e0e0e0; padding: 0 0 10px 0;}

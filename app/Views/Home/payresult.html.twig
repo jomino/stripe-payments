@@ -38,11 +38,12 @@
         </div>
         <div class="signup-form col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
             <form action="#" name="pay-result-form">
+                <input type="hidden" name="check-url" value="{{- check_url -}}">
                 <div class="well">
-                        <span class="glyphicon glyphicon-{%- if status=='failed' -%}remove-circle text-danger{%- else -%}ok-circle text-success{%- endif -%}" aria-hidden="true">
-                        </span>
-                        {{ title }}<br>
-                        {{ message|raw }}
+                    <div class="check-loader"></div>
+                    <p id="title-checked" class="hidden"><span class="glyphicon glyphicon-{%- if status=='failed' -%}remove-circle text-danger{%- else -%}ok-circle text-success{%- endif -%}" aria-hidden="true"></span>
+                    <span id="text-checked"></span></p><br>
+                    {{ message|raw }}
                 </div>
             </form>
         </div>

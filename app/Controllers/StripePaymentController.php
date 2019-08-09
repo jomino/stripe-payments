@@ -97,18 +97,26 @@ class StripePaymentController extends \Core\Controller
         }
         $event_date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->updated_at);
         $amount = number_format((float) $event->amount/100, 2, ',', ' ');
-        $message = 'Détail de la transaction ----------------<br>';
+        $message = 'Détail de la transaction --------<br>';
         $message .= '<strong>Produit:</strong> '.$event->product.'<br>';
-        $message .= '<strong>Methode de payement:</strong> '.$event->method.'<br>';
-        $message .= '<strong>Date de la transaction:</strong> '.$event_date->format('d/m/Y h:i:s').'<br>';
+        $message .= '<strong>Methode:</strong> '.$event->method.'<br>';
+        $message .= '<strong>Date:</strong> '.$event_date->format('d/m/Y h:i:s').'<br>';
         $message .= '<strong>Bénéficiaire:</strong> '.$user->name.'<br>';
-        $message .= '<strong>Montant du transfert:</strong> '.$amount.'<br>';
-        $message .= '<strong>Numéro de transaction:</strong> '.$event->token.'<br>';
-        $message .= '-----------------------------------------<br>';
+        $message .= '<strong>Montant:</strong> '.$amount.'<br>';
+        $message .= '<strong>ID transaction:</strong> '.$event->token.'<br>';
+        $message .= '----------------------------------<br>';
         return $this->view->render($response, 'Home/payresult.html.twig',[
             'message' => $message,
             'status' => $status,
             'title' => $title
+        ]);
+    }
+
+    public function check($request, $response, $args)
+    {
+        $event = $this->getCurrentEvent();
+        return $response->withJson([
+            'status' => $event->status
         ]);
     }
 
