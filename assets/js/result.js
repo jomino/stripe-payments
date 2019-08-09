@@ -16,6 +16,8 @@ $(document).ready(function(){
             if(response.ok) {
                 response.json().then(function(obj){
                     callback(obj.status);
+                }).catch(function(e){
+                    log(e);
                 });
             }
         }).catch(function(e){
