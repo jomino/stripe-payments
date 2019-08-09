@@ -14,7 +14,7 @@ class Middleware
     {
         $app->add(new \Slim\Middleware\Session([
             'name' => 'application_session',
-            'autorefresh' => true,
+            'autorefresh' => false,
             'lifetime' => '10 minutes'
         ]));
 
