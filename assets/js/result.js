@@ -14,7 +14,9 @@ $(document).ready(function(){
             credentials: 'same-origin'
         }).then(function(response){
             if(response.ok) {
-                callback(JSON.parse(response.text()));
+                response.json().then(function(obj){
+                    callback(obj.status);
+                });
             }
         }).catch(function(e){
             log(e);
