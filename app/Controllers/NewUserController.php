@@ -38,7 +38,9 @@ class NewUserController extends \Core\Controller
                 ]);
                 if($this->sendUserMail($register_link,$user)){
                     $datas['generated_link'] = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor('payment_start',[
-                        'token' => $user->uuid
+                        'token' => $user->uuid,
+                        'amount' => '',
+                        'product' => ''
                     ]);
                 }else{
                     $datas['error'] = $this->getErrors();
