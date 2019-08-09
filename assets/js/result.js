@@ -27,6 +27,7 @@ $(document).ready(function(){
             $text_el.text(response);
             $hiden_el.toggleClass('hidden visible');
             overlayLoader('hide',{});
+            $loading_el.remove();
         }else{
             start();
         }
