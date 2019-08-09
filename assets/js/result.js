@@ -26,9 +26,8 @@ $(document).ready(function(){
     };
 
     var onChecked = function(response){
-        var status = response.status;
         overlayLoader('hide',{});
-        log('STATUS:'+status);
+        log('STATUS:'+response);
     };
 
     var overlayLoader = function(show,options){
@@ -43,7 +42,7 @@ $(document).ready(function(){
         if(check_url){
             checkUrl(check_url,onChecked);
         }
-    },1000);
+    },3000);
 
     var log = function(content){
         console.log(content);
