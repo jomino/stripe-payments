@@ -116,7 +116,7 @@ class RegisterUserController extends \Core\Controller
     {
         $error_str = '';
         $errors = $this->errors;
-        array_map(function($error) use($error_str){
+        array_map(function($error) use(&$error_str){
             $error_str .= $error."\n";
         },$errors);
         return $error_str;
