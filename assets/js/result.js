@@ -1,7 +1,7 @@
 $(document).ready(function(){
     
     var check_url = $('input[name="check-url"]').val();
-    var $loading_el = $('.signup-form');
+    var $loading_el = $('.check-loader');
     var $hiden_el = $('#title-checked');
     var $text_el = $('#text-checked');
 
