@@ -174,7 +174,7 @@ class StripeWebhookController extends \Core\Controller
             'client_email' => $user->email,
             'amount' => $amount.' &euro;',
             'token' => $event->token,
-            'datetime' => $event_date->format('d/m/Y h:i:s'),
+            'datetime' => $event_date->format('d/m/Y H:i:s'),
             'error' => $error
         ];
         
@@ -201,7 +201,7 @@ class StripeWebhookController extends \Core\Controller
             'client_email' => $event->email,
             'amount' => $amount.' &euro;',
             'token' => $event->token,
-            'datetime' => $event_date->format('d/m/Y h:i:s')
+            'datetime' => $event_date->format('d/m/Y H:i:s')
         ];
         
         $content = $this->view->fetch($template,$data);
