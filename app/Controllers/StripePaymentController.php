@@ -56,8 +56,8 @@ class StripePaymentController extends \Core\Controller
                         $event = $this->getCurrentEvent();
                         $dt_evt = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->updated_at);
                         $dt_str = $dt_evt->format('l d/m/Y à H:i:s');
-                        $message = '<p><span class="glyphicon glyphicon-warning-sign text-danger" aria-hidden="true"></span>';
-                        $message = 'Un achat similaire à déjà été effectué ce '.$dt_str.'<br>';
+                        $message = '<p class="test-justify"><span class="glyphicon glyphicon-warning-sign text-danger" aria-hidden="true"></span>';
+                        $message .= 'Un achat similaire à déjà été effectué ce '.$dt_str.'<br>';
                         $message .= 'Vous pouvez fermez cette page ou continuer vos achat.</p>';
                         $message .= '<input type="hidden" name="forced" value="force">'."\n";
                         $message .= '<input type="hidden" name="name" value="'.$name.'">'."\n";
@@ -87,17 +87,17 @@ class StripePaymentController extends \Core\Controller
         $user = $this->getCurrentUser();
         $status = $event->status;
         if($status==\Util\StripeUtility::STATUS_SUCCEEDED){
-            $message = 'Merci, votre payement nous est bien arrivé.<br>';
+            $title = 'Merci, votre payement nous est bien arrivé.<br>';
         }
         if($status==\Util\StripeUtility::STATUS_WAITING){
-            $message = 'Merci, votre payement est en cour de traitement.<br>';
+            $title = 'Merci, votre payement est en cour de traitement.<br>';
         }
         if($status==\Util\StripeUtility::STATUS_FAILED){
-            $message = 'Désolé, votre payement ne nous est pas parvenu.<br>';
+            $title = 'Désolé, votre payement ne nous est pas parvenu.<br>';
         }
         $event_date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->updated_at);
         $amount = number_format((float) $event->amount/100, 2, ',', ' ');
-        $message .= 'Détail de la transaction -----------------------<br>';
+        $message = 'Détail de la transaction -----------------------<br>';
         $message .= '<strong>Produit:</strong> '.$event->product.'<br>';
         $message .= '<strong>Methode de payement:</strong> '.$event->method.'<br>';
         $message .= '<strong>Date de la transaction:</strong> '.$event_date->format('d/m/Y h:i:s').'<br>';
@@ -107,7 +107,8 @@ class StripePaymentController extends \Core\Controller
         $message .= '-------------------------------------------------<br>';
         return $this->view->render($response, 'Home/payresult.html.twig',[
             'message' => $message,
-            'status' => $status
+            'status' => $status,
+            'title' => $title
         ]);
     }
 

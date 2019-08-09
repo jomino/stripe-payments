@@ -34,6 +34,8 @@ class StripeUtility
     const EVENT_SOURCE_CHARGEABLE = 'source.chargeable';
     const EVENT_SOURCE_CANCELED = 'source.canceled';
     const EVENT_SOURCE_FAILED = 'source.failed';
+    
+    const WEBHOOK_STATUS_ENABLED = 'enabled';
 
     public static function createWebhook($api_key,$wh_url)
     {

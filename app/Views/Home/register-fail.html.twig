@@ -1,6 +1,39 @@
-<!-- todo page design -->
-<h1>Error !!</h1><br>
-<p>New user not registered</p>
-<p>Agence: {{ agence }}</p>
-<p>E-mail: {{ email }}</p>
-<p>Token: {{ token }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<base href="/">
+<title>Enregistrer vos clefs Stripe</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="css/application.css">
+<script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="row">
+        <div class="header text-center col-xs-4 col-xs-offset-4">
+            <h1><strong>Stripe Payment Register</strong></h1>
+        </div>
+        <div class="signup-form col-xs-4 col-xs-offset-4">
+            <form action="#">
+                <h2>Erreur</h2>
+				<div class="panel panel-default">
+					<div class="panel-body text-justify">
+                        {% if error %}
+                            {{ error }}<br><br>
+                        {% else %}
+                            Une erreur inattendue est survenu.<br><br>
+                        {% endif %}
+                        Vous pouvez contacter le support technique à l'adresse <a href="mailto:info@ipefix.com">info@ipefix.com</a> en mentionnent l'erreur.<br>
+                        Cordialement, l'équipe d'Ipefix.
+					</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>    
+

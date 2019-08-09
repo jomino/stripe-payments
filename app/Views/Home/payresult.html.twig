@@ -38,8 +38,10 @@
         </div>
         <div class="signup-form col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
             <form action="#" name="pay-result-form">
-                <div class="well">
-                        <span class="glyphicon glyphicon-{%- if status=='failed' -%}remove-circle text-danger{%- else -%}ok-circle text-success{%- endif -%}" aria-hidden="true"></span>
+                <div class="well text-justify">
+                        <span class="glyphicon glyphicon-{%- if status=='failed' -%}remove-circle text-danger{%- else -%}ok-circle text-success{%- endif -%}" aria-hidden="true">
+                            {{ title }}
+                        </span><br>
                         {{ message|raw }}
                 </div>
             </form>
