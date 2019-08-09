@@ -83,7 +83,7 @@ class StripePaymentController extends \Core\Controller
 
     public function result($request, $response, $args)
     {
-        $event = $this->getCurrentEvent();
+        $event = $this->getCurrentEvent($args['token']);
         $user = $this->getCurrentUser();
         $event_date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->updated_at);
         $amount = number_format((float) $event->amount/100, 2, ',', ' ');
