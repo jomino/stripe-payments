@@ -38,12 +38,14 @@ $(document).ready(function(){
         }
     };
 
+    var launch = function(){
+        if(check_url){
+            checkUrl(check_url,onChecked);
+        }
+    };
+
     var start = function(){
-        window.setTimeout(function(){
-            if(check_url){
-                checkUrl(check_url,onChecked);
-            }
-        },1000);
+        window.setTimeout(launch,1000);
     };
 
     overlayLoader('show',defaultLoaderOptions);
