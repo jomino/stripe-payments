@@ -90,7 +90,7 @@ class StripePaymentController extends \Core\Controller
         $message = 'Détail de la transaction --------<br>';
         $message .= '<strong>Produit:</strong> '.$event->product.'<br>';
         $message .= '<strong>Methode:</strong> '.$event->method.'<br>';
-        $message .= '<strong>Date:</strong> '.$event_date->format('d/m/Y h:i:s').'<br>';
+        $message .= '<strong>Date:</strong> '.$event_date->format('d/m/Y H:i:s').'<br>';
         $message .= '<strong>Bénéficiaire:</strong> '.$user->name.'<br>';
         $message .= '<strong>Montant:</strong> '.$amount.'<br>';
         $message .= '<strong>ID transaction:</strong> '.$event->token.'<br>';
