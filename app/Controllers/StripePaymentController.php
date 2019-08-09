@@ -89,7 +89,7 @@ class StripePaymentController extends \Core\Controller
         $amount = number_format((float) $event->amount/100, 2, ',', ' ');
         $message = 'Détail de la transaction --------<br>';
         $message .= '<strong>Produit:</strong> '.$event->product.'<br>';
-        $message .= '<strong>Methode:</strong> '.$event->method.'<br>';
+        $message .= '<strong>Methode:</strong> '.ucfirst($event->method).'<br>';
         $message .= '<strong>Date:</strong> '.$event_date->format('d/m/Y H:i:s').'<br>';
         $message .= '<strong>Bénéficiaire:</strong> '.$user->name.'<br>';
         $message .= '<strong>Montant:</strong> '.$amount.' &euro;<br>';

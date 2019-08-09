@@ -169,7 +169,7 @@ class StripeWebhookController extends \Core\Controller
         $data = [
             'name' => $event->name,
             'product' => $event->product,
-            'method' => $event->method,
+            'method' => ucfirst($event->method),
             'client_name' => $user->name,
             'client_email' => $user->email,
             'amount' => $amount.' &euro;',
@@ -196,7 +196,7 @@ class StripeWebhookController extends \Core\Controller
         
         $data = [
             'product' => $event->product,
-            'method' => $event->method,
+            'method' => ucfirst($event->method),
             'client_name' => $event->name,
             'client_email' => $event->email,
             'amount' => $amount.' &euro;',
