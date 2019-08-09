@@ -92,7 +92,7 @@ class StripePaymentController extends \Core\Controller
         $message .= '<strong>Methode:</strong> '.$event->method.'<br>';
         $message .= '<strong>Date:</strong> '.$event_date->format('d/m/Y H:i:s').'<br>';
         $message .= '<strong>Bénéficiaire:</strong> '.$user->name.'<br>';
-        $message .= '<strong>Montant:</strong> '.$amount.'<br>';
+        $message .= '<strong>Montant:</strong> '.$amount.' &euro;<br>';
         $message .= '<strong>ID transaction:</strong> '.$event->token.'<br>';
         $message .= '---------------------------------<br>';
         return $this->view->render($response, 'Home/payresult.html.twig',[
