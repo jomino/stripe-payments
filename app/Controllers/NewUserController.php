@@ -46,7 +46,7 @@ class NewUserController extends \Core\Controller
                     $user->delete();
                 }
             }
-            
+
             if(sizeof($this->errors)>0){
                 $datas['error'] = $this->getErrors();
             }
@@ -114,7 +114,7 @@ class NewUserController extends \Core\Controller
     {
         $error_str = '';
         $errors = $this->errors;
-        array_map(function($error) use($error_str){
+        array_map(function($error) use(&$error_str){
             $error_str .= $error."\n";
         },$errors);
         return $error_str;
