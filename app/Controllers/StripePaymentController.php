@@ -85,16 +85,6 @@ class StripePaymentController extends \Core\Controller
     {
         $event = $this->getCurrentEvent();
         $user = $this->getCurrentUser();
-        $status = $event->status;
-        if($status==\Util\StripeUtility::STATUS_SUCCEEDED){
-            $title = 'Merci, votre payement nous est bien arrivé.';
-        }
-        if($status==\Util\StripeUtility::STATUS_WAITING){
-            $title = 'Merci, votre payement est en cour de traitement.';
-        }
-        if($status==\Util\StripeUtility::STATUS_FAILED){
-            $title = 'Désolé, votre payement ne nous est pas parvenu.';
-        }
         $event_date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->updated_at);
         $amount = number_format((float) $event->amount/100, 2, ',', ' ');
         $message = 'Détail de la transaction --------<br>';
@@ -107,16 +97,26 @@ class StripePaymentController extends \Core\Controller
         $message .= '----------------------------------<br>';
         return $this->view->render($response, 'Home/payresult.html.twig',[
             'message' => $message,
-            'status' => $status,
-            'title' => $title
+            'status' => $event->status
         ]);
     }
 
     public function check($request, $response, $args)
     {
         $event = $this->getCurrentEvent();
+        $status = $event->status;
+        $title = '';
+        if($status==\Util\StripeUtility::STATUS_SUCCEEDED){
+            $title = 'Merci, votre payement nous est bien arrivé.';
+        }
+        if($status==\Util\StripeUtility::STATUS_WAITING){
+            $title = 'Merci, votre payement est en cour de traitement.';
+        }
+        if($status==\Util\StripeUtility::STATUS_FAILED){
+            $title = 'Désolé, votre payement ne nous est pas parvenu.';
+        }
         return $response->withJson([
-            'status' => $event->status
+            'status' => $title
         ]);
     }
 

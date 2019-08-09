@@ -41,18 +41,14 @@ class Routes
             phpinfo();
             $content = ob_get_contents();
             ob_end_flush(); */
-            return $response->withJson([
-                'status' => 'succeeded'
-            ]);
+            $notFoundHandler = $this->notFoundHandler;
+            return $notFoundHandler($request, $response);
         });
         
         // Debug
         $app->get('/debug', function($request, $response, $args){
-            $view = $this->get('view');
-            return $view->render($response,'Home/test.html.twig',[
-                'message' => 'message come here',
-                'check_url' => 'https://stripe-payments.bleu-azur.be/infos'
-            ]);
+            $notFoundHandler = $this->notFoundHandler;
+            return $notFoundHandler($request, $response);
         });
 
     }

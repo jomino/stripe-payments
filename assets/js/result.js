@@ -17,18 +17,19 @@ $(document).ready(function(){
             if(response.ok) {
                 response.json().then(function(obj){
                     callback(obj.status);
-                }).catch(function(e){
-                    log(e);
                 });
             }
-        }).catch(function(e){
-            log(e);
         });
     };
 
     var onChecked = function(response){
-        overlayLoader('hide',{});
-        log('STATUS:'+response);
+        if(response!=''){
+            $text_el.text(response);
+            $hiden_el.toggleClass('hidden visible');
+            overlayLoader('hide',{});
+        }else{
+            start();
+        }
     };
 
     var overlayLoader = function(show,options){
@@ -37,16 +38,15 @@ $(document).ready(function(){
         }
     };
 
-    overlayLoader('show',defaultLoaderOptions);
-
-    window.setTimeout(function(){
-        if(check_url){
-            checkUrl(check_url,onChecked);
-        }
-    },3000);
-
-    var log = function(content){
-        console.log(content);
+    var start = function(){
+        window.setTimeout(function(){
+            if(check_url){
+                checkUrl(check_url,onChecked);
+            }
+        },1000);
     };
+
+    overlayLoader('show',defaultLoaderOptions);
+    start();
 
 });
