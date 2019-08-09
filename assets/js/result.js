@@ -6,7 +6,8 @@ $(document).ready(function(){
     var $text_el = $('#text-checked');
 
     var defaultLoaderOptions = {
-        background  : 'rgba(99, 115, 138, 0.5)'
+        background  : 'rgba(99, 115, 138, 0.5)',
+        minSize: false
     };
 
     var checkUrl = function(url,callback){
