@@ -187,7 +187,7 @@ class StripePaymentController extends \Core\Controller
         $route_name = 'payment_result';
         return $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor($route_name,[
             'token' => $uuid
-        ]);
+        ]).'?l='.$this->language;
     }
 
     private function getSourceOptions($bank,$user)
