@@ -1,9 +1,8 @@
 $(document).ready(function(){
     
     var check_url = $('input[name="check-url"]').val();
-    var $loading_el = $('.check-loader');
-    var $hiden_el = $('#title-checked');
-    var $text_el = $('#text-checked');
+    var $loading_el = $('.loader-container');
+    var $hiden_el = $('.result-text');
 
     var defaultLoaderOptions = {
         background : false,
@@ -24,8 +23,7 @@ $(document).ready(function(){
 
     var onChecked = function(response){
         if(response!=''){
-            $text_el.text(response);
-            $hiden_el.toggleClass('hidden visible');
+            $hiden_el.toggleClass('hidden visible').text(response);
             overlayLoader('hide',{});
             $loading_el.remove();
         }else{

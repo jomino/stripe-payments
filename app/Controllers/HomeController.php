@@ -10,9 +10,9 @@ class HomeController extends \Core\Controller
         $pass_phrase = \App\Parameters::SECURITY['login'].'-'.\App\Parameters::SECURITY['secret'];
         if($cookie!=hash('sha256', $pass_phrase)){
             if($cookie!='none'){ $response = \Dflydev\FigCookies\FigResponseCookies::remove($response, \App\Parameters::SECURITY['cookie']); }
+            return $this->view->render($response, 'Home/login.html.twig');
         }else{
             return $response->withRedirect($this->router->pathFor('adduser'), 301);
         }
-        return $this->view->render($response, 'Home/index.html.twig');
     }
 }

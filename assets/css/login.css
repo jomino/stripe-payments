@@ -1,0 +1,58 @@
+.main .border-right {
+    padding-right: 0px !important;
+    min-height: 180px;
+    border-right: 1px solid;
+    border-right-color: #3B4856;
+}
+.main .content-left {
+    position: relative;
+    margin-right: 12px;
+    text-align: right;
+    max-width: 100%;
+}
+.main .content-left p {
+    margin-bottom: 5px;
+}
+.main .content-left h2,
+.main .content-left h3,
+.main .content-left h4 {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+.main .content-left .form-group {
+    float: right;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    min-width: 270px;
+}
+.main .content-left .form-group button {
+    color: #3B4856;
+    margin-top: 10px;
+    font-family: Nonito Sans Bold;
+    font-weight: bold;
+    outline: none !important;
+}
+.main .content-left .form-group button.btn-default:hover {
+    color: #006699 !important;
+}
+.main .content-left .form-group input[type="email"] {
+    border-color: #3B4856;
+}
+.main .content-left .form-group input[type="email"]:focus {
+    border-color: #3B4856;
+    outline: 0 none;
+    box-shadow: 0;
+}
+.main .border-left {
+    padding-left: 0px !important;
+    min-height: 180px;
+}
+.main .content-right {
+    margin-left: 12px;
+    margin-bottom: 0;
+    max-width: 100%;
+}
+.main .content-right p {
+    text-align: justify;
+    max-width: 370px;
+}

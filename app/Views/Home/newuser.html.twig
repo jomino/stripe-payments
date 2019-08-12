@@ -5,54 +5,82 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <base href="/">
-<title>Enregistrer vos clefs Stripe</title>
+<title>Stripe Payment Admin</title>
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/application.css">
+<link rel="stylesheet" href="css/newuser.css">
 <script src="js/jquery-1.12.4.min.js"></script>
-<script src="js/bootstrap.min.js"></script> 
+<script src="js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="row">
-        <div class="header text-center col-xs-4 col-xs-offset-4">
-            <h1><strong>Stripe Payment Admin</strong></h1>
-        </div>
-        <div class="signup-form col-xs-4 col-xs-offset-4">
-            <form action="{{ path_for('adduser') }}" method="get">
-                {% if error %}
-                    <h2>Erreur</h2>
-                    <div class="panel panel-danger">
-                        <div class="panel-body">
-                            <blockquote>
-                                <p class="text-justify text-danger small">{{ error|raw }}</p>
-                            </blockquote>
-                        </div>
-                    </div>
-                {% else %}
-                    <h2>Success</h2>
-                    <div class="panel panel-success">
-                        <div class="panel-body">
-                            <p class="text-justify">Voici l'adresse du lien pour initier toute transaction de payement depuis le site client.</p>
-                            <blockquote>
-                                <code>{{ generated_link }}</code>
-                            </blockquote>
-                            <p class="text-justify">Il suffit d'ajouter au chemin ci-dessus le prix (exprimé en centime) suivi d'une réference d'article, expl. https://.../2500/mon-premier-article. Il s'agira alors d'un produit à 25,00 &euro; qui aura la référence "mon-premier-article" lors des envois du mail justificatif au client et à l'acheteur.</p>
-                            <p class="text-justify">Vous pouvez maintenant ajouter un nouvel utilisateur ou quitter la page.</p>
-                        </div>
-                    </div>
-                {% endif %}
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success btn-lg btn-block">
-                    {% if error %}
-                        Retour
-                    {% else %}
-                        Ajouter un nouvel utilisateur
-                    {% endif %}
-                    </button>
+    <div class="container main">
+        <div class="row header">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="text-center">
+                    <h1 class="boldi light-blue">Ipefix Payment Solution</h1>
                 </div>
-            </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 border-right">
+                <div class="pull-right content-left">
+                    <h2 class="dark-blue boldi">Ajouter un utilisateur</h2>
+                    <h4 class="result{%- if error %} mid-red{%- else %} mid-green{%- endif -%}">
+                        {% if error -%}
+                            Une erreur est survenue  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                        {% else -%}
+                            Utilisateur ajouter  <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+                        {%- endif -%}
+                    </h4>
+                    <p>
+                        {%- if error -%}
+                            Vous trouverez le détail de l'erreur sur la partie droite de la page.
+                        {%- else -%}
+                            Voici l'adresse de base du lien pour initier toute transaction de payement depuis le site client.
+                        {%- endif -%}
+                    </p>
+                    <div class="input-group generated-link">
+                        <input type="text" class="form-control" name="generated-link" value="{%- if !error -%}{{ generated_link }}{%- endif -%}"{%- if error %} disabled{%- endif -%}>
+                        <div class="input-group-addon{%- if !error %} clickable{%- endif -%}">
+                            <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
+                        </div>
+                    </div>
+                    <form action="{{ path_for('adduser') }}" method="get">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default btn-sm btn-block bold">
+                                {%- if error -%}
+                                    Retour
+                                {%- else -%}
+                                    Continuer
+                                {%- endif -%}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 border-left">
+                <div class="pull-left content-right">
+                    <p>
+                        {%- if error -%}
+                            <strong><u>Détail de l'erreur:</u></strong><br>
+                            <code class="code">{{ error|raw }}</code>
+                        {%- else -%}
+                            Ce dernier est à insérer dans une balise &lt;a href="..."&gt;.
+                            Il faut le compléter avec le prix exprimé en centime d'euro et la reférence du produit,
+                            le tout séparer par des slash ("/") de sorte à en faire un lien valide. 
+                            Expl: <code class="code">https://adresse_de_base/12300/mon-produit-num-123</code><br>
+                            Le prix doit forcement être un nombre (pas de lettre ajoutée)
+                            et la référence du produit ne peut contenir que des caractères alpha-numérique (pas de caractères accentués),
+                            seule le tiret ("-") et le trait de soulignement ("_") sont tolérés.
+                        {%- endif -%}
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 col-md-offset-4">
+                <div class="text-center copyr">&copy; Ipefix 2019</div>
+            </div>
         </div>
     </div>
 </body>
-</html>    
-
+</html>

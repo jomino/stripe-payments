@@ -1,10 +1,10 @@
 $(document).ready(function(){
     
     var redir_url = $('input[name="redir-url"]').val();
-    var $loading_el = $('.signup-form');
+    var $loading_el = $('.loader-container');
 
     var defaultLoaderOptions = {
-        background  : 'rgba(99, 115, 138, 0.5)'
+        background  : 'rgba(255, 255, 255, 0)'
     };
 
     var redirectTo = function(url){
@@ -23,7 +23,7 @@ $(document).ready(function(){
         if(redir_url){
             redirectTo(redir_url);
         }else{
-            overlayLoader('text','Opération impossible ...');
+            overlayLoader('text','...');
         }
     },3000);
 

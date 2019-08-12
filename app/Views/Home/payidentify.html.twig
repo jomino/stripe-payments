@@ -5,51 +5,59 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <base href="/">
-<title>Welcome</title>
+<title>Ipefix Payment Solution</title>
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/application.css">
+<link rel="stylesheet" href="css/payidentify.css">
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="row bs-wizard" style="border-bottom:0;">
-            <div id="step-1" class="col-xs-3 bs-wizard-step complete">
-                <div class="text-center bs-wizard-stepnum">Solution</div>
-                <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot step-btn" data-step="0"></a>
-            </div>
-            <div id="step-2" class="col-xs-3 bs-wizard-step active">
-                <div class="text-center bs-wizard-stepnum">Identifiez vous</div>
-                <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot step-btn" data-step="1"></a>
-            </div>
-            <div id="step-3" class="col-xs-3 bs-wizard-step disabled">
-                <div class="text-center bs-wizard-stepnum">Payement</div>
-                <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot step-btn" data-step="2"></a>
-            </div>
-            <div id="step-4" class="col-xs-3 bs-wizard-step disabled">
-                <div class="text-center bs-wizard-stepnum">Finalisation</div>
-                <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot step-btn" data-step="3"></a>
+    <div class="container main">
+        <div class="row header">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="text-center">
+                    <h1 class="boldi light-blue">Ipefix Payment Solution</h1>
+                </div>
             </div>
         </div>
-        <div class="signup-form col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
-            <form action="{{ path_for('payment_source') }}" method="post" name="pay-identify-form">
+        <div class="row">
+            <form action="{{ path_for('payment_source') }}" method="post">
                 <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
                 <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
-                <h2>Identifiez-vous</h2>
-                <img src="images/{{session.payment_type}}.png" alt="img-logo" class="center-img">
-                <div class="form-group">
-                    <input name="name" class="form-control" placeholder="Nom*" required>
-                    <input name="email" type="email" class="form-control" placeholder="E-mail*" required>
-                    <button type="submit" class="btn btn-success btn-lg btn-block">Suivant</button>
+                <div class="col-md-6 border-right">
+                    <div class="pull-right content-left">
+                        <h2 class="dark-blue boldi">Identifiez-vous</h2>
+                        <h4 class="mid-blue">&Eacute;tape 2</h4>
+                        <div class="clearfix">
+                            <img src="images/{{session.payment_type}}.png" alt="bank-logo" class="img-logo">
+                        </div>
+                        <p class="bold">*Veuillez remplir les champs requis.</p>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default btn-sm btn-block bold">Suivant</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 border-left">
+                    <div class="pull-left content-right">
+                        <div class="form-container">
+                            <div class="form-group">
+                                <label class="mid-blue">Votre nom:</label>
+                                <input type="text" name="name" class="form-control" placeholder="Nom*" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="mid-blue">Votre e-mail:</label>
+                                <input type="email" name="email" class="form-control" placeholder="E-mail*" required>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
+            <div class="col-md-4 col-md-offset-4">
+                <div class="text-center copyr">&copy; Ipefix 2019</div>
+            </div>
         </div>
     </div>
-    <script src="js/application.js"></script> 
 </body>
 </html>

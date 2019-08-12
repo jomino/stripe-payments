@@ -5,80 +5,74 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <base href="/">
-<title>Welcome</title>
+<title>Ipefix Payment Solution</title>
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/application.css">
+<link rel="stylesheet" href="css/paystart.css">
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="row bs-wizard" style="border-bottom:0;">
-            <div id="step-1" class="col-xs-3 bs-wizard-step active">
-                <div class="text-center bs-wizard-stepnum">Solution</div>
-                <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot step-btn" data-step="0"></a>
-            </div>
-            <div id="step-2" class="col-xs-3 bs-wizard-step disabled">
-                <div class="text-center bs-wizard-stepnum">Identification</div>
-                <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot step-btn" data-step="1"></a>
-            </div>
-            <div id="step-3" class="col-xs-3 bs-wizard-step disabled">
-                <div class="text-center bs-wizard-stepnum">Payement</div>
-                <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot step-btn" data-step="2"></a>
-            </div>
-            <div id="step-4" class="col-xs-3 bs-wizard-step disabled">
-                <div class="text-center bs-wizard-stepnum">Finalisation</div>
-                <div class="progress"><div class="progress-bar"></div></div>
-                <a href="#" class="bs-wizard-dot step-btn" data-step="3"></a>
+    <div class="container main">
+        <div class="row header">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="text-center">
+                    <h1 class="boldi light-blue">Ipefix Payment Solution</h1>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="signup-form col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
-                <form action="{{ path_for('payment_identify') }}" method="post" name="pay-choice-form">
-                    <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
-                    <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
-                    <h2>Choisissez</h2>
-                    <div class="well text-center">
-                        {{ product }}<br>
-                        {{ amount|raw }}
+            <form action="{{ path_for('payment_identify') }}" method="post">
+                <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
+                <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
+                <div class="col-md-6 border-right">
+                    <div class="pull-right content-left">
+                        <h2 class="dark-blue boldi">Méthode de payement</h2>
+                        <h4 class="mid-blue">&Eacute;tape 1</h4>
+                        <h3 class="dark-blue boldi">{{ amount|raw }}</h3>
+                        <p class="product bold">{{ product }}</p>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default btn-sm btn-block">Suivant</button>
+                        </div>
                     </div>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <div class="radio form-control">
-                                <label>
-                                    <input type="radio" name="payment-type" value="bancontact" checked>
-                                    <img src="images/bancontact.png" alt="bancontact-logo" class="img-thumbnail">&nbsp;&nbsp;Bancontact
-                                </label>
-                            </div>
-                        </li>
-                        {# <li class="list-group-item">
-                            <div class="radio form-control">
-                                <label>
-                                    <input type="radio" name="payment-type" value="ideal">
-                                    <img src="images/ideal-small.png" alt="iDeal-logo" class="img-thumbnail">&nbsp;&nbsp;iDeal
-                                </label>
-                            </div>
-                        </li> #}
-                        <li class="list-group-item">
-                            <div class="radio form-control">
-                                <label>
-                                    <input type="radio" name="payment-type" value="sofort">
-                                    <img src="images/sofort.png" alt="Sofort-logo" class="img-thumbnail">&nbsp;&nbsp;Sofort
-                                </label>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success btn-lg btn-block">Suivant</button>
+                </div>
+                <div class="col-md-6 border-left">
+                    <div class="pull-left content-right">
+                        <p class="mid-blue bold">Choisissez votre prestataire de service.</p>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="radio form-control">
+                                    <label>
+                                        <input type="radio" name="payment-type" value="bancontact" checked>
+                                        <img src="images/bancontact.png" alt="bancontact-logo" class="img-thumbnail">&nbsp;&nbsp;<span class="bold mid-blue">Bancontact</span>
+                                    </label>
+                                </div>
+                            </li>
+                            <!--<li class="list-group-item">
+                                <div class="radio form-control">
+                                    <label>
+                                        <input type="radio" name="payment-type" value="ideal">
+                                        <img src="images/ideal-small.png" alt="iDeal-logo" class="img-thumbnail">&nbsp;&nbsp;<span class="bold mid-blue">iDeal</span>
+                                    </label>
+                                </div>
+                            </li>-->
+                            <li class="list-group-item">
+                                <div class="radio form-control">
+                                    <label>
+                                        <input type="radio" name="payment-type" value="sofort">
+                                        <img src="images/sofort.png" alt="Sofort-logo" class="img-thumbnail">&nbsp;&nbsp;<span class="bold mid-blue">Sofort</span>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                </form>
+                </div>
+            </form>
+            <div class="col-md-4 col-md-offset-4">
+                <div class="text-center copyr">&copy; Ipefix 2019</div>
             </div>
         </div>
     </div>
-    <script src="js/application.js"></script>
 </body>
 </html>

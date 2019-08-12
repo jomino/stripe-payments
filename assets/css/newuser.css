@@ -1,0 +1,76 @@
+.main .border-right {
+    padding-right: 0px !important;
+    min-height: 180px;
+    border-right: 1px solid;
+    border-right-color: #3B4856;
+}
+.main .content-left {
+    position: relative;
+    margin-right: 12px;
+    text-align: right;
+    max-width: 100%;
+}
+.main .content-left h2,
+.main .content-left h3,
+.main .content-left h4 {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+.main .content-left p {
+    float: right;
+    max-width: 300px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.main .content-left .result .glyphicon {
+    font-size: 24px;
+    vertical-align: bottom;
+    margin-bottom: -1px;
+}
+.main .content-left .form-group button {
+    color: #3B4856;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    max-width: 300px;
+    outline: none !important;
+    float: right;
+}
+.main .content-left .form-group button.btn-default:hover {
+    color: #006699 !important;
+}
+.main .content-left .generated-link {
+    float: right;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    max-width: 300px;
+}
+.main .content-left .generated-link .input-group-addon{
+    color: #3B4856;
+    border-color: #3B4856;
+}
+.main .content-left .generated-link .clickable:hover {
+    color: #006699;
+    cursor: pointer;
+}
+.main .content-left .generated-link input[type="text"] {
+    border-color: #3B4856;
+}
+.main .content-left .generated-link input[type="text"]:focus {
+    border-color: #3B4856;
+    outline: 0 none;
+    box-shadow: 0;
+}
+.main .border-left {
+    padding-left: 0px !important;
+    min-height: 180px;
+    line-height: 1.5em;
+}
+.main .content-right {
+    margin-left: 12px;
+    margin-bottom: 0;
+    max-width: 100%;
+}
+.main .content-right p {
+    max-width: 380px;
+    text-align: justify;
+}

@@ -1,113 +1,67 @@
 @font-face {
     font-family: Source Code Pro;
     font-weight: 400;
-    src: url(/fonts/SourceCodePro-Regular.ttf) format('truetype')
+    src: url(/fonts/SourceCodePro-Regular.ttf) format('truetype');
 }
-body{
-    color: #fff;
-    background: #63738a;
-    font-family: Source Code Pro, sans-serif;
+
+@font-face {
+    font-family: Nonito Sans;
+    font-weight: 400;
+    src: url(/fonts/NunitoSans-Regular.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: Nonito Sans Bold;
+    font-weight: 600;
+    src: url(/fonts/NunitoSans-Bold.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: Nonito Sans Bold Italic;
+    font-style: italic;
+    font-weight: 600;
+    src: url(/fonts/NunitoSans-BoldItalic.ttf) format('truetype');
+}
+
+.dark-blue  {color: #3B4856;}
+.mid-blue   {color: #006699;}
+.light-blue {color: #9FADBD;}
+.mid-fush   {color: #91496A;}
+.light-fush {color: #C97B9D;}
+.mid-yelo   {color: #E49D22;}
+.light-yelo {color: #FFECCC;}
+.mid-brown  {color: #8B7356;}
+.mid-green  {color: #5CA700;}
+.mid-red    {color: #FF3C26;}
+  
+body {
+    font-family: Nonito Sans, sans-serif;
     font-style: normal;
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
 }
-.header {
-    padding-top: 90px;
-}
-.form-control{
-    box-shadow: none;
-    color: #969fa4;
-}
-.form-control:focus{
-    border-color: #5cb85c;
-}
-.form-control, .btn{
-    margin-top: 20px;    
-    border-radius: 3px;
-}
-.signup-form{
-    padding: 4px 0;
-}
-.signup-form h2{
-    color: #636363;
-    margin: 0 0 10px;
-    position: relative;
-    text-align: center;
-}
-.signup-form h2:before, .signup-form h2:after{
-    content: "";
-    height: 2px;
-    width: 5%;
-    background: #d4d4d4;
-    position: absolute;
-    top: 50%;
-    z-index: 2;
-}	
-.signup-form h2:before{
-    left: 0;
-}
-.signup-form h2:after{
-    right: 0;
-}
-.signup-form .hint-text{
-    color: #666;
-    margin-bottom: 30px;
-    text-align: center;
-}
-.signup-form form{
-    color: #666;
-    border-radius: 3px;
-    margin-bottom: 15px;
-    background: #f2f3f7;
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-    padding: 30px;
-}
-.signup-form .form-group{
-    margin-bottom: 20px;
-}
-.signup-form input[type="radio"]{
-    margin-top: 9px;
-}
-.signup-form .btn{        
-    font-size: 16px;
-    font-weight: bold;
-    outline: none !important;
-}
-.signup-form .img-thumbnail {
-    max-width: 100px !important;
-    max-height: 33px !important;
-    line-height: 33px !important;
-}
-.signup-form img.center-img {
-    display: block;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 80%;
-}
-.signup-form span.glyphicon {  
-    font-weight: 600;
-    font-size: 1.5em;
-}
-.signup-form div.check-loader {  
-    min-height: 30px;
+
+.code {
+    font-family: Source Code Pro;
 }
 
-.bs-wizard {margin-top: 40px;}
-.bs-wizard {border-bottom: solid 1px #e0e0e0; padding: 0 0 10px 0;}
-.bs-wizard > .bs-wizard-step {padding: 0; position: relative;}
-.bs-wizard > .bs-wizard-step .bs-wizard-stepnum {color: #f5f5f5; font-size: 16px; margin-bottom: 5px;}
-.bs-wizard > .bs-wizard-step .bs-wizard-info {color: #f5f5f5; font-size: 14px;}
-.bs-wizard > .bs-wizard-step > .bs-wizard-dot {position: absolute; width: 30px; height: 30px; display: block; background: #fbe8aa; top: 45px; left: 50%; margin-top: -15px; margin-left: -15px; border-radius: 50%;} 
-.bs-wizard > .bs-wizard-step > .bs-wizard-dot:after {content: ' '; width: 14px; height: 14px; background: #fbbd19; border-radius: 50px; position: absolute; top: 8px; left: 8px; } 
-.bs-wizard > .bs-wizard-step > .progress {position: relative; border-radius: 0px; height: 8px; box-shadow: none; margin: 20px 0;}
-.bs-wizard > .bs-wizard-step > .progress > .progress-bar {width:0px; box-shadow: none; background: #fbe8aa;}
-.bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {width:100%;}
-.bs-wizard > .bs-wizard-step.active > .progress > .progress-bar {width:50%;}
-.bs-wizard > .bs-wizard-step:first-child.active > .progress > .progress-bar {width:0%;}
-.bs-wizard > .bs-wizard-step:last-child.active > .progress > .progress-bar {width: 100%;}
-.bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot {background-color: #f5f5f5;}
-.bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot:after {opacity: 0;}
-.bs-wizard > .bs-wizard-step:first-child  > .progress {left: 50%; width: 50%;}
-.bs-wizard > .bs-wizard-step:last-child  > .progress {width: 50%;}
-.bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot{ pointer-events: none; }
+.bold {
+    font-family: Nonito Sans Bold;
+}
+
+.boldi {
+    font-family: Nonito Sans Bold Italic;
+}
+
+.main .header {
+    min-height: 120px;
+    padding-top: 80px;
+}
+
+.main .header h1 {
+    margin-top: 0;
+}
+
+.main .copyr {
+    margin-top: 5px;
+}

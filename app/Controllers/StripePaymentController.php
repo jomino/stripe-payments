@@ -56,27 +56,30 @@ class StripePaymentController extends \Core\Controller
                         $event = $this->getCurrentEvent();
                         $dt_evt = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->updated_at);
                         $dt_str = $dt_evt->format('l d/m/Y à H:i:s');
-                        $message = '<p class="test-justify"><span class="glyphicon glyphicon-warning-sign text-danger" aria-hidden="true"></span>';
-                        $message .= 'Un achat similaire à déjà été effectué ce '.$dt_str.'<br>';
-                        $message .= 'Vous pouvez fermez cette page ou continuer vos achat.</p>';
+                        $alert = '<h4 class="result mid-yelo">Message préventif  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h4>';
+                        $message = 'Tout semble indiqué qu\'achat similaire a déjà été effectué ce '.$dt_str.'.Vous pouvez fermez cette page ou poursuivre votre achat en cliquant sur le bouton "Continuer".';
                         $message .= '<input type="hidden" name="forced" value="force">'."\n";
                         $message .= '<input type="hidden" name="name" value="'.$name.'">'."\n";
                         $message .= '<input type="hidden" name="email" value="'.$email.'">'."\n";
-                        $message .= '<button type="submit" class="btn btn-success btn-lg btn-block">Continuer</button>';
+                        $message .= '<button type="submit" class="btn btn-default btn-sm bold">Continuer</button>';
                     }
                 }else{
+                    $alert = '<h4 class="result mid-red">Une erreur est survenue  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></h4>';
                     $message = $this->getDefaultError($user);
                     $this->logger->info('['.self::class.'] cannot read source datas');
                 }
             }else{
+                $alert = '<h4 class="result mid-red">Une erreur est survenue  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></h4>';
                 $message = $this->getDefaultError();
                 $this->logger->info('['.self::class.'] cannot read user datas');
             }
         }else{
+            $alert = '<h4 class="result mid-red">Une erreur est survenue  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></h4>';
             $message = $this->getDefaultError();
             $this->logger->info('['.self::class.'] required client datas');
         }
         return $this->view->render($response, 'Home/paymess.html.twig',[
+            'alert' => $alert,
             'message' => $message
         ]);
     }
@@ -85,17 +88,17 @@ class StripePaymentController extends \Core\Controller
     {
         $event = $this->getCurrentEvent($args['token']);
         $user = $this->getCurrentUser();
+        $method = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
         $event_date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->updated_at);
         $amount = number_format((float) $event->amount/100, 2, ',', ' ');
-        $message = 'Détail de la transaction --------<br>';
-        $message .= '<strong>Produit:</strong> '.$event->product.'<br>';
+        $message = '<strong>Produit:</strong> '.$event->product.'<br>';
         $message .= '<strong>Methode:</strong> '.ucfirst($event->method).'<br>';
         $message .= '<strong>Date:</strong> '.$event_date->format('d/m/Y H:i:s').'<br>';
         $message .= '<strong>Bénéficiaire:</strong> '.$user->name.'<br>';
         $message .= '<strong>Montant:</strong> '.$amount.' &euro;<br>';
-        $message .= '<strong>ID transaction:</strong> '.$event->token.'<br>';
-        $message .= '---------------------------------<br>';
+        $message .= '<strong>ID transaction:</strong> '.$event->token;
         return $this->view->render($response, 'Home/payresult.html.twig',[
+            'bank_logo' => $method,
             'message' => $message,
             'status' => $event->status,
             'check_url' => $this->router->pathFor( 'payment_check', [
@@ -125,10 +128,10 @@ class StripePaymentController extends \Core\Controller
 
     private function getDefaultError($user='')
     {
-        $message = 'Une erreur inattendue est survenue.<br>';
-        $message .= 'Nous sommes actuellement dans l\'incapacité de <br>';
-        $message .= 'vous redirigé vers la page de votre banque.<br>';
-        $message .= 'Veuillez ré-essayer plus tard, merci.<br>';
+        $message = 'Une erreur inattendue est survenue. ';
+        $message .= 'Nous sommes actuellement dans l\'incapacité de ';
+        $message .= 'vous redirigé vers la page de votre banque.';
+        $message .= 'Veuillez ré-essayer plus tard, merci.<br><br>';
         if(!empty($user)){
             $message .= '<a href="//:'.$user->name.'" title="'.$user->name.'">';
             $message .= 'Retournez vers le site marchant';
