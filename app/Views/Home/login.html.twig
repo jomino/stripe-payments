@@ -29,7 +29,7 @@
                     <p>Cette partie du site est réservée,<br>vous devez fournir un login pour y entrer.</p>
                     <form action="{{ path_for('login') }}" method="post">
                         <div class="form-group">
-                            <input type="email" class="form-control" placeholder="E-mail" required>
+                            <input type="email" name="login" class="form-control" placeholder="E-mail" required>
                             <button type="submit" class="btn btn-default btn-sm btn-block">Login</button>
                         </div>
                     </form>
