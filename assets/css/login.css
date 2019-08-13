@@ -56,3 +56,10 @@
     text-align: justify;
     max-width: 370px;
 }
+.main .content-right .img-logo {
+    max-width: 300px;
+    min-height: 160px;
+}
+.main .content-right .img-logo img {
+    margin-top: 10px;
+}
