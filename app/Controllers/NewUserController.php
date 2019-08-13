@@ -37,11 +37,7 @@ class NewUserController extends \Core\Controller
                     'token' => '?'.$user->uuid
                 ]);
                 if($this->sendUserMail($register_link,$user)){
-                    $datas['generated_link'] = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor('payment_start',[
-                        'token' => $user->uuid,
-                        'amount' => '12300',
-                        'product' => 'my-product-to-sell'
-                    ]);
+                    $datas['generated_link'] = $uri->getScheme().'://'.$uri->getHost().'/'.$user->uuid.'/';
                 }else{
                     $user->delete();
                 }
