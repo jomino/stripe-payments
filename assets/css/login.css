@@ -52,11 +52,7 @@
     margin-bottom: 0;
     max-width: 100%;
 }
-.main .content-right p {
-    text-align: justify;
-    max-width: 370px;
-}
-.main .content-right .img-logo img {
+.main .content-right .img-responsive {
+    max-height: 160px;
     margin-top: 10px;
-    min-height: 160px;
 }
