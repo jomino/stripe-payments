@@ -21,7 +21,7 @@ class RegisterUserController extends \Core\Controller
             $datas = [ 'agence' => $user->name, 'email' => $user->email ];
             if($request->isGet()){
                 $template_name = $route_name = 'register';
-                array_merge( $datas, [
+                $datas = array_merge( $datas, [
                     'generated_link' => $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor($route_name,[
                         'id' => $user->id,
                         'token' => '?'.$user->uuid
