@@ -41,8 +41,8 @@
                         {%- endif -%}
                     </p>
                     <div class="input-group generated-link">
-                        <input type="text" class="form-control" name="generated-link" value="{%- if !error -%}{{ generated_link }}{%- endif -%}"{%- if error %} disabled{%- endif -%}>
-                        <div class="input-group-addon{%- if !error %} clickable{%- endif -%}">
+                        <input type="text" class="form-control" name="generated-link" value="{%- if not error -%}{{ generated_link }}{%- endif -%}"{%- if error %} disabled{%- endif -%}>
+                        <div class="input-group-addon{%- if not error %} clickable{%- endif -%}">
                             <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
                         </div>
                     </div>
