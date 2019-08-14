@@ -11,11 +11,11 @@ class HomeController extends \Core\Controller
         $cookie = \Util\Tools::cookieGetValue(\Dflydev\FigCookies\FigRequestCookies::get($request, \App\Parameters::SECURITY['cookie'], 'none'));
         $pass_phrase = \App\Parameters::SECURITY['login'].'-'.\App\Parameters::SECURITY['secret'];
         if($cookie!=hash('sha256', $pass_phrase)){
-            $this->logger->info('['.$ip.'] ADMIN_LOGIN_COOKIE_NOMATCH');
+            $this->logger->info('['.$ip.'] ADMIN_LOGIN_FAILED');
             if($cookie!='none'){ $response = \Dflydev\FigCookies\FigResponseCookies::remove($response, \App\Parameters::SECURITY['cookie']); }
             return $this->view->render($response, 'Home/login.html.twig');
         }else{
-            $this->logger->info('['.$ip.'] ADMIN_LOGIN_PASS');
+            $this->logger->info('['.$ip.'] ADMIN_LOGIN_ACCEPTED');
             return $response->withRedirect($this->router->pathFor('adduser'), 301);
         }
     }
