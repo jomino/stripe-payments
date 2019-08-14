@@ -10,7 +10,12 @@ class RegisterUserController extends \Core\Controller
 
     public function __invoke($request, $response, $args)
     {
-        $ip = $request->getServerParam('REMOTE_ADDR');
+        if($this->session->exists(\Util\StripeUtility::SESSION_REMOTE)){
+            $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
+        }else{
+            $ip = $request->getServerParam('REMOTE_ADDR');
+            $this->session->set(\Util\StripeUtility::SESSION_REMOTE,$ip);
+        }
         $uri = $request->getUri();
         $token = (string) ltrim($uri->getQuery(),'?');
         if(empty($token) || strlen($token)<2){ $token = ltrim($args['token'],'?'); }
@@ -48,7 +53,7 @@ class RegisterUserController extends \Core\Controller
         }
         if(sizeof($this->errors)>0){
             $errors = $this->getErrors();
-            $this->logger->info('['.$ip.'] REGISTER_NEWUSER_ERROR -> WITH_ERROR: '.$errors);
+            $this->logger->info('['.$ip.'] REGISTER_NEWUSER_ERROR -> WITH_ERRORS: '.$errors);
             $datas['error'] = $errors;
             $template_name = 'register-fail';
         }
