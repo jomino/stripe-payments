@@ -6,8 +6,12 @@ class HomeController extends \Core\Controller
 {
     public function __invoke($request, $response, $args)
     {
-        $ip = $request->getServerParam('REMOTE_ADDR');
-        $this->setSessionVar(\Util\StripeUtility::SESSION_REMOTE,$ip);
+        if($this->session->exists(\Util\StripeUtility::SESSION_REMOTE)){
+            $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
+        }else{
+            $ip = $request->getServerParam('REMOTE_ADDR');
+            $this->session->set(\Util\StripeUtility::SESSION_REMOTE,$ip);
+        }
         $cookie = \Util\Tools::cookieGetValue(\Dflydev\FigCookies\FigRequestCookies::get($request, \App\Parameters::SECURITY['cookie'], 'none'));
         $pass_phrase = \App\Parameters::SECURITY['login'].'-'.\App\Parameters::SECURITY['secret'];
         if($cookie!=hash('sha256', $pass_phrase)){
