@@ -11,6 +11,7 @@ class NewUserController extends \Core\Controller
 
     public function __invoke($request, $response, $args)
     {
+        $ip = $request->getServerParam('REMOTE_ADDR');
 
         $parsedBody = $request->getParsedBody();
 
@@ -23,8 +24,10 @@ class NewUserController extends \Core\Controller
         ];
 
         if(false === $request->getAttribute('csrf_status')){
+            $this->logger->info('['.$ip.'] ADDUSER_CSRF_REJECTED -> EXIT_WITH_403');
             return $response->withStatus(403);
         }elseif(false === $request->getAttribute(\App\Parameters::SECURITY['status'])){
+            $this->logger->info('['.$ip.'] ADDUSER_TIMEOUT_REJECTED -> HOME_REDIR');
             return $response->withRedirect($this->router->pathFor('home'));
         }else{
 
@@ -37,6 +40,8 @@ class NewUserController extends \Core\Controller
                     'token' => '?'.$user->uuid
                 ]);
                 if($this->sendUserMail($register_link,$user)){
+                    $this->logger->info('['.$ip.'] ADDUSER_SUCCESS_EMAIL -> '.$email);
+                    $this->logger->info('['.$ip.'] ADDUSER_SUCCESS_EMAIL -> REGISTER_URL:'.$register_link);
                     $datas['generated_link'] = $uri->getScheme().'://'.$uri->getHost().'/'.$user->uuid.'/';
                 }else{
                     $user->delete();
@@ -44,7 +49,9 @@ class NewUserController extends \Core\Controller
             }
 
             if(sizeof($this->errors)>0){
-                $datas['error'] = $this->getErrors();
+                $errors = $this->getErrors();
+                $this->logger->info('['.$ip.'] ADDUSER_CREATE_ERROR -> WITH_ERROR: '.$errors);
+                $datas['error'] = $errors;
             }
 
             return $this->view->render($response, 'Home/newuser.html.twig', $datas);
