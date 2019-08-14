@@ -11,7 +11,7 @@ class NewUserController extends \Core\Controller
 
     public function __invoke($request, $response, $args)
     {
-        $ip = $request->getServerParam('REMOTE_ADDR');
+        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
 
         $parsedBody = $request->getParsedBody();
 
@@ -50,7 +50,7 @@ class NewUserController extends \Core\Controller
 
             if(sizeof($this->errors)>0){
                 $errors = $this->getErrors();
-                $this->logger->info('['.$ip.'] ADDUSER_CREATE_ERROR -> WITH_ERROR: '.$errors);
+                $this->logger->info('['.$ip.'] ADDUSER_CREATE_ERROR -> WITH_ERRORS: '.$errors);
                 $datas['error'] = $errors;
             }
 
