@@ -12,13 +12,26 @@ class StripePaymentController extends \Core\Controller
         $token = (string) ltrim($uri->getQuery(),'?');
         if(empty($token) || strlen($token)<2){ $token = ltrim($args['token'],'?'); }
         $this->setSessionVar(\Util\StripeUtility::SESSION_REFERRER,$token);
-        $this->setSessionVar(\Util\StripeUtility::SESSION_AMOUNT,$amount);
-        $this->setSessionVar(\Util\StripeUtility::SESSION_PRODUCT,$product);
-        $display_amount = number_format((float) $amount/100, 2, ',', ' ');
-        return $this->view->render($response, 'Home/paystart.html.twig',[
-            'product' => $product,
-            'amount' => $display_amount.' &euro;'
-        ]);
+        if($this->isValidUser()){
+            $this->setSessionVar(\Util\StripeUtility::SESSION_AMOUNT,$amount);
+            $this->setSessionVar(\Util\StripeUtility::SESSION_PRODUCT,$product);
+            $display_amount = number_format((float) $amount/100, 2, ',', ' ');
+            return $this->view->render($response, 'Home/paystart.html.twig',[
+                'product' => $product,
+                'amount' => $display_amount.' &euro;'
+            ]);
+        }else{
+            $alert = '<h4 class="result mid-red">Alerte de sécurité  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h4>';
+            $message = 'Il nous est impossible de valider votre demande.<br>';
+            $message .= 'Cela peut arriver dans les cas suivants:<br>';
+            $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Le compte client a été désactivé.<br>';
+            $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Un problème d\'ordre matériel est survenu.<br><br>';
+            $message .= 'Vous pouvez contacter nos services à l\'adresse <a href="mailto:info@ipefix.com">info@ipefix.com</a>';
+            return $this->view->render($response, 'Home/paymess.html.twig',[
+                'alert' => $alert,
+                'message' => $message
+            ]);
+        }
     }
 
     public function identify($request, $response, $args)
@@ -157,6 +170,17 @@ class StripePaymentController extends \Core\Controller
         }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
             return null;
         }
+    }
+
+    private function isValidUser()
+    {
+        if($this->session->exists(\Util\StripeUtility::SESSION_DOMAIN)){
+            $domain = $this->session->get(\Util\StripeUtility::SESSION_DOMAIN);
+            if($user=$this->getCurrentUser()){
+                return $user->name==$domain && (int) $user->active==1;
+            }
+        }
+        return false;
     }
 
     private function getCurrentEvent($token='')

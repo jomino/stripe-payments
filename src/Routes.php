@@ -31,19 +31,20 @@ class Routes
             $app->get('/{token:[0-9a-zA-Z-]*}/{amount:[0-9]*}/{product:[0-9a-zA-Z-_]+}', \App\Controllers\StripePaymentController::class.':start')->setName('payment_start');
             $app->post('/identify', \App\Controllers\StripePaymentController::class.':identify')->setName('payment_identify');
             $app->post('/source', \App\Controllers\StripePaymentController::class.':source')->setName('payment_source');
-        })->add($container->get('csrf'));
+        })->add($container->get('csrf'))->add(new \App\Middleware\HttpReferrerMiddleware($app));
         
         $app->get('/result/{token:[0-9a-zA-Z-]*}', \App\Controllers\StripePaymentController::class.':result')->setName('payment_result');
         $app->get('/check/{token:[0-9a-zA-Z-]*}', \App\Controllers\StripePaymentController::class.':check')->setName('payment_check');
         
         // Infos
         $app->get('/infos', function($request, $response, $args){
-            /* ob_start();
+            ob_start();
             phpinfo();
             $content = ob_get_contents();
-            ob_end_flush(); */
-            $notFoundHandler = $this->notFoundHandler;
-            return $notFoundHandler($request, $response);
+            ob_end_flush();
+            return $response->write($content);
+            /* $notFoundHandler = $this->notFoundHandler;
+            return $notFoundHandler($request, $response); */
         });
         
         // Debug
