@@ -11,8 +11,9 @@ class StripePaymentController extends \Core\Controller
         $product = $args['product'];
         $token = (string) ltrim($uri->getQuery(),'?');
         if(empty($token) || strlen($token)<2){ $token = ltrim($args['token'],'?'); }
-        $ip = $request->getServerParam('REMOTE_ADDR');
         $this->setSessionVar(\Util\StripeUtility::SESSION_REFERRER,$token);
+        $ip = $request->getServerParam('REMOTE_ADDR');
+        $this->setSessionVar(\Util\StripeUtility::SESSION_REMOTE,$ip);
         if($this->isValidUser()){
             $this->logger->info('['.$ip.'] PAYMENT_START_SUCCESS');
             $this->setSessionVar(\Util\StripeUtility::SESSION_AMOUNT,$amount);
@@ -39,22 +40,22 @@ class StripePaymentController extends \Core\Controller
 
     public function identify($request, $response, $args)
     {
-        $ip = $request->getServerParam('REMOTE_ADDR');
+        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
         if(false === $request->getAttribute('csrf_status')){
-            $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> RETURN 403');
+            $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> EXIT_WITH_403');
             return $response->withStatus(403);
         }
         $payment_type = $request->getParsedBodyParam('payment-type');
         $this->setSessionVar(\Util\StripeUtility::SESSION_METHOD,$payment_type);
-        $this->logger->info('['.$ip.'] PAYMENT_START_IDENTIFY');
+        $this->logger->info('['.$ip.'] PAYMENT_START_IDENTIFY -> METHOD_TYPE: '.$payment_type);
         return $this->view->render($response, 'Home/payidentify.html.twig');
     }
 
     public function source($request, $response, $args)
     {
-        $ip = $request->getServerParam('REMOTE_ADDR');
+        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
         if(false === $request->getAttribute('csrf_status')){
-            $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> RETURN 403');
+            $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> EXIT_WITH_403');
             return $response->withStatus(403);
         }
         $name = $request->getParsedBodyParam('name');

@@ -13,6 +13,7 @@ class StripeUtility
     const DEFAULT_CURRENCY = 'eur';
     const DEFAULT_COUNTRY = 'BE';
 
+    const SESSION_REMOTE = 'remote';
     const SESSION_DOMAIN = 'domain';
     const SESSION_REFERRER = 'referrer';
     const SESSION_AMOUNT = 'amount';
