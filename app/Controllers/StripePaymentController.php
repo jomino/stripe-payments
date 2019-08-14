@@ -11,8 +11,10 @@ class StripePaymentController extends \Core\Controller
         $product = $args['product'];
         $token = (string) ltrim($uri->getQuery(),'?');
         if(empty($token) || strlen($token)<2){ $token = ltrim($args['token'],'?'); }
+        $ip = $request->getServerParam('REMOTE_ADDR');
         $this->setSessionVar(\Util\StripeUtility::SESSION_REFERRER,$token);
         if($this->isValidUser()){
+            $this->logger->info('['.$ip.'] PAYMENT_START_SUCCESS');
             $this->setSessionVar(\Util\StripeUtility::SESSION_AMOUNT,$amount);
             $this->setSessionVar(\Util\StripeUtility::SESSION_PRODUCT,$product);
             $display_amount = number_format((float) $amount/100, 2, ',', ' ');
@@ -21,6 +23,7 @@ class StripePaymentController extends \Core\Controller
                 'amount' => $display_amount.' &euro;'
             ]);
         }else{
+            $this->logger->info('['.$ip.'] PAYMENT_START_ERROR -> INVALID_USER');
             $alert = '<h4 class="result mid-red">Alerte de sécurité  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h4>';
             $message = 'Il nous est impossible de valider votre demande.<br>';
             $message .= 'Cela peut arriver dans les cas suivants:<br>';
@@ -36,17 +39,22 @@ class StripePaymentController extends \Core\Controller
 
     public function identify($request, $response, $args)
     {
+        $ip = $request->getServerParam('REMOTE_ADDR');
         if(false === $request->getAttribute('csrf_status')){
+            $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> RETURN 403');
             return $response->withStatus(403);
         }
         $payment_type = $request->getParsedBodyParam('payment-type');
         $this->setSessionVar(\Util\StripeUtility::SESSION_METHOD,$payment_type);
+        $this->logger->info('['.$ip.'] PAYMENT_START_IDENTIFY');
         return $this->view->render($response, 'Home/payidentify.html.twig');
     }
 
     public function source($request, $response, $args)
     {
+        $ip = $request->getServerParam('REMOTE_ADDR');
         if(false === $request->getAttribute('csrf_status')){
+            $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> RETURN 403');
             return $response->withStatus(403);
         }
         $name = $request->getParsedBodyParam('name');
@@ -55,11 +63,13 @@ class StripePaymentController extends \Core\Controller
             if($user=$this->getCurrentUser()){
                 if($source=$this->getSource($request,$user,$email,$name)){
                     if($source->redirect->status==\Util\StripeUtility::STATUS_PENDING){
+                        $this->logger->info('['.$ip.'] SOURCE_OBJ_SUCCEED -> STATUS_'.(\Util\StripeUtility::STATUS_PENDING));
                         $redir_url = $source->redirect->url;
                         return $this->view->render($response, 'Home/payredir.html.twig',[
                             'redir_url' => $redir_url
                         ]);
                     }elseif(!empty($request->getParsedBodyParam('forced'))){
+                        $this->logger->info('['.$ip.'] SOURCE_OBJ_ALERT -> FORCED_MODE_RETRY');
                         $source = $this->createNewSource($request,$user,$email,$name);
                         $redir_url = $source->redirect->url;
                         return $this->view->render($response, 'Home/payredir.html.twig',[
@@ -75,21 +85,22 @@ class StripePaymentController extends \Core\Controller
                         $message .= '<input type="hidden" name="name" value="'.$name.'">'."\n";
                         $message .= '<input type="hidden" name="email" value="'.$email.'">'."\n";
                         $message .= '<button type="submit" class="btn btn-default btn-sm bold">Continuer</button>';
+                        $this->logger->info('['.$ip.'] SOURCE_OBJ_ALERT -> PRODUCT_ALREADY_SUCCEEDED');
                     }
                 }else{
                     $alert = '<h4 class="result mid-red">Une erreur est survenue  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></h4>';
                     $message = $this->getDefaultError($user);
-                    $this->logger->info('['.self::class.'] cannot read source datas');
+                    $this->logger->info('['.$ip.'] CANNOT_CREATE_SOURCE_OBJ -> NO_USER_NOR_DB');
                 }
             }else{
-                $alert = '<h4 class="result mid-red">Une erreur est survenue  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></h4>';
+                $alert = '<h4 class="result mid-red">Impossible de retrouver le profil client  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></h4>';
                 $message = $this->getDefaultError();
-                $this->logger->info('['.self::class.'] cannot read user datas');
+                $this->logger->info('['.$ip.'] PAYMENT_IDENTITY_ERROR -> NO_USER_NOR_DB');
             }
         }else{
-            $alert = '<h4 class="result mid-red">Une erreur est survenue  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></h4>';
+            $alert = '<h4 class="result mid-red">Votre nom et e-mail sont requis  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></h4>';
             $message = $this->getDefaultError();
-            $this->logger->info('['.self::class.'] required client datas');
+            $this->logger->info('['.$ip.'] PAYMENT_IDENTITY_ERROR -> NO_NAME_NOR_EMAIL');
         }
         return $this->view->render($response, 'Home/paymess.html.twig',[
             'alert' => $alert,

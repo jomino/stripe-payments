@@ -7,6 +7,7 @@ class LoginController extends \Core\Controller
     public function __invoke($request, $response, $args)
     {
         $parsedBody = $request->getParsedBody();
+        $ip = $request->getServerParam('REMOTE_ADDR');
         if($parsedBody['login']==\App\Parameters::SECURITY['login']){
             $pass_phrase = \App\Parameters::SECURITY['login'].'-'.\App\Parameters::SECURITY['secret'];
             $response = \Dflydev\FigCookies\FigResponseCookies::set($response, \Dflydev\FigCookies\SetCookie::create(\App\Parameters::SECURITY['cookie'])
@@ -17,10 +18,10 @@ class LoginController extends \Core\Controller
                 ->withSecure(true)
                 ->withHttpOnly(true)
             );
-            $this->logger->info('ADMIN_LOGIN_SUCCESS');
+            $this->logger->info('['.$ip.'] ADMIN_LOGIN_SUCCESS');
             return $response->withRedirect($this->router->pathFor('adduser'), 301);
         }
-        $this->logger->info('ADMIN_LOGIN_ERROR');
+        $this->logger->info('['.$ip.'] ADMIN_LOGIN_ERROR');
         return $response->withRedirect($this->router->pathFor('home'), 301);
     }
 }
