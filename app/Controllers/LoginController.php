@@ -17,8 +17,10 @@ class LoginController extends \Core\Controller
                 ->withSecure(true)
                 ->withHttpOnly(true)
             );
+            $this->logger->info('ADMIN_LOGIN_SUCCESS');
             return $response->withRedirect($this->router->pathFor('adduser'), 301);
         }else{
+            $this->logger->info('ADMIN_LOGIN_REDIRECT_HOME');
             return $response->withRedirect($this->router->pathFor('home'), 301);
         }
     }
