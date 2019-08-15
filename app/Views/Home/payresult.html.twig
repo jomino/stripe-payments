@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/application.css">
 <link rel="stylesheet" href="css/payresult.css">
+<link rel="stylesheet" href="css/print.css">
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </head>
@@ -36,7 +37,7 @@
                             <p class="result-text bold hidden"></p>
                             <div class="loader-container"></div>
                         </div>
-                        <button type="button" class="btn btn-default btn-sm">Imprimer</button>
+                        <button type="button" class="btn btn-default btn-sm btn-print">Imprimer</button>
                     </div>
                 </div>
                 <div class="col-md-6 border-left">
@@ -51,7 +52,9 @@
             </div>
         </div>
     </div>
+    <div id="print-container" class="print-container hidden"></div>
     <script src="js/loadingoverlay.min.js"></script>
     <script src="js/result.js"></script>
+    <script src="js/print.js"></script>
 </body>
 </html>

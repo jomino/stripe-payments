@@ -3,29 +3,57 @@ $(document).ready(function(){
     var check_url = $('input[name="check-url"]').val();
     var $loading_el = $('.loader-container');
     var $hiden_el = $('.result-text');
+    var $print_btn = $('.btn-print');
+    var $print_container = $('.print-container');
 
     var defaultLoaderOptions = {
         background : false,
         minSize: false
     };
 
-    var checkUrl = function(url,callback){
+    var getUrl = function(url,callback){
         window.fetch( url, {
             credentials: 'same-origin'
         }).then(function(response){
             if(response.ok) {
-                response.json().then(function(obj){
-                    callback(obj.status);
+                response.json().then(function(o){
+                    callback(o);
                 });
             }
         });
     };
 
+    var onPrintFinished = function(){
+        $print_container.empty();
+    };
+
+    var onPrintLoaded = function(response){
+        var html = window.atob(response.html);
+        $print_container.html(html);
+        if(printJS){
+            printJS({
+                printable: 'print-container',
+                type: 'html',
+                fallbackPrintable: onPrintFinished
+            });
+        }
+    };
+
+    var print = function(){
+        if(check_url){
+            getUrl('/print/'+check_url,onPrintLoaded);
+        }
+    };
+
+    $print_btn.on('click',function(){
+        print();
+    });
+
     var onChecked = function(response){
-        if(response!=''){
-            $hiden_el.toggleClass('hidden visible').text(response);
-            overlayLoader('hide',{});
-            $loading_el.remove();
+        if(response.status && response.status!=''){
+            $hiden_el.toggleClass('hidden visible').text(response.status);
+            overlayLoader('hide');
+            $loading_el.toggleClass('hidden');
         }else{
             start();
         }
@@ -39,7 +67,7 @@ $(document).ready(function(){
 
     var launch = function(){
         if(check_url){
-            checkUrl(check_url,onChecked);
+            getUrl('/check/' + check_url,onChecked);
         }
     };
 

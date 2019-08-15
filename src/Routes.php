@@ -35,6 +35,7 @@ class Routes
         
         $app->get('/result/{token:[0-9a-zA-Z-]*}', \App\Controllers\StripePaymentController::class.':result')->setName('payment_result');
         $app->get('/check/{token:[0-9a-zA-Z-]*}', \App\Controllers\StripePaymentController::class.':check')->setName('payment_check');
+        $app->get('/print/{token:[0-9a-zA-Z-]*}', \App\Controllers\StripePaymentController::class.':print')->setName('payment_print');
         
         // Infos
         $app->get('/infos', function($request, $response, $args){

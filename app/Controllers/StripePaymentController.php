@@ -130,9 +130,7 @@ class StripePaymentController extends \Core\Controller
             'bank_logo' => $method,
             'message' => $message,
             'status' => $event->status,
-            'check_url' => $this->router->pathFor( 'payment_check', [
-                'token' => $event->token
-            ])
+            'check_url' => $event->token
         ]);
     }
 
@@ -153,6 +151,49 @@ class StripePaymentController extends \Core\Controller
         return $response->withJson([
             'status' => $title
         ]);
+    }
+
+    public function print($request, $response, $args)
+    {
+        $event = $this->getCurrentEvent($args['token']);
+        $user = $this->getCurrentUser();
+        $html = $this->getPrintContent($event,$user);
+        return $response->withJson([
+            'html' => \base64_encode($html)
+        ]);
+    }
+
+    private function getPrintContent($event,$user)
+    {
+        $status = $event->status;
+        $event_tpl = [
+            \Util\StripeUtility::STATUS_SUCCEEDED => 'Email/email-pay-succeed.html.twig',
+            \Util\StripeUtility::STATUS_WAITING => 'Email/email-pay-pending.html.twig',
+            \Util\StripeUtility::STATUS_FAILED => 'Email/email-pay-rejected.html.twig'
+        ];
+
+        $template = $event_tpl[$status];
+
+        $event_date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->updated_at);
+
+        $amount = number_format((float) $event->amount/100, 2, ',', ' ');
+        
+        $data = [
+            'name' => $event->name,
+            'product' => $event->product,
+            'method' => ucfirst($event->method),
+            'client_name' => $user->name,
+            'client_email' => $user->email,
+            'amount' => $amount.' &euro;',
+            'token' => $event->token,
+            'datetime' => $event_date->format('d/m/Y H:i:s'),
+            'error' => ''
+        ];
+        
+        $content = $this->view->fetch($template,$data);
+
+        return $content;
+
     }
 
     private function getDefaultError($user='')
