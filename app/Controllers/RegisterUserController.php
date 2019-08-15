@@ -10,12 +10,7 @@ class RegisterUserController extends \Core\Controller
 
     public function __invoke($request, $response, $args)
     {
-        if($this->session->exists(\Util\StripeUtility::SESSION_REMOTE)){
-            $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
-        }else{
-            $ip = $request->getServerParam('REMOTE_ADDR');
-            $this->session->set(\Util\StripeUtility::SESSION_REMOTE,$ip);
-        }
+        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
         $uri = $request->getUri();
         $token = (string) ltrim($uri->getQuery(),'?');
         if(empty($token) || strlen($token)<2){ $token = ltrim($args['token'],'?'); }

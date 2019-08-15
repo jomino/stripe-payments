@@ -10,12 +10,12 @@ class StripePaymentController extends \Core\Controller
         $amount = $args['amount'];
         $product = $args['product'];
         $token = (string) ltrim($uri->getQuery(),'?');
+        $ip = $request->getServerParam('REMOTE_ADDR');
         if(empty($token) || strlen($token)<2){ $token = ltrim($args['token'],'?'); }
         $this->setSessionVar(\Util\StripeUtility::SESSION_REFERRER,$token);
-        $ip = $request->getServerParam('REMOTE_ADDR');
         $this->setSessionVar(\Util\StripeUtility::SESSION_REMOTE,$ip);
         if($this->isValidUser()){
-            $this->logger->info('['.$ip.'] PAYMENT_START_SUCCESS');
+            $this->logger->info('['.$ip.'] PAYMENT_START_VALIDATE');
             $this->setSessionVar(\Util\StripeUtility::SESSION_AMOUNT,$amount);
             $this->setSessionVar(\Util\StripeUtility::SESSION_PRODUCT,$product);
             $display_amount = number_format((float) $amount/100, 2, ',', ' ');
@@ -40,7 +40,7 @@ class StripePaymentController extends \Core\Controller
 
     public function identify($request, $response, $args)
     {
-        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
+        $ip = $request->getServerParam('REMOTE_ADDR');
         if(false === $request->getAttribute('csrf_status')){
             $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> EXIT_WITH_403');
             return $response->withStatus(403);
@@ -53,7 +53,7 @@ class StripePaymentController extends \Core\Controller
 
     public function source($request, $response, $args)
     {
-        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
+        $ip = $request->getServerParam('REMOTE_ADDR');
         if(false === $request->getAttribute('csrf_status')){
             $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> EXIT_WITH_403');
             return $response->withStatus(403);

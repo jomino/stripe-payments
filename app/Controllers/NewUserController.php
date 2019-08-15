@@ -11,7 +11,7 @@ class NewUserController extends \Core\Controller
 
     public function __invoke($request, $response, $args)
     {
-        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
+        $ip = $request->getServerParam('REMOTE_ADDR');
 
         $parsedBody = $request->getParsedBody();
 
