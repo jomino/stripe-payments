@@ -24,6 +24,9 @@
         </div>
         <div class="row">
             <form action="{{ path_for('payment_source') }}" method="post">
+                {% if session.payment_type in ['ideal'] -%}
+                    <input type="hidden" name="{{ session.payment_type }}-selection" value="">
+                {%- endif %}
                 <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
                 <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
                 <div class="col-md-6 border-right">
@@ -41,7 +44,7 @@
                 </div>
                 <div class="col-md-6 border-left">
                     <div class="pull-left content-right">
-                        <div class="form-container">
+                        <div class="form-container mid">
                             <div class="form-group">
                                 <label class="mid-blue">Votre nom:</label>
                                 <input type="text" name="name" class="form-control" placeholder="Nom*" required>
@@ -50,6 +53,19 @@
                                 <label class="mid-blue">Votre e-mail:</label>
                                 <input type="email" name="email" class="form-control" placeholder="E-mail*" required>
                             </div>
+                            {% if session.payment_type=='ideal' -%}
+                                <div class="form-group">
+                                    <label class="mid-blue" for="ideal-bank-element">
+                                        iDEAL
+                                    </label>
+                                    <div id="ideal-bank-element">
+                                        <!-- A Stripe Element will be inserted here. -->
+                                    </div>
+                                </div>
+                                <script src="https://js.stripe.com/v3/"></script>
+                                <script src="js/stripe-pkey.js"></script>
+                                <script src="js/ideal.js"></script>
+                            {%- endif %}
                         </div>
                     </div>
                 </div>

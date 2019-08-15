@@ -58,6 +58,10 @@ class StripePaymentController extends \Core\Controller
             $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> EXIT_WITH_403');
             return $response->withStatus(403);
         }
+        $method = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
+        if(in_array($method.'-selection',array_keys($request->getParsedBody()))){
+            $this->setSessionVar(\Util\StripeUtility::SESSION_SELECTION,$request->getParsedBodyParam($method.'-selection'));
+        }
         $name = $request->getParsedBodyParam('name');
         $email = $request->getParsedBodyParam('email');
         if(!empty($name) && !empty($email)){
@@ -251,7 +255,7 @@ class StripePaymentController extends \Core\Controller
             case \Util\StripeUtility::METHOD_IDEAL:
                 return [
                     \Util\StripeUtility::METHOD_IDEAL => [
-                        'bank' => \Util\StripeUtility::DEFAULT_IDEAL_BANK,
+                        'bank' => $this->session->get(\Util\StripeUtility::SESSION_SELECTION),
                         'statement_descriptor' => $statement_descriptor
                     ]
                 ];

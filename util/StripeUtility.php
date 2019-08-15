@@ -16,6 +16,7 @@ class StripeUtility
     const SESSION_REMOTE = 'remote';
     const SESSION_DOMAIN = 'domain';
     const SESSION_REFERRER = 'referrer';
+    const SESSION_SELECTION = 'selection';
     const SESSION_AMOUNT = 'amount';
     const SESSION_PRODUCT = 'product_ref';
     const SESSION_METHOD = 'payment_type';
