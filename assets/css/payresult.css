@@ -59,3 +59,20 @@
 .main .content-right .detail {
     margin-top: 10px;
 }
+#print-container {
+    visibility: hidden;
+}
+
+@media print {
+    body{
+        width: 21cm;
+        height: 29.7cm;
+        margin: 30mm 45mm 30mm 45mm;
+   }
+   .main{
+        visibility: hidden;
+   }
+   #print-container {
+       visibility: visible;
+   }
+}

@@ -24,7 +24,7 @@ $(document).ready(function(){
     };
 
     var onPrintFinished = function(){
-        $print_container.empty();
+        $print_container.html('');
     };
 
     var onPrintLoaded = function(response){
