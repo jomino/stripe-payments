@@ -58,7 +58,7 @@
             e.preventDefault();
                     
             var sourceData = {
-                type: 'iban',
+                type: 'sepa_debit',
                 currency: 'eur',
                 owner: {
                     name: $('input[name="name"]').val(),
