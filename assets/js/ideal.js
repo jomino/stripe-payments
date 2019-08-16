@@ -40,7 +40,7 @@
     $('form').on('submit',function(e){
         if($bank_input.val()==''){
             e.preventDefault();
-            $msg_output.text('Sélectionnez une banque');
+            $msg_output.text('Faite dérouler le menu iDeal et choisissez une banque.');
             $msg_output.remoceClass('hidden');
             return false;
         }

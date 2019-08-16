@@ -41,6 +41,7 @@
                             <img src="images/{{session.payment_type}}.png" alt="bank-logo" class="img-logo">
                         </div>
                         <p class="bold">*Veuillez remplir les champs requis.</p>
+                        <p class="small help-text mid-red hidden"></p>
                     </div>
                 </div>
                 <div class="col-md-6 border-left">
@@ -63,7 +64,6 @@
                                         <!-- A Stripe Element will be inserted here. -->
                                     </div>
                                 </div>
-                                <div class="small help-text mid-red hidden"></div>
                                 <script src="js/ideal.js"></script>
                             {%- endif %}
                             {% if session.payment_type=='iban' -%}
