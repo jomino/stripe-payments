@@ -60,9 +60,9 @@
 .main .content-right .list-group .list-group-item table {
     min-width: 150px;
 }
-.main .content-right .list-group .list-group-item table td {
-    width: 50%;
-    min-width: 50%;
+.main .content-right .list-group .list-group-item table tr td:first-child {
+    width: 33%;
+    min-width: 33%;
 }
 .main .content-right .list-group .list-group-item .img-thumbnail {
     max-width: 100px !important;
