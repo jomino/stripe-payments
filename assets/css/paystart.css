@@ -16,6 +16,9 @@
     margin-top: 5px !important;
     margin-bottom: 5px !important;
 }
+.main .content-left p {
+    max-width: 380px;
+}
 .main .border-left {
     padding-left: 0px !important;
     min-height: 180px;
@@ -27,12 +30,10 @@
     margin-bottom: 0;
     max-width: 100%;
 }
-.main .content-right p {
-    max-width: 380px;
-}
 .main .content-right .form-group {
     max-width: 100%;
     margin-left: 12px;
+    margin-bottom: 0;
 }
 .main .content-right .form-group button {
     color: #3B4856;
