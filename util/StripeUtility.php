@@ -7,6 +7,7 @@ class StripeUtility
     const METHOD_BANCONTACT = 'bancontact';
     const METHOD_SOFORT = 'sofort';
     const METHOD_IDEAL = 'ideal';
+    const METHOD_IBAN = 'iban';
 
     const DEFAULT_IDEAL_BANK = 'ing';
 
