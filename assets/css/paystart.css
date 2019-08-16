@@ -1,6 +1,6 @@
 .main .border-right {
     padding-right: 0px !important;
-    min-height: 180px;
+    min-height: 225px;
     border-right: 1px solid;
     border-right-color: #3B4856;
 }
@@ -33,7 +33,7 @@
 .main .content-right .form-group button {
     color: #3B4856;
     margin-top: 5px;
-    padding-left: 12px;
+    margin-left: 12px;
     font-family: Nonito Sans Bold;
     font-weight: bold;
     outline: none !important;
