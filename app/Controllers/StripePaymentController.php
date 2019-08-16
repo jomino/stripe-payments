@@ -25,16 +25,7 @@ class StripePaymentController extends \Core\Controller
             ]);
         }else{
             $this->logger->info('['.$ip.'] PAYMENT_START_ERROR -> INVALID_USER');
-            $alert = '<h4 class="result mid-red">Alerte de sécurité  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h4>';
-            $message = 'Il nous est impossible de valider votre demande.<br>';
-            $message .= 'Cela peut arriver dans les cas suivants:<br>';
-            $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Le compte client a été désactivé.<br>';
-            $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Un problème d\'ordre matériel est survenu.<br>';
-            $message .= 'Vous pouvez contacter nos services à l\'adresse <a href="mailto:info@ipefix.com">info@ipefix.com</a>';
-            return $this->view->render($response, 'Home/paymess.html.twig',[
-                'alert' => $alert,
-                'message' => $message
-            ]);
+            return $response->write($this->getSecurityAlert());
         }
     }
 
@@ -43,7 +34,7 @@ class StripePaymentController extends \Core\Controller
         $ip = $request->getServerParam('REMOTE_ADDR');
         if(false === $request->getAttribute('csrf_status')){
             $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> EXIT_WITH_403');
-            return $response->withStatus(403);
+            return $response->write($this->getSecurityAlert())->withStatus(403);
         }
         $payment_type = $request->getParsedBodyParam('payment-type');
         $this->setSessionVar(\Util\StripeUtility::SESSION_METHOD,$payment_type);
@@ -65,7 +56,7 @@ class StripePaymentController extends \Core\Controller
         $ip = $request->getServerParam('REMOTE_ADDR');
         if(false === $request->getAttribute('csrf_status')){
             $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> EXIT_WITH_403');
-            return $response->withStatus(403);
+            return $response->write($this->getSecurityAlert())->withStatus(403);
         }
         $method = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
         if(in_array($method.'-selection',array_keys($request->getParsedBody()))){
@@ -94,7 +85,7 @@ class StripePaymentController extends \Core\Controller
                         $dt_evt = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->updated_at);
                         $dt_str = $dt_evt->format('l d/m/Y à H:i:s');
                         $alert = '<h4 class="result mid-yelo">Message préventif  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h4>';
-                        $message = 'Tout semble indiqué qu\'achat similaire a déjà été effectué ce '.$dt_str.'.Vous pouvez fermez cette page ou poursuivre votre achat en cliquant sur le bouton "Continuer".';
+                        $message = 'Tout semble indiqué qu\'un achat similaire a déjà été effectué ce '.$dt_str.'.Vous pouvez fermez cette page ou poursuivre votre achat en cliquant sur le bouton "Continuer".';
                         $message .= '<input type="hidden" name="forced" value="force">'."\n";
                         $message .= '<input type="hidden" name="name" value="'.$name.'">'."\n";
                         $message .= '<input type="hidden" name="email" value="'.$email.'">'."\n";
@@ -127,7 +118,7 @@ class StripePaymentController extends \Core\Controller
         $ip = $request->getServerParam('REMOTE_ADDR');
         if(false === $request->getAttribute('csrf_status')){
             $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> EXIT_WITH_403');
-            return $response->withStatus(403);
+            return $response->write($this->getSecurityAlert())->withStatus(403);
         }
         $method = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
         if(in_array($method.'-selection',array_keys($request->getParsedBody()))){
@@ -152,7 +143,7 @@ class StripePaymentController extends \Core\Controller
             return $this->view->render($response, 'Home/payredir.html.twig',[
                 'redir_url' => $redir_url
             ]);
-            
+
         }
     }
 
@@ -251,6 +242,21 @@ class StripePaymentController extends \Core\Controller
             $message .= '</a>';
         }
         return $message;
+    }
+
+    private function getSecurityAlert()
+    {
+        $alert = '<h4 class="result mid-red">Alerte de sécurité  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h4>';
+        $message = 'Il nous est impossible de valider votre demande.<br>';
+        $message .= 'Cela peut arriver dans les cas suivants:<br>';
+        $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Le compte client a été désactivé.<br>';
+        $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Un problème d\'ordre matériel est survenu.<br>';
+        $message .= 'Vous pouvez contacter nos services à l\'adresse <a href="mailto:info@ipefix.com">info@ipefix.com</a>';
+        $content = $this->view->fetch('Home/paymess.html.twig',[
+            'alert' => $alert,
+            'message' => $message
+        ]);
+        return $content;
     }
 
     private function setSessionVar($name,$value)
