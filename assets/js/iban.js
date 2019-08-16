@@ -72,7 +72,7 @@
             stripe.createSource(iBan, sourceData).then(function(result) {
                 console.log(result);
                 if (result.error) {
-                    setHelpMessage(event.error.message);
+                    setHelpMessage(result.error.message);
                 } else {
                     setHelpMessage('');
                     stripeSourceHandler(result.source);
