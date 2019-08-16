@@ -58,8 +58,7 @@
     margin-bottom: 5px;
 }
 .main .content-right .list-group .list-group-item table {
-    width: 100%;
-    min-width: 100%;
+    min-width: 150px;
 }
 .main .content-right .list-group .list-group-item table td {
     width: 50%;
