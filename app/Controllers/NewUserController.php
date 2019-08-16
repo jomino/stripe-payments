@@ -13,19 +13,14 @@ class NewUserController extends \Core\Controller
     {
         $ip = $request->getServerParam('REMOTE_ADDR');
 
-        $parsedBody = $request->getParsedBody();
+        $datas = $request->getParsedBody();
 
-        $agence = $parsedBody['agence'];
-        $email = $parsedBody['email'];
-
-        $datas = [
-            'agence' => $agence,
-            'email' => $email
-        ];
+        $domain = $datas['domain'];
+        $email = $datas['email'];
 
         if(false === $request->getAttribute('csrf_status')){
             $this->logger->info('['.$ip.'] ADDUSER_CSRF_REJECTED -> EXIT_WITH_403');
-            return $response->withStatus(403);
+            return $response->write($this->getSecurityAlert())->withStatus(403);
         }elseif(false === $request->getAttribute(\App\Parameters::SECURITY['status'])){
             $this->logger->info('['.$ip.'] ADDUSER_TIMEOUT_REJECTED -> HOME_REDIR');
             return $response->withRedirect($this->router->pathFor('home'));
@@ -33,7 +28,7 @@ class NewUserController extends \Core\Controller
 
             $token = \Util\UuidGenerator::v4();
 
-            if($user=$this->createNewUser($token,$agence,$email)){
+            if($user=$this->createNewUser($token,$domain,$email)){
                 $uri = $request->getUri();
                 $register_link = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor('register',[
                     'id' => $user->id,
@@ -59,12 +54,12 @@ class NewUserController extends \Core\Controller
         }
     }
 
-    private function createNewUser($token,$agence,$email)
+    private function createNewUser($token,$domain,$email)
     {
-        if($this->validateUser($agence)){
+        if($this->validateUser($domain)){
             try{
                 $user = new User();
-                $user->name = $agence;
+                $user->name = $domain;
                 $user->email = $email;
                 $user->uuid = $token;
                 $user->save();
@@ -79,10 +74,10 @@ class NewUserController extends \Core\Controller
         }
     }
 
-    private function validateUser($agence)
+    private function validateUser($domain)
     {
         try{
-            $count = User::where('name',$agence)->count();
+            $count = User::where('name',$domain)->count();
             return $count==0;
         }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
             return false;
@@ -121,6 +116,21 @@ class NewUserController extends \Core\Controller
             $error_str .= $error."\n";
         },$errors);
         return $error_str;
+    }
+
+    private function getSecurityAlert()
+    {
+        $alert = '<h4 class="result mid-red">Alerte de sécurité  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h4>';
+        $message = 'Il nous est impossible de valider votre demande.<br>';
+        $message .= 'Cela peut arriver dans les cas suivants:<br>';
+        $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Une tentative de ré-utilisation d\'un formulaire.<br>';
+        $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Un autre problème d\'ordre technique.<br>';
+        $message .= 'Vous pouvez contacter nos services à l\'adresse <a href="mailto:info@ipefix.com">info@ipefix.com</a>';
+        $content = $this->view->fetch('Home/paymess.html.twig',[
+            'alert' => $alert,
+            'message' => $message
+        ]);
+        return $content;
     }
 
 }
