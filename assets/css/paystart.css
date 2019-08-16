@@ -46,6 +46,16 @@
     margin-bottom: 0;
     margin-top: 5px;
 }
+.main .content-right .form-group button {
+    color: #3B4856;
+    margin-top: 10px;
+    font-family: Nonito Sans Bold;
+    font-weight: bold;
+    outline: none !important;
+}
+.main .content-right .form-group button.btn-default:hover {
+    color: #006699 !important;
+}
 .main .content-right .list-group .list-group-item {
     border: 0px none;
     padding: 0;
