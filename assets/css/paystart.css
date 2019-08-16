@@ -61,8 +61,8 @@
     min-width: 150px;
 }
 .main .content-right .list-group .list-group-item table tr td:first-child {
-    width: 33%;
-    min-width: 33%;
+    width: 40%;
+    min-width: 40%;
 }
 .main .content-right .list-group .list-group-item .img-thumbnail {
     max-width: 100px !important;
