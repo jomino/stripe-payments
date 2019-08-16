@@ -1,6 +1,7 @@
 (function(){
 
     var $bank_input = $('input[name="ideal-selection"]');
+    var $msg_output = $('.help-text');
 
     var $container = $('.form-container');
     $container.removeClass('mid');
@@ -27,9 +28,22 @@
     var idealBank = elements.create('idealBank', options);
     idealBank.mount('#ideal-bank-element');
 
+    var bank = '';
+
     idealBank.on('change', function(event) {
-        var bank = event.value;
+        bank = event.value;
         $bank_input.val(bank);
+        $msg_output.text('');
+        $msg_output.addClass('hidden');
+    });
+
+    $('form').on('submit',function(e){
+        if($bank_input.val()==''){
+            e.preventDefault();
+            $msg_output.text('Sélectionnez une banque');
+            $msg_output.remoceClass('hidden');
+            return false;
+        }
     });
 
 })();
