@@ -58,7 +58,7 @@
             e.preventDefault();
                     
             var sourceData = {
-                type: 'sepa_debit',
+                type: 'iban',
                 currency: 'eur',
                 owner: {
                     name: $('input[name="name"]').val(),
@@ -70,6 +70,7 @@
             };
 
             stripe.createSource(iBan, sourceData).then(function(result) {
+                console.log(result);
                 if (result.error) {
                     setHelpMessage(event.error.message);
                 } else {
