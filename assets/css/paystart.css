@@ -22,7 +22,7 @@
     line-height: 1.5em;
 }
 .main .content-right {
-    padding-top: 15px;
+    padding-top: 5px;
     margin-left: 12px;
     margin-bottom: 0;
     max-width: 100%;
@@ -32,7 +32,8 @@
 }
 .main .content-right .form-group button {
     color: #3B4856;
-    margin-top: 10px;
+    margin-top: 5px;
+    padding-left: 12px;
     font-family: Nonito Sans Bold;
     font-weight: bold;
     outline: none !important;
@@ -50,7 +51,7 @@
     border: 0px none;
     padding: 0;
     padding-left: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 .main .content-right .list-group .list-group-item .img-thumbnail {
     max-width: 100px !important;
