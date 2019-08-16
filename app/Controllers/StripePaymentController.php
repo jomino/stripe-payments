@@ -249,8 +249,8 @@ class StripePaymentController extends \Core\Controller
         $alert = '<h4 class="result mid-red">Alerte de sécurité  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h4>';
         $message = 'Il nous est impossible de valider votre demande.<br>';
         $message .= 'Cela peut arriver dans les cas suivants:<br>';
-        $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Le compte client a été désactivé.<br>';
-        $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Un problème d\'ordre matériel est survenu.<br>';
+        $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Une tentative de ré-utilisation d\'un formulaire.<br>';
+        $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Un autre problème d\'ordre technique.<br>';
         $message .= 'Vous pouvez contacter nos services à l\'adresse <a href="mailto:info@ipefix.com">info@ipefix.com</a>';
         $content = $this->view->fetch('Home/paymess.html.twig',[
             'alert' => $alert,
