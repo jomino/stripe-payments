@@ -1,6 +1,6 @@
 .main .border-right {
     padding-right: 0px !important;
-    min-height: 180px;
+    min-height: 240px;
     border-right: 1px solid;
     border-right-color: #3B4856;
 }
@@ -28,7 +28,7 @@
 }
 .main .border-left {
     padding-left: 0px !important;
-    min-height: 180px;
+    min-height: 240px;
     line-height: 1.5em;
 }
 .main .content-right {
