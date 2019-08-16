@@ -31,6 +31,7 @@ class Routes
             $app->get('/{token:[0-9a-zA-Z-]*}/{amount:[0-9]*}/{product:[0-9a-zA-Z-_]+}', \App\Controllers\StripePaymentController::class.':start')->setName('payment_start');
             $app->post('/identify', \App\Controllers\StripePaymentController::class.':identify')->setName('payment_identify');
             $app->post('/source', \App\Controllers\StripePaymentController::class.':source')->setName('payment_source');
+            $app->post('/charge', \App\Controllers\StripePaymentController::class.':charge')->setName('payment_charge');
         })->add($container->get('csrf'))->add(new \App\Middleware\HttpReferrerMiddleware($app));
         
         $app->get('/result/{token:[0-9a-zA-Z-]*}', \App\Controllers\StripePaymentController::class.':result')->setName('payment_result');

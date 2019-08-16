@@ -29,7 +29,7 @@ class StripePaymentController extends \Core\Controller
             $message = 'Il nous est impossible de valider votre demande.<br>';
             $message .= 'Cela peut arriver dans les cas suivants:<br>';
             $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Le compte client a été désactivé.<br>';
-            $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Un problème d\'ordre matériel est survenu.<br><br>';
+            $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Un problème d\'ordre matériel est survenu.<br>';
             $message .= 'Vous pouvez contacter nos services à l\'adresse <a href="mailto:info@ipefix.com">info@ipefix.com</a>';
             return $this->view->render($response, 'Home/paymess.html.twig',[
                 'alert' => $alert,
@@ -48,7 +48,16 @@ class StripePaymentController extends \Core\Controller
         $payment_type = $request->getParsedBodyParam('payment-type');
         $this->setSessionVar(\Util\StripeUtility::SESSION_METHOD,$payment_type);
         $this->logger->info('['.$ip.'] PAYMENT_START_IDENTIFY -> METHOD_TYPE: '.$payment_type);
-        return $this->view->render($response, 'Home/payidentify.html.twig');
+        switch($payment_type){
+            case \Util\StripeUtility::METHOD_IBAN:
+                $post_url = $this->router->pathFor('payment_charge');
+            break;
+            default:
+                $post_url = $this->router->pathFor('payment_source');
+        }
+        return $this->view->render($response, 'Home/payidentify.html.twig',[
+            'post_url' => $post_url
+        ]);
     }
 
     public function source($request, $response, $args)
@@ -113,15 +122,49 @@ class StripePaymentController extends \Core\Controller
         ]);
     }
 
+    public function charge($request, $response, $args)
+    {
+        $ip = $request->getServerParam('REMOTE_ADDR');
+        if(false === $request->getAttribute('csrf_status')){
+            $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> EXIT_WITH_403');
+            return $response->withStatus(403);
+        }
+        $method = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
+        if(in_array($method.'-selection',array_keys($request->getParsedBody()))){
+            $method_selection = $request->getParsedBodyParam($method.'-selection');
+            $this->setSessionVar(\Util\StripeUtility::SESSION_SELECTION,$method_selection);
+        }
+        $name = $request->getParsedBodyParam('name');
+        $email = $request->getParsedBodyParam('email');
+        if(!empty($name) && !empty($email)){
+
+            if(!($event=$this->getEventFromSource($method_selection))){
+                $s_token = \Util\UuidGenerator::v4();
+                $status = \Util\StripeUtility::STATUS_PENDING;
+                $uuid = $this->session->get(\Util\StripeUtility::SESSION_REFERRER);
+                $amount = $this->session->get(\Util\StripeUtility::SESSION_AMOUNT);
+                $product = $this->session->get(\Util\StripeUtility::SESSION_PRODUCT);
+                $event = $this->createNewEvent($status,$uuid,$name,$email,$amount,$product,$method,$method_selection,$s_token);
+            }
+
+            $redir_url = $this->getReturnUrl($request->getUri(),$event->uuid);
+
+            return $this->view->render($response, 'Home/payredir.html.twig',[
+                'redir_url' => $redir_url
+            ]);
+            
+        }
+    }
+
     public function result($request, $response, $args)
     {
         $event = $this->getCurrentEvent($args['token']);
-        $user = $this->getCurrentUser();
-        $method = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
+        $user = $this->getCurrentUser($event->uuid);
+        $method = $event->method;
         $event_date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $event->updated_at);
         $amount = number_format((float) $event->amount/100, 2, ',', ' ');
         $message = '<strong>Produit:</strong> '.$event->product.'<br>';
-        $message .= '<strong>Methode:</strong> '.ucfirst($event->method).'<br>';
+        $message .= '<strong>Methode:</strong> '.ucfirst($method).'<br>';
         $message .= '<strong>Date:</strong> '.$event_date->format('d/m/Y H:i:s').'<br>';
         $message .= '<strong>Bénéficiaire:</strong> '.$user->name.'<br>';
         $message .= '<strong>Montant:</strong> '.$amount.' &euro;<br>';
@@ -218,11 +261,15 @@ class StripePaymentController extends \Core\Controller
         $this->session->set($name,$value);
     }
 
-    private function getCurrentUser()
+    private function getCurrentUser($token='')
     {
-        $token = $this->session->get(\Util\StripeUtility::SESSION_REFERRER);
+        if(!empty($token)){
+            $s_token = $token;
+        }elseif($this->session->exists(\Util\StripeUtility::SESSION_REFERRER)){
+            $s_token = $this->session->get(\Util\StripeUtility::SESSION_REFERRER);
+        }
         try{
-            $user = \App\Models\User::where('uuid',$token)->first();
+            $user = \App\Models\User::where('uuid',$s_token)->firstOrFail();
             return $user;
         }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
             return null;
@@ -256,6 +303,17 @@ class StripePaymentController extends \Core\Controller
         return null;
     }
 
+    private function getEventFromSource($skey)
+    {
+        try{
+            $event = \App\Models\Event::where('skey',$skey)->firstOrFail();
+            return $event;
+        }catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return null;
+        }
+        return null;
+    }
+
     private function getSource($request,$user,$email,$name)
     {
         if($event=$this->getCurrentEvent()){
@@ -266,11 +324,11 @@ class StripePaymentController extends \Core\Controller
         return $source;
     }
 
-    private function getReturnUrl($uri,$uuid)
+    private function getReturnUrl($uri,$evt_uuid)
     {
         $route_name = 'payment_result';
         return $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor($route_name,[
-            'token' => $uuid
+            'token' => $evt_uuid
         ]).'?l='.$this->language;
     }
 
@@ -317,7 +375,7 @@ class StripePaymentController extends \Core\Controller
         $src_status = $source->status==\Util\StripeUtility::STATUS_PENDING ? \Util\StripeUtility::STATUS_PENDING : \Util\StripeUtility::STATUS_FAILED;
         $this->createNewEvent($src_status,$user->uuid,$name,$email,$amount,$product,$method,$src_id,$s_token);
         return $source;
-}
+    }
 
     private function createNewEvent($status,$uuid,$name,$email,$amount,$product,$method,$skey,$s_token)
     {

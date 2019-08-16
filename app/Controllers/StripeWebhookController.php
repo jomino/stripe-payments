@@ -38,7 +38,7 @@ class StripeWebhookController extends \Core\Controller
 
             switch($object['object']){
                 case \Util\StripeUtility::EVENT_OBJECT_SOURCE:
-                    if($event=$this->getEvent($token,$object['id'])){
+                    if($event=$this->getEventFromSource($token,$object)){
                         if($event->status==\Util\StripeUtility::STATUS_PENDING){
                             if($type==\Util\StripeUtility::EVENT_SOURCE_CHARGEABLE){
                                 if($charge=$this->createChargeFromSource($api_key,$object)){
@@ -65,12 +65,12 @@ class StripeWebhookController extends \Core\Controller
                     }else{
                         $result = [
                             'status' => 'failed',
-                            'error' => 'database_not_ready'
+                            'error' => 'event_not_found'
                         ];
                     }
                 break;
                 case \Util\StripeUtility::EVENT_OBJECT_CHARGE:
-                    if($event=$this->getEvent($token,$object['payment_method'])){
+                    if($event=$this->getEventFromCharge($token,$object)){
                         if($event->status==\Util\StripeUtility::STATUS_CHARGEABLE){
                             if($type==\Util\StripeUtility::EVENT_CHARGE_SUCCEEDED){
                                 $event->status = \Util\StripeUtility::STATUS_SUCCEEDED;
@@ -129,6 +129,39 @@ class StripeWebhookController extends \Core\Controller
             return null;
         }
 
+    }
+
+    private function createNewEvent($uuid,$object)
+    {
+        try{
+            $event = new \App\Models\Event();
+            $event->status = \Util\StripeUtility::STATUS_PENDING;
+            $event->uuid = $uuid;
+            $event->name = $object['owner']['name']??'';
+            $event->email = $object['owner']['email']??'';
+            $event->amount = $object['amount']??0;
+            $event->product = $object['metadata']['product']??'none';
+            $event->method = $object['type'];
+            $event->token = \Util\UuidGenerator::v4();
+            $event->skey = $object['id'];
+            $event->save();
+            return $event;
+        }catch(\Exception $e){
+            return null;
+        }
+    }
+
+    private function getEventFromSource($token,$obj)
+    {
+        if(!($event=$this->getEvent($token,$obj['id']))){
+            $event = $this->createNewEvent($token,$obj);
+        }
+        return $event;
+    }
+
+    private function getEventFromCharge($token,$obj)
+    {
+        return $this->getEvent($token,$obj['payment_method']);
     }
 
     private function getEvent($token,$skey)

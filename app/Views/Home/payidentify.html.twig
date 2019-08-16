@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="row">
-            <form action="{{ path_for('payment_source') }}" method="post">
+            <form action="{{ post_url }}" method="post">
                 {% if session.payment_type in ['ideal'] -%}
                     <input type="hidden" name="{{ session.payment_type }}-selection" value="">
                 {%- endif %}
@@ -58,7 +58,7 @@
                                 <input type="email" name="email" class="form-control" placeholder="E-mail*" required>
                             </div>
                             {% if session.payment_type=='ideal' -%}
-                                <div class="form-group">
+                                <div class="form-group ideal">
                                     <label class="mid-blue" for="ideal-bank-element">
                                         iDEAL
                                     </label>
@@ -67,6 +67,18 @@
                                     </div>
                                 </div>
                                 <script src="js/ideal.js"></script>
+                            {%- endif %}
+                            {% if session.payment_type=='iban' -%}
+                                <div class="form-group iban">
+                                    <label class="mid-blue" for="iban-element">
+                                        IBAN
+                                    </label>
+                                    <div id="iban-element">
+                                        <!-- A Stripe Element will be inserted here. -->
+                                    </div>
+                                </div>
+                                <div class="small help-text hidden"></div>
+                                <script src="js/iban.js"></script>
                             {%- endif %}
                         </div>
                     </div>
