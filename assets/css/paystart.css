@@ -30,10 +30,13 @@
 .main .content-right p {
     max-width: 380px;
 }
+.main .content-right .form-group {
+    max-width: 100%;
+    margin-left: 12px;
+}
 .main .content-right .form-group button {
     color: #3B4856;
     margin-top: 5px;
-    margin-left: 12px;
     font-family: Nonito Sans Bold;
     font-weight: bold;
     outline: none !important;
