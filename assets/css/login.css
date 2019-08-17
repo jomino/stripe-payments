@@ -68,18 +68,19 @@
     }
     .main .content-left h2 {
         letter-spacing: -1px;
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
     }
     .main .content-left p {
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-top: 15px;
+        margin-bottom: 15px;
     }
     .main .content-left .form-group {
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-top: 15px;
+        margin-bottom: 0;
     }
     .main .content-left .form-group button {
         color: #3B4856;
-        margin-top: 10px;
         outline: none !important;
     }
     .main .content-left .form-group button.btn-default:hover {
