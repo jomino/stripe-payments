@@ -110,7 +110,7 @@
     }
 }
 
-@media (max-height: 639px) {
+@media (orientation: landscape) and (max-height: 639px) {
     .main .footer {
         display: none;
     }
