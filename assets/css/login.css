@@ -67,6 +67,7 @@
     }
     .main .content-left h2 {
         text-align: center;
+        letter-spacing: -1px;
     }
     .main .content-left p {
         text-align: left;
