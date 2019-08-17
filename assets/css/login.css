@@ -63,7 +63,7 @@
         border: 0px none;
     }
     .main .content-left {
-        max-width: 100%;
+        max-width: 80%;
         text-align: center;
     }
     .main .content-left h2 {
@@ -111,10 +111,12 @@
         max-width: 100%;
         margin-left: 5%;
         margin-right: 5%;
+        padding-left: 0;
+        padding-right: 0;
         border: 0px none;
     }
     .main .content-left {
-        max-width: 100%;
+        max-width: 90%;
         text-align: center;
     }
     .main .content-left h2 {
