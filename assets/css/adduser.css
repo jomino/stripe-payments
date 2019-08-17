@@ -55,6 +55,8 @@
         max-width: 100%;
         margin-left: 10%;
         padding-right: 10%;
+        margin-right: 0;
+        padding-left: 0;
         border: 0px none;
     }
     .main .content-left {
@@ -97,6 +99,8 @@
         max-width: 100%;
         margin-left: 10%;
         padding-right: 10%;
+        margin-right: 0;
+        padding-left: 0;
         border: 0px none;
     }
     .main .content-right {
@@ -113,6 +117,8 @@
         max-width: 100%;
         margin-left: 5%;
         padding-right: 5%;
+        margin-right: 0;
+        padding-left: 0;
         border: 0px none;
     }
     .main .content-left {
@@ -159,6 +165,8 @@
         max-width: 100%;
         margin-left: 5%;
         padding-right: 5%;
+        margin-right: 0;
+        padding-left: 0;
         border: 0px none;
     }
     .main .content-right {
