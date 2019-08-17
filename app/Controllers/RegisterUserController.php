@@ -17,7 +17,7 @@ class RegisterUserController extends \Core\Controller
         $user_id = (int) $args['id']??0;
         if(empty($token) || $user_id==0){
             $this->logger->info('['.$ip.'] REGISTER_USER_BAD_REQUEST -> EXIT_WITH_403');
-            return $response->withStatus(403);
+            return $response->write($this->getSecurityAlert('BAD_REQUEST'))->withStatus(403);
         }
         if($user=$this->validateUser($token,$user_id)){
             $datas = [ 'agence' => $user->name, 'email' => $user->email ];
@@ -33,14 +33,14 @@ class RegisterUserController extends \Core\Controller
             }else{
                 if(false === $request->getAttribute('csrf_status')){
                     $this->logger->info('['.$ip.'] REGISTER_NEWUSER_CSRF_REJECTED -> EXIT_WITH_403');
-                    return $response->withStatus(403);
+                    return $response->write($this->getSecurityAlert('CSRF_REJECTED'))->withStatus(403);
                 }else{
                     if($this->register($user,$request->getParsedBody())){
                         $template_name = 'registered';
-                        $webhook_url = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor( 'webhook', [
+                        /* $webhook_url = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor( 'webhook', [
                             'token' => $user->uuid
                         ]);
-                        $this->setupWebhook($user,$webhook_url);
+                        $this->setupWebhook($user,$webhook_url); */
                         $this->logger->info('['.$ip.'] REGISTER_NEWUSER_PROCEEDED -> USER_ID: '.$user->id);
                     }
                 }
@@ -49,10 +49,10 @@ class RegisterUserController extends \Core\Controller
         if(sizeof($this->errors)>0){
             $errors = $this->getErrors();
             $this->logger->info('['.$ip.'] REGISTER_NEWUSER_ERROR -> WITH_ERRORS: '.$errors);
-            $datas['error'] = $errors;
-            $template_name = 'register-fail';
+            return $response->write($this->getSecurityAlert($errors));
+        }else{
+            return $this->view->render($response, sprintf('Home/%s.html.twig',$template_name), $datas);
         }
-        return $this->view->render($response, sprintf('Home/%s.html.twig',$template_name), $datas);
     }
 
     private function validateUser($token,$user_id)
@@ -127,5 +127,25 @@ class RegisterUserController extends \Core\Controller
             $error_str .= $error."\n";
         },$errors);
         return $error_str;
+    }
+
+    private function getSecurityAlert($errors='')
+    {
+        $alert = '<h4 class="result mid-red">Alerte de sécurité  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h4>';
+        $message = 'Il nous est impossible de valider votre demande.<br>';
+        $message .= 'Cela peut arriver dans les cas suivants:<br>';
+        $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Une tentative de ré-utilisation d\'un formulaire.<br>';
+        $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Un autre problème d\'ordre technique.<br>';
+        if(!empty($errors)){
+            $message .= '<span class="bold mid-red">';
+            $message .= $errors;
+            $message .= '</span><br>';
+        }
+        $message .= 'Vous pouvez contacter nos services à l\'adresse <a href="mailto:info@ipefix.com">info@ipefix.com</a>';
+        $content = $this->view->fetch('Home/paymess.html.twig',[
+            'alert' => $alert,
+            'message' => $message
+        ]);
+        return $content;
     }
 }
