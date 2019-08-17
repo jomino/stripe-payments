@@ -16,12 +16,6 @@
     .main .content-left p {
         margin-bottom: 5px;
     }
-    .main .content-left h2,
-    .main .content-left h3,
-    .main .content-left h4 {
-        margin-top: 5px !important;
-        margin-bottom: 5px !important;
-    }
     .main .content-left .form-group {
         float: right;
         margin-top: 5px;
@@ -74,12 +68,6 @@
     }
     .main .content-left p {
         margin-bottom: 5px;
-    }
-    .main .content-left h2,
-    .main .content-left h3,
-    .main .content-left h4 {
-        margin-top: 5px !important;
-        margin-bottom: 5px !important;
     }
     .main .content-left .form-group {
         margin-top: 5px;

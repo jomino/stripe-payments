@@ -31,6 +31,17 @@
         min-height: 120px;
         padding-top: 80px;
     }
+    .main .header .text-center {
+        margin: 0;
+    }
+    .main .header .text-center h1 {
+        margin: 0;
+        white-space: nowrap;
+    }
+    .main .copyr {
+        margin-top: 5px;
+        white-space: nowrap;
+    }
 }
 
 @media (max-width: 768px) {
@@ -40,15 +51,23 @@
     .main .header {
         padding-top: 5px;
     }
-    .main .header h1 {
+    .main .header .text-center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .main .header .text-center h1 {
         margin: 0;
+        white-space: nowrap;
         letter-spacing: -1px;
     }
     .main .footer {
         position: absolute;
         min-height: 33px;
         bottom: 0;
-        padding-bottom: 5px;
+    }
+    .main .copyr {
+        white-space: nowrap;
+        margin-bottom: 5px;
     }
 }
 
@@ -82,12 +101,9 @@ body {
     font-family: Nonito Sans Bold Italic;
 }
 
-.main .header h1 {
-    margin: 0;
-    white-space: nowrap;
-}
-
-.main .copyr {
-    margin-top: 5px;
-    white-space: nowrap;
+.main .content-left h2,
+.main .content-left h3,
+.main .content-left h4 {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
 }
