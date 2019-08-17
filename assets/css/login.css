@@ -55,7 +55,7 @@
         max-height: 160px;
     }
 }
-@media (max-width: 767px) {
+@media (min-width: 377px) and  (max-width: 767px) {
     .main .border-right {
         max-width: 100%;
         margin-left: 10%;
