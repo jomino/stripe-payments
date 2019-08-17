@@ -54,7 +54,7 @@
     .main .border-right {
         max-width: 100%;
         margin-left: 10%;
-        margin-right: 10%;
+        padding-right: 10%;
         border: 0px none;
     }
     .main .content-left {
@@ -96,7 +96,7 @@
     .main .border-left {
         max-width: 100%;
         margin-left: 10%;
-        margin-right: 10%;
+        padding-right: 10%;
         border: 0px none;
     }
     .main .content-right {
@@ -112,7 +112,7 @@
     .main .border-right {
         max-width: 100%;
         margin-left: 5%;
-        margin-right: 5%;
+        padding-right: 5%;
         border: 0px none;
     }
     .main .content-left {
@@ -158,7 +158,7 @@
     .main .border-left {
         max-width: 100%;
         margin-left: 5%;
-        margin-right: 5%;
+        padding-right: 5%;
         border: 0px none;
     }
     .main .content-right {
