@@ -1,26 +1,58 @@
 @font-face {
     font-family: Source Code Pro;
     font-weight: 400;
-    src: url(/fonts/SourceCodePro-Regular.ttf) format('truetype');
+    src: url(../fonts/SourceCodePro-Regular.ttf) format('truetype');
 }
 
 @font-face {
     font-family: Nonito Sans;
     font-weight: 400;
-    src: url(/fonts/NunitoSans-Regular.ttf) format('truetype');
+    src: url(../fonts/NunitoSans-Regular.ttf) format('truetype');
 }
 
 @font-face {
     font-family: Nonito Sans Bold;
     font-weight: 600;
-    src: url(/fonts/NunitoSans-Bold.ttf) format('truetype');
+    src: url(../fonts/NunitoSans-Bold.ttf) format('truetype');
 }
 
 @font-face {
     font-family: Nonito Sans Bold Italic;
     font-style: italic;
     font-weight: 600;
-    src: url(/fonts/NunitoSans-BoldItalic.ttf) format('truetype');
+    src: url(../fonts/NunitoSans-BoldItalic.ttf) format('truetype');
+}
+
+@media (min-width: 769px) {
+    body {
+        font-size: 14px;
+    }
+    .main .header {
+        min-height: 120px;
+        padding-top: 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    body{
+        font-size: 16px;
+    }
+    .main .header {
+        padding-top: 5px;
+    }
+    .main .footer {
+        position: absolute;
+        min-height: 33px;
+        bottom: 0;
+        padding-bottom: 5px;
+    }
+}
+
+body {
+    font-family: Nonito Sans, sans-serif;
+    font-style: normal;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
 }
 
 .dark-blue  {color: #3B4856;}
@@ -33,13 +65,6 @@
 .mid-brown  {color: #8B7356;}
 .mid-green  {color: #5CA700;}
 .mid-red    {color: #FF3C26;}
-  
-body {
-    font-family: Nonito Sans, sans-serif;
-    font-style: normal;
-    -webkit-text-size-adjust: 100%;
-    -webkit-font-smoothing: antialiased;
-}
 
 .code {
     font-family: Source Code Pro;
@@ -53,15 +78,11 @@ body {
     font-family: Nonito Sans Bold Italic;
 }
 
-.main .header {
-    min-height: 120px;
-    padding-top: 80px;
-}
-
 .main .header h1 {
     margin-top: 0;
 }
 
 .main .copyr {
     margin-top: 5px;
+    white-space: nowrap;
 }
