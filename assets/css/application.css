@@ -54,6 +54,7 @@
     .main .header .text-center {
         margin-left: auto;
         margin-right: auto;
+        margin-bottom: 5px;
     }
     .main .header .text-center h1 {
         margin: 0;
