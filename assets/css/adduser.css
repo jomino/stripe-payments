@@ -66,10 +66,6 @@
         margin-top: 15px !important;
         margin-bottom: 15px !important;
     }
-    .main .content-left p {
-        margin-top: 15px;
-        margin-bottom: 15px;
-    }
     .main .content-left .form-group {
         margin-top: 25px;
         margin-bottom: 0;
@@ -107,6 +103,7 @@
         max-width: 80%;
     }
     .main .content-right p {
+        margin-top: 15px;
         text-align: justify;
     }
 }
@@ -168,6 +165,7 @@
         max-width: 90%;
     }
     .main .content-right p {
+        margin-top: 15px;
         text-align: justify;
     }
 }
