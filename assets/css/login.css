@@ -76,11 +76,12 @@
         margin-bottom: 15px;
     }
     .main .content-left .form-group {
-        margin-top: 15px;
+        margin-top: 25px;
         margin-bottom: 0;
     }
     .main .content-left .form-group button {
         color: #3B4856;
+        margin-top: 25px;
         outline: none !important;
     }
     .main .content-left .form-group button.btn-default:hover {
@@ -130,11 +131,12 @@
         margin-bottom: 15px;
     }
     .main .content-left .form-group {
-        margin-top: 15px;
+        margin-top: 25px;
         margin-bottom: 0;
     }
     .main .content-left .form-group button {
         color: #3B4856;
+        margin-top: 25px;
         outline: none !important;
     }
     .main .content-left .form-group button.btn-default:hover {
