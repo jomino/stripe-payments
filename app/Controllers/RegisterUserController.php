@@ -137,7 +137,7 @@ class RegisterUserController extends \Core\Controller
         $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Une tentative de ré-utilisation d\'un formulaire.<br>';
         $message .= '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Un autre problème d\'ordre technique.<br>';
         if(!empty($errors)){
-            $message .= '<span class="bold mid-red">';
+            $message .= '&nbsp;&nbsp;&nbsp;&nbsp;<span class="bold mid-red">';
             $message .= $errors;
             $message .= '</span><br>';
         }
