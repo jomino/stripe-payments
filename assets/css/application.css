@@ -102,9 +102,9 @@ body {
     font-family: Nonito Sans Bold Italic;
 }
 
-.main .content-left h2,
-.main .content-left h3,
-.main .content-left h4 {
+.main h2,
+.main h3,
+.main h4 {
     white-space: nowrap;
     margin-top: 5px !important;
     margin-bottom: 5px !important;
