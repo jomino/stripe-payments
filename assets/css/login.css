@@ -105,3 +105,52 @@
         display: none;
     }
 }
+
+@media (max-width: 376px) {
+    .main .border-right {
+        max-width: 100%;
+        border: 0px none;
+    }
+    .main .content-left {
+        margin-left: 10%;
+        margin-right: 10%;
+        max-width: 100%;
+        text-align: center;
+    }
+    .main .content-left h2 {
+        letter-spacing: -1px;
+    }
+    .main .content-left p {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .main .content-left .form-group {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .main .content-left .form-group button {
+        color: #3B4856;
+        margin-top: 10px;
+        outline: none !important;
+    }
+    .main .content-left .form-group button.btn-default:hover {
+        color: #006699 !important;
+    }
+    .main .content-left .form-group input[type="email"] {
+        border-color: #3B4856;
+    }
+    .main .content-left .form-group input[type="email"]:focus {
+        border-color: #3B4856;
+        outline: 0 none;
+        box-shadow: 0;
+    }
+    .main .border-left {
+        min-height: 0;
+    }
+    .main .content-right {
+        display: none;
+    }
+    .main .content-right .img-logo {
+        display: none;
+    }
+}
