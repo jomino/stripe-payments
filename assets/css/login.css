@@ -50,9 +50,11 @@
 .main .content-right {
     margin-left: 12px;
     margin-bottom: 0;
-    max-width: 100%;
+    max-width: 300px;
 }
 .main .content-right .img-responsive {
-    max-height: 160px;
-    margin-top: 10px;
+    position: relative;
+    float: right;
+    bottom: 0;
+    max-height: 120px;
 }
