@@ -63,7 +63,6 @@
 }
 @media (max-width: 768px) {
     .main .border-right {
-        min-height: 220px;
         max-width: 100%;
         border: 0px none;
     }
@@ -82,8 +81,8 @@
         margin-bottom: 5px !important;
     }
     .main .content-left .form-group {
-        margin-left: auto;
-        margin-right: auto;
+        margin-left: 10%;
+        margin-right: 10%;
         margin-top: 5px;
         margin-bottom: 5px;
         min-width: 270px;
