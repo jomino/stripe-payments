@@ -14,20 +14,20 @@
 <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="container main">
+    <div class="container main hidden">
         <div class="row header">
-            <div class="col-md-6 col-md-offset-3">
+            <div class="col-sm-6 col-sm-offset-3">
                 <div class="text-center">
                     <h1 class="boldi light-blue">Ipefix Payment Solution</h1>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row content">
             <form action="{{ generated_link }}" method="post">
                 <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
                 <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
-                <div class="col-md-6 border-right">
-                    <div class="pull-right content-left">
+                <div class="col-sm-6 border-right">
+                    <div class="content-left">
                         <h2 class="dark-blue boldi">Inscription client</h2>
                         <p>
                             Veuillez copier/coller vos clefs publique et privée ici,
@@ -35,30 +35,35 @@
                             <a href="https://dashboard.stripe.com/login" target="_blank">Dashboard-Stripe</a>
                             à la rubrique "Développeurs" -> "Clés API".
                         </p>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-default btn-sm btn-block bold">Enregistrer</button>
+                    </div>
+                </div>
+                <div class="col-sm-6 border-left">
+                    <div class="content-right">
+                        <div class="form-container">
+                            <div class="form-group">
+                                <label class="mid-blue">Votre clefs publique:</label>
+                                <input type="text" class="form-control" name="pkey" placeholder="pk_ ..." required>
+                            </div>
+                            <div class="form-group">
+                                <label class="mid-blue">Votre clefs secrète:</label>
+                                <input type="password" class="form-control" name="skey" placeholder="sk_ ..." required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-default btn-sm btn-block bold">Enregistrer</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 border-left">
-                    <div class="pull-left content-right">
-                            <div class="form-container">
-                                <div class="form-group">
-                                    <label class="mid-blue">Votre clefs publique:</label>
-                                    <input type="text" class="form-control" name="pkey" placeholder="pk_ ..." required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="mid-blue">Votre clefs secrète:</label>
-                                    <input type="password" class="form-control" name="skey" placeholder="sk_ ..." required>
-                                </div>
-                            </div>
-                    </div>
-                </div>
             </form>
-            <div class="col-md-4 col-md-offset-4">
+        </div>
+        <div class="row footer">
+            <div class="col-sm-4 col-sm-offset-4">
                 <div class="text-center copyr">&copy; Ipefix 2019</div>
             </div>
         </div>
     </div>
+    <div class="container loader"></div>
+    <script src="js/loadingoverlay.min.js"></script>
+    <script src="js/application.js"></script>
 </body>
 </html>
