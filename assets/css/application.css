@@ -40,6 +40,10 @@
     .main .header {
         padding-top: 5px;
     }
+    .main .header h1 {
+        margin: 0;
+        letter-spacing: 85%;
+    }
     .main .footer {
         position: absolute;
         min-height: 33px;
@@ -80,6 +84,7 @@ body {
 
 .main .header h1 {
     margin: 0;
+    white-space: nowrap;
 }
 
 .main .copyr {
