@@ -110,6 +110,12 @@
     }
 }
 
+@media (max-height: 639px) {
+    .main .footer {
+        display: none;
+    }
+}
+
 body {
     font-family: Nonito Sans, sans-serif;
     font-style: normal;
