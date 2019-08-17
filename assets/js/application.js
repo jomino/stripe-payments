@@ -13,11 +13,11 @@ $(document).ready(function(){
         window.setTimeout(function(){
             overlayLoader('hide');
             $loading_el.remove();
-            $main_el.show();
+            $main_el.removeClass('hidden');
         },3000);
         overlayLoader('show');
     }else{
-        $main_el.show();
+        $main_el.removeClass('hidden');
     }
 
 });
