@@ -64,13 +64,12 @@
         margin-left: 10%;
         margin-right: 10%;
         max-width: 100%;
+        text-align: center;
     }
     .main .content-left h2 {
-        text-align: left;
         letter-spacing: -1px;
     }
     .main .content-left p {
-        text-align: left;
         margin-top: 10px;
         margin-bottom: 10px;
     }
