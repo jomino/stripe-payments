@@ -14,7 +14,7 @@ $(document).ready(function(){
             overlayLoader('hide');
             $loading_el.remove();
             $main_el.removeClass('hidden');
-        },3000);
+        },2000);
         overlayLoader('show');
     }else{
         $main_el.removeClass('hidden');
