@@ -7,8 +7,8 @@
         border-right-color: #3B4856;
     }
     .main .content-left {
-        position: relative;
         float: right;
+        position: relative;
         margin-right: 12px;
         text-align: right;
         max-width: 100%;
@@ -25,8 +25,6 @@
     .main .content-left .form-group button {
         color: #3B4856;
         margin-top: 10px;
-        font-family: Nonito Sans Bold;
-        font-weight: bold;
         outline: none !important;
     }
     .main .content-left .form-group button.btn-default:hover {
@@ -46,6 +44,7 @@
     }
     .main .content-right {
         float: left;
+        position: relative;
         margin-left: 12px;
         margin-bottom: 0;
         max-width: 100%;
@@ -99,9 +98,7 @@
         min-height: 0;
     }
     .main .content-right {
-        margin: auto auto;
-        margin-bottom: 0;
-        max-width: 100%;
+        display: none;
     }
     .main .content-right .img-logo {
         display: none;
