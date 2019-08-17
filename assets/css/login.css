@@ -115,4 +115,7 @@
     .main .content-right .img-logo {
         display: none;
     }
+    .main .content-right .img-logo img {
+        display: none !important;
+    }
 }
