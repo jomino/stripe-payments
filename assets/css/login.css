@@ -66,16 +66,17 @@
         max-width: 100%;
     }
     .main .content-left h2 {
-        text-align: center;
+        text-align: left;
         letter-spacing: -1px;
     }
     .main .content-left p {
         text-align: left;
-        margin-bottom: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
     .main .content-left .form-group {
-        margin-top: 5px;
-        margin-bottom: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
     .main .content-left .form-group button {
         color: #3B4856;
