@@ -16,7 +16,7 @@
 <body>
     <div class="container main hidden">
         <div class="row header">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-6 col-xs-12 col-sm-offset-3">
                 <div class="text-center">
                     <h1 class="boldi light-blue">Ipefix Payment Solution</h1>
                 </div>
@@ -26,7 +26,7 @@
             <form action="{{ generated_link }}" method="post">
                 <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
                 <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
-                <div class="col-sm-6 border-right">
+                <div class="col-sm-6 col-xs-12 border-right">
                     <div class="content-left">
                         <h2 class="dark-blue boldi">Inscription client</h2>
                         <p>
@@ -37,7 +37,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="col-sm-6 border-left">
+                <div class="col-sm-6 col-xs-12 border-left">
                     <div class="content-right">
                         <div class="form-container">
                             <div class="form-group">
