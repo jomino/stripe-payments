@@ -67,7 +67,8 @@
         border: 0px none;
     }
     .main .content-left {
-        margin: auto auto;
+        margin-left: 10%;
+        margin-right: 10%;
         text-align: justify;
         max-width: 100%;
     }
@@ -81,11 +82,8 @@
         margin-bottom: 5px !important;
     }
     .main .content-left .form-group {
-        margin-left: 10%;
-        margin-right: 10%;
         margin-top: 5px;
         margin-bottom: 5px;
-        min-width: 270px;
     }
     .main .content-left .form-group button {
         color: #3B4856;
