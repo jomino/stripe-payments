@@ -50,7 +50,7 @@
 .main .content-right {
     margin-left: 12px;
     margin-bottom: 0;
-    max-width: 300px;
+    min-width: 300px;
 }
 .main .content-right .img-responsive {
     position: relative;
