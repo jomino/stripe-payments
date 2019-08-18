@@ -33,7 +33,7 @@
                 {%- endif %}
                 <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
                 <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
-                <div class="col-sm-6 col-xs-12 border-right">
+                <div class="col-sm-6 col-xs-12 border-right{%- if session.payment_type in ['ideal','iban'] %} {{ session.payment_type -}}{%- endif -%}">
                     <div class="content-left">
                         <h2 class="dark-blue boldi">Identifiez-vous</h2>
                         <h4 class="mid-blue">&Eacute;tape 2</h4>
@@ -48,8 +48,8 @@
                         <p class="help-text small mid-red bold hidden"></p>
                     </div>
                 </div>
-                <div class="col-sm-6 col-xs-12 border-left">
-                    <div class="content-right{%- if session.payment_type in ['ideal','iban'] %} {{ session.payment_type -}}{%- endif -%}">
+                <div class="col-sm-6 col-xs-12 border-left{%- if session.payment_type in ['ideal','iban'] %} {{ session.payment_type -}}{%- endif -%}">
+                    <div class="content-right">
                         <div class="form-container">
                             <div class="form-group">
                                 <label class="mid-blue">Votre nom:</label>
