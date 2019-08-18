@@ -3,20 +3,24 @@
     .main .content-left .loader-container {
         width: 55px;
         height: 55px;
-        margin-top: 5px
+        margin-top: 5px;
     }
 }
 @media (min-width: 377px) and  (max-width: 767px) {
     .main .content-left .loader-container {
-        width: 55px;
-        height: 55px;
-        margin-top: 5px
+        width: 100px;
+        height: 100px;
+        margin-top: 15px;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 @media (max-width: 376px) {
     .main .content-left .loader-container {
-        width: 55px;
-        height: 55px;
-        margin-top: 5px
+        width: 100px;
+        height: 100px;
+        margin-top: 15px;
+        margin-left: auto;
+        margin-right: auto;
     }
 }

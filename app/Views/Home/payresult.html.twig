@@ -32,7 +32,9 @@
                         {% if status=='failed' -%}
                             <h4 class="result mid-red">Une erreur est survenue  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></h4>
                         {% endif -%}
-                        <img src="images/{{ bank_logo }}.png" alt="bank-logo" class="img-logo">
+                        <div class="img-logo">
+                            <img src="images/{{ bank_logo }}.png" alt="bank-logo" class="img-logo">
+                        </div>
                         <div class="result-container">
                             <p class="result-text bold hidden"></p>
                             <div class="loader-container"></div>
