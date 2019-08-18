@@ -1,50 +1,138 @@
-.main .header {
-    min-height: 120px;
+
+@media (min-width: 768px) {
+    .main .border-right {
+        padding-right: 0px !important;
+        min-height: 180px;
+        border-right: 1px solid;
+        border-right-color: #3B4856;
+    }
+    .main .content-left {
+        float: right;
+        position: relative;
+        margin-right: 12px;
+        text-align: right;
+        max-width: 55%;
+    }
+    .main .content-left .loader-container {
+        width: 55px;
+        height: 55px;
+        margin-top: 5px
+    }
+    .main .border-left {
+        padding-left: 0px !important;
+        min-height: 180px;
+        line-height: 1.5em;
+    }
+    .main .content-right {
+        float: left;
+        position: relative;
+        margin-left: 12px;
+        text-align: left;
+        max-width: 55%;
+    }
+    .main .content-right .img-logo {
+        max-height: 53px !important;
+        margin-bottom: 10px;
+    }
+    .main .content-right .loader-container {
+        width: 115px;
+        height: 115px;
+        padding: 15px 15px;
+    }
 }
-.main .border-right {
-    padding-right: 0px !important;
-    min-height: 180px;
-    border-right: 1px solid;
-    border-right-color: #3B4856;
+@media (min-width: 377px) and  (max-width: 767px) {
+    .main .border-right {
+        max-width: 100%;
+        padding-right: 0;
+        padding-left: 0;
+        border: 0px none;
+    }
+    .main .content-left {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 80%;
+        text-align: center;
+    }
+    .main .content-left h2 {
+        letter-spacing: -1px;
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+    }
+    .main .content-left p {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .main .content-left .loader-container {
+        width: 35px;
+        height: 35px;
+        margin-top: 5px
+    }
+    .main .border-left {
+        max-width: 100%;
+        padding-right: 0;
+        padding-left: 0;
+        border: 0px none;
+    }
+    .main .content-right {
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .main .content-right .img-logo {
+        max-height: 33px !important;
+        margin-bottom: 10px;
+    }
+    .main .content-right .loader-container {
+        width: 65px;
+        height: 65px;
+        padding: 5px 5px;
+    }
 }
-.main .content-left {
-    position: relative;
-    margin-right: 12px;
-    text-align: right;
-    max-width: 55%;
-}
-.main .content-left h2,
-.main .content-left h3,
-.main .content-left h4 {
-    margin-top: 5px !important;
-    margin-bottom: 5px !important;
-}
-.main .content-left .loader-container {
-    float: right;
-    width: 55px;
-    height: 55px;
-    margin-top: 5px
-}
-.main .border-left {
-    padding-left: 0px !important;
-    min-height: 180px;
-    line-height: 1.5em;
-}
-.main .content-right {
-    position: relative;
-    margin-left: 12px;
-    text-align: left;
-    max-width: 55%;
-}
-.main .content-right .img-logo {
-    max-height: 53px !important;
-    margin-bottom: 10px;
-}
-.main .content-right .loader-container {
-    width: 115px;
-    height: 115px;
-    padding: 15px 15px;
-}
-.main .copyr {
-    margin-top: 5px;
+@media (max-width: 376px) {
+    .main .border-right {
+        max-width: 100%;
+        padding-right: 0;
+        padding-left: 0;
+        border: 0px none;
+    }
+    .main .content-left {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 90%;
+        text-align: center;
+    }
+    .main .content-left h2 {
+        letter-spacing: -1px;
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+    }
+    .main .content-left p {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .main .content-left .loader-container {
+        width: 35px;
+        height: 35px;
+        margin-top: 5px
+    }
+    .main .border-left {
+        max-width: 100%;
+        padding-right: 0;
+        padding-left: 0;
+        border: 0px none;
+    }
+    .main .content-right {
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .main .content-right .img-logo {
+        max-height: 33px !important;
+        margin-bottom: 10px;
+    }
+    .main .content-right .loader-container {
+        width: 65px;
+        height: 65px;
+        padding: 5px 5px;
+    }
 }
