@@ -56,11 +56,8 @@
         border: 1px solid #3B4856;
         border-radius: 4px;
     }
-    .main .content-right .form-container.top {
+    .main .content-right .form-container {
         margin-top: 5px;
-    }
-    .main .content-right .form-container.mid {
-        margin-top: 25px;
     }
     .main .content-right .form-group {
         margin-top: 5px;
