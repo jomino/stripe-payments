@@ -4,7 +4,7 @@ $(document).ready(function(){
     var $loading_el = $('.container.loader');
 
     var defaultLoaderOptions = {
-        imageClass: 'dark-blue'
+        imageColor: '#3B4856'
     };
 
     var overlayLoader = function(show,options){
