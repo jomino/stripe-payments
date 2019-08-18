@@ -1,75 +1,219 @@
-.main .border-right {
-    padding-right: 0px !important;
-    min-height: 240px;
-    border-right: 1px solid;
-    border-right-color: #3B4856;
+
+@media (min-width: 768px) {
+    .main .border-right {
+        padding-right: 0px !important;
+        min-height: 240px;
+        border-right: 1px solid;
+        border-right-color: #3B4856;
+    }
+    .main .content-left {
+        float: right;
+        position: relative;
+        margin-right: 12px;
+        text-align: right;
+        max-width: 100%;
+    }
+    .main .content-left .img-logo {
+        max-height: 53px !important;
+        margin-bottom: 5px;
+    }
+    .main .content-left p {
+        max-width: 300px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .main .border-left {
+        padding-left: 0px !important;
+        min-height: 240px;
+        line-height: 1.5em;
+    }
+    .main .content-right {
+        float: left;
+        position: relative;
+        margin-left: 12px;
+        text-align: left;
+        max-width: 100%;
+    }
+    .main .content-right .form-container #ideal-bank-element {
+        padding-top: 3px;
+        min-height: 33px;
+        border: 1px solid #3B4856;
+        border-radius: 4px;
+    }
+    .main .content-right .form-container.top {
+        margin-top: 5px;
+    }
+    .main .content-right .form-container.mid {
+        margin-top: 25px;
+    }
+    .main .content-right .form-group {
+        width: 270px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .main .content-right .form-group input[type="email"],
+    .main .content-right .form-group input[type="text"] {
+        border-color: #3B4856;
+        max-width: 100%;
+    }
+    .main .content-right .form-group input[type="email"]:focus,
+    .main .content-right .form-group input[type="text"]:focus {
+        border-color: #3B4856;
+        outline: 0 none;
+        box-shadow: 0;
+    }
+    .main .content-right .form-group.btn-submit button {
+        color: #3B4856;
+        margin-top: 20px;
+        outline: none !important;
+    }
+    .main .content-right .form-group.btn-submit button.btn-default:hover {
+        color: #006699 !important;
+    }
 }
-.main .content-left {
-    position: relative;
-    margin-right: 12px;
-    text-align: right;
-    max-width: 100%;
+@media (min-width: 377px) and  (max-width: 767px) {
+    .main .border-right {
+        max-width: 100%;
+        padding-right: 0;
+        padding-left: 0;
+        border: 0px none;
+    }
+    .main .content-left {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 80%;
+        text-align: center;
+    }
+    .main .content-left .img-logo {
+        max-height: 43px !important;
+        margin-bottom: 5px;
+    }
+    .main .content-left h2 {
+        letter-spacing: -1px;
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+    }
+    .main .content-left p {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .main .border-left {
+        max-width: 100%;
+        padding-right: 0;
+        padding-left: 0;
+        border: 0px none;
+    }
+    .main .content-right {
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .main .content-right .form-container #ideal-bank-element {
+        padding-top: 3px;
+        min-height: 33px;
+        border: 1px solid #3B4856;
+        border-radius: 4px;
+    }
+    .main .content-right .form-container.top {
+        margin-top: 5px;
+    }
+    .main .content-right .form-container.mid {
+        margin-top: 25px;
+    }
+    .main .content-right .form-group {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .main .content-right .form-group input[type="email"],
+    .main .content-right .form-group input[type="text"] {
+        border-color: #3B4856;
+        max-width: 100%;
+    }
+    .main .content-right .form-group input[type="email"]:focus,
+    .main .content-right .form-group input[type="text"]:focus {
+        border-color: #3B4856;
+        outline: 0 none;
+        box-shadow: 0;
+    }
+    .main .content-right .form-group.btn-submit button {
+        color: #3B4856;
+        margin-top: 20px;
+        outline: none !important;
+    }
+    .main .content-right .form-group.btn-submit button.btn-default:hover {
+        color: #006699 !important;
+    }
 }
-.main .content-left h2,
-.main .content-left h3,
-.main .content-left h4 {
-    margin-top: 5px !important;
-    margin-bottom: 5px !important;
-}
-.main .content-left .img-logo {
-    max-height: 53px !important;
-    margin-bottom: 5px;
-}
-.main .content-left p {
-    float: right;
-    max-width: 300px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-.main .border-left {
-    padding-left: 0px !important;
-    min-height: 240px;
-    line-height: 1.5em;
-}
-.main .content-right {
-    position: relative;
-    margin-left: 12px;
-    text-align: left;
-    max-width: 100%;
-}
-.main .content-right .form-container #ideal-bank-element {
-    padding-top: 3px;
-    min-height: 33px;
-    border: 1px solid #3B4856;
-    border-radius: 4px;
-}
-.main .content-right .form-container.top {
-    margin-top: 5px;
-}
-.main .content-right .form-container.mid {
-    margin-top: 25px;
-}
-.main .content-right .form-group {
-    width: 270px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-.main .content-right .form-group input[type="email"],
-.main .content-right .form-group input[type="text"] {
-    border-color: #3B4856;
-    max-width: 100%;
-}
-.main .content-right .form-group input[type="email"]:focus,
-.main .content-right .form-group input[type="text"]:focus {
-    border-color: #3B4856;
-    outline: 0 none;
-    box-shadow: 0;
-}
-.main .content-right .form-group.btn-submit button {
-    color: #3B4856;
-    margin-top: 20px;
-    outline: none !important;
-}
-.main .content-right .form-group.btn-submit button.btn-default:hover {
-    color: #006699 !important;
+@media (max-width: 376px) {
+    .main .border-right {
+        max-width: 100%;
+        padding-right: 0;
+        padding-left: 0;
+        border: 0px none;
+    }
+    .main .content-left {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 90%;
+        text-align: center;
+    }
+    .main .content-left .img-logo {
+        max-height: 43px !important;
+        margin-bottom: 5px;
+    }
+    .main .content-left h2 {
+        letter-spacing: -1px;
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+    }
+    .main .content-left p {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .main .border-left {
+        max-width: 100%;
+        padding-right: 0;
+        padding-left: 0;
+        border: 0px none;
+    }
+    .main .content-right {
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .main .content-right .form-container #ideal-bank-element {
+        padding-top: 3px;
+        min-height: 33px;
+        border: 1px solid #3B4856;
+        border-radius: 4px;
+    }
+    .main .content-right .form-container.top {
+        margin-top: 5px;
+    }
+    .main .content-right .form-container.mid {
+        margin-top: 25px;
+    }
+    .main .content-right .form-group {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .main .content-right .form-group input[type="email"],
+    .main .content-right .form-group input[type="text"] {
+        border-color: #3B4856;
+        max-width: 100%;
+    }
+    .main .content-right .form-group input[type="email"]:focus,
+    .main .content-right .form-group input[type="text"]:focus {
+        border-color: #3B4856;
+        outline: 0 none;
+        box-shadow: 0;
+    }
+    .main .content-right .form-group.btn-submit button {
+        color: #3B4856;
+        margin-top: 20px;
+        outline: none !important;
+    }
+    .main .content-right .form-group.btn-submit button.btn-default:hover {
+        color: #006699 !important;
+    }
 }
