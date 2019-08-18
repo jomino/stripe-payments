@@ -1,10 +1,10 @@
 
 @media (min-width: 768px) {
     .main .border-right {
-        min-height: 240px;
+        min-height: 270px;
     }
     .main .border-left {
-        min-height: 240px;
+        min-height: 270px;
     }
     .main .content-right .form-container #ideal-bank-element {
         padding-top: 3px;
