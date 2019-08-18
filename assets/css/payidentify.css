@@ -8,9 +8,17 @@
 
 @media (min-width: 768px) {
     .main .border-right {
+        min-height: 225px !important;
+    }
+    .main .border-right.ideal,
+    .main .border-right.iban {
         min-height: 270px !important;
     }
     .main .border-left {
+        min-height: 225px !important;
+    }
+    .main .border-left.ideal,
+    .main .border-left.iban {
         min-height: 270px !important;
     }
     .main .content-right .form-container {
