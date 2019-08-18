@@ -3,9 +3,13 @@ $(document).ready(function(){
     var $main_el = $('.container.main');
     var $loading_el = $('.container.loader');
 
+    var defaultLoaderOptions = {
+        imageClass: 'dark-blue'
+    };
+
     var overlayLoader = function(show,options){
         if($.LoadingOverlay){
-            $loading_el.LoadingOverlay(show,options || {});
+            $loading_el.LoadingOverlay( show, $.extend( options || {}, defaultLoaderOptions));
         }
     };
 
