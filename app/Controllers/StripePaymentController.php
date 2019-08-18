@@ -64,8 +64,13 @@ class StripePaymentController extends \Core\Controller
         }
         $name = $request->getParsedBodyParam('name');
         $email = $request->getParsedBodyParam('email');
+        $forced = !empty($request->getParsedBodyParam('forced'));
         if(!empty($name) && !empty($email)){
             if($user=$this->getCurrentUser()){
+                if($forced){
+                    $name = base64_decode($name);
+                    $email = base64_decode($email);
+                }
                 if($source=$this->getSource($request,$user,$email,$name)){
                     if($source->redirect->status==\Util\StripeUtility::STATUS_PENDING){
                         $this->logger->info('['.$ip.'] SOURCE_OBJ_SUCCEED -> STATUS_'.(\Util\StripeUtility::STATUS_PENDING));
@@ -73,7 +78,7 @@ class StripePaymentController extends \Core\Controller
                         return $this->view->render($response, 'Home/payredir.html.twig',[
                             'redir_url' => $redir_url
                         ]);
-                    }elseif(!empty($request->getParsedBodyParam('forced'))){
+                    }elseif($forced){
                         $this->logger->info('['.$ip.'] SOURCE_OBJ_ALERT -> FORCED_MODE_RETRY');
                         $source = $this->createNewSource($request,$user,$email,$name);
                         $redir_url = $source->redirect->url;
@@ -87,9 +92,9 @@ class StripePaymentController extends \Core\Controller
                         $alert = '<h4 class="result mid-yelo">Message préventif  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h4>';
                         $message = 'Tout semble indiqué qu\'un achat similaire a déjà été effectué ce '.$dt_str.'.Vous pouvez fermez cette page ou poursuivre votre achat en cliquant sur le bouton "Continuer".';
                         $message .= '<input type="hidden" name="forced" value="force">'."\n";
-                        $message .= '<input type="hidden" name="name" value="'.$name.'">'."\n";
-                        $message .= '<input type="hidden" name="email" value="'.$email.'">'."\n";
-                        $message .= '<button type="submit" class="btn btn-default btn-sm bold">Continuer</button>';
+                        $message .= '<input type="hidden" name="name" value="'.base64_encode($name).'">'."\n";
+                        $message .= '<input type="hidden" name="email" value="'.base64_encode($email).'">'."\n";
+                        $message .= '<br><button type="submit" class="btn btn-default btn-sm bold">Continuer</button>';
                         $this->logger->info('['.$ip.'] SOURCE_OBJ_ALERT -> PRODUCT_ALREADY_SUCCEEDED');
                     }
                 }else{
