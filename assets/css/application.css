@@ -47,10 +47,13 @@ body {
 
 .bold {
     font-family: Nonito Sans Bold;
+    font-weight: bold;
 }
 
 .boldi {
     font-family: Nonito Sans Bold Italic;
+    font-weight: bold;
+    font-style: italic;
 }
 
 .main h2,
@@ -59,6 +62,11 @@ body {
     white-space: nowrap;
     margin-top: 5px !important;
     margin-bottom: 5px !important;
+}
+
+.main .glyphicon {
+    vertical-align: bottom;
+    margin-bottom: -1px;
 }
 
 .loader {
@@ -94,66 +102,64 @@ body {
         margin-top: 5px;
         white-space: nowrap;
     }
-    .main .glyphicon {
+    .main .content .glyphicon {
         font-size: 24px;
-        vertical-align: bottom;
-        margin-bottom: -1px;
     }
-    .main .form-group button {
+    .main .content .form-group button.btn {
         color: #3B4856;
         outline: none !important;
     }
-    .main .form-group button.btn-default:hover {
+    .main .content .form-group button.btn:hover {
         color: #006699 !important;
     }
-    .main .form-group input[type="text"],
-    .main .form-group input[type="email"],
-    .main .form-group input[type="password"]  {
+    .main .content .form-group input[type="text"],
+    .main .content .form-group input[type="email"],
+    .main .content .form-group input[type="password"]  {
         border-color: #3B4856;
         max-width: 100%;
     }
-    .main .form-group input[type="text"]:focus,
-    .main .form-group input[type="email"]:focus,
-    .main .form-group input[type="password"]:focus {
+    .main .content .form-group input[type="text"]:focus,
+    .main .content .form-group input[type="email"]:focus,
+    .main .content .form-group input[type="password"]:focus {
         border-color: #3B4856;
         outline: 0 none;
         box-shadow: 0;
     }
-    .main .border-right {
+    .main .content .border-right {
         padding-right: 0;
         min-height: 180px;
         border-right: 1px solid;
         border-right-color: #3B4856;
     }
-    .main .content-left {
+    .main .content .content-left {
         float: right;
         position: relative;
         margin-right: 12px;
         text-align: right;
         min-height: 100%;
     }
-    .main .content-left p {
+    .main .content .content-left p {
         max-width: 300px;
         margin-top: 5px;
         margin-bottom: 5px;
     }
-    .main .content-left .img-logo {
+    .main .content .content-left .img-logo {
         max-height: 53px;
         margin-bottom: 5px;
     }
-    .main .border-left {
+    .main .content .border-left {
         padding-left: 0;
         min-height: 180px;
         border-left: 0px none;
     }
-    .main .content-right {
+    .main .content .content-right {
         float: left;
         position: relative;
         margin-left: 12px;
         text-align: left;
         max-height: 100%;
     }
-    .main .content-right p {
+    .main .content .content-right p {
         max-width: 300px;
     }
 }
@@ -187,55 +193,53 @@ body {
         white-space: nowrap;
         margin-bottom: 5px;
     }
-    .main .glyphicon {
+    .main .content .glyphicon {
         font-size: 20px;
-        vertical-align: bottom;
-        margin-bottom: -1px;
     }
-    .main .form-group button {
+    .main .content .form-group button {
         color: #3B4856;
         outline: none !important;
     }
-    .main .form-group button.btn-default:hover {
+    .main .content .form-group button.btn-default:hover {
         color: #006699 !important;
     }
-    .main .border-right {
+    .main .content .border-right {
         max-width: 100%;
         padding-right: 0;
         padding-left: 0;
         border: 0px none;
     }
-    .main .content-left {
+    .main .content .content-left {
         max-width: 80%;
         margin-left: auto;
         margin-right: auto;
         text-align: center;
     }
-    .main .content-left h2 {
+    .main .content .content-left h2 {
         letter-spacing: -1px;
         margin-top: 15px;
         margin-bottom: 15px;
     }
-    .main .content-left p {
+    .main .content .content-left p {
         margin-top: 15px;
         margin-bottom: 15px;
     }
-    .main .content-left .img-logo {
+    .main .content .content-left .img-logo {
         max-height: 63px;
         margin-bottom: 10px;
     }
-    .main .border-left {
+    .main .content .border-left {
         max-width: 100%;
         padding-right: 0;
         padding-left: 0;
         border: 0px none;
     }
-    .main .content-right {
+    .main .content .content-right {
         max-width: 80%;
         margin-left: auto;
         margin-right: auto;
     }
-    .main .content-right p {
+    .main .content .content-right p {
         max-width: 100%;
     }
 }
@@ -270,55 +274,53 @@ body {
         white-space: nowrap;
         margin-bottom: 5px;
     }
-    .main .glyphicon {
+    .main .content .glyphicon {
         font-size: 20px;
-        vertical-align: bottom;
-        margin-bottom: -1px;
     }
-    .main .form-group button {
+    .main .content .form-group button {
         color: #3B4856;
         outline: none !important;
     }
-    .main .form-group button.btn-default:hover {
+    .main .content .form-group button.btn-default:hover {
         color: #006699 !important;
     }
-    .main .border-right {
+    .main .content .border-right {
         max-width: 100%;
         padding-right: 0;
         padding-left: 0;
         border: 0px none;
     }
-    .main .content-left {
+    .main .content .content-left {
         margin-left: auto;
         margin-right: auto;
         max-width: 90%;
         text-align: center;
     }
-    .main .content-left h2 {
+    .main .content .content-left h2 {
         letter-spacing: -1px;
         margin-top: 15px !important;
         margin-bottom: 15px !important;
     }
-    .main .content-left p {
+    .main .content .content-left p {
         margin-top: 15px;
         margin-bottom: 15px;
     }
-    .main .content-left .img-logo {
+    .main .content .content-left .img-logo {
         max-height: 73px;
         margin-bottom: 10px;
     }
-    .main .border-left {
+    .main .content .border-left {
         max-width: 100%;
         padding-right: 0;
         padding-left: 0;
         border: 0px none;
     }
-    .main .content-right {
+    .main .content .content-right {
         max-width: 90%;
         margin-left: auto;
         margin-right: auto;
     }
-    .main .content-right p {
+    .main .content .content-right p {
         max-width: 100%;
     }
 }
