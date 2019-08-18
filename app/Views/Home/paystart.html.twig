@@ -14,28 +14,28 @@
 <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="container main">
+    <div class="container main hidden">
         <div class="row header">
-            <div class="col-md-6 col-md-offset-3">
+            <div class="col-sm-6 col-xs-12 col-sm-offset-3">
                 <div class="text-center">
                     <h1 class="boldi light-blue">Ipefix Payment Solution</h1>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row content">
             <form action="{{ path_for('payment_identify') }}" method="post">
                 <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
                 <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
-                <div class="col-md-6 border-right">
-                    <div class="pull-right content-left">
+                <div class="col-sm-6 col-xs-12 border-right">
+                    <div class="content-left">
                         <h2 class="dark-blue boldi">Méthode de payement</h2>
                         <h4 class="mid-blue">&Eacute;tape 1</h4>
                         <h3 class="dark-blue boldi">{{ amount|raw }}</h3>
                         <p class="product bold">{{ product }}</p>
                     </div> 
                 </div>
-                <div class="col-md-6 border-left">
-                    <div class="pull-left content-right">
+                <div class="col-sm-6 col-xs-12 border-left">
+                    <div class="content-right">
                         <p class="mid-blue bold">Choisissez votre prestataire de service.</p>
                         <ul class="list-group">
                             <li class="list-group-item">
@@ -54,7 +54,6 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        {# <img src="images/bancontact.png" alt="bancontact-logo" class="img-thumbnail">&nbsp;&nbsp;<span class="bold mid-blue">Bancontact</span> #}
                                     </label>
                                 </div>
                             </li>
@@ -74,7 +73,6 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        {# <img src="images/ideal-small.png" alt="iDeal-logo" class="img-thumbnail">&nbsp;&nbsp;<span class="bold mid-blue">iDeal</span> #}
                                     </label>
                                 </div>
                             </li>
@@ -94,7 +92,6 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        {# <img src="images/sofort.png" alt="Sofort-logo" class="img-thumbnail">&nbsp;&nbsp;<span class="bold mid-blue">Sofort</span> #}
                                     </label>
                                 </div>
                             </li>
@@ -108,15 +105,20 @@
                             </li> #}
                         </ul>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-default btn-sm btn-block">Suivant</button>
+                            <button type="submit" class="btn btn-default btn-sm btn-block bold">Suivant</button>
                         </div>
                     </div>
                 </div>
             </form>
-            <div class="col-md-4 col-md-offset-4">
+        </div>
+        <div class="row footer">
+            <div class="col-sm-4 col-sm-offset-4">
                 <div class="text-center copyr">&copy; Ipefix 2019</div>
             </div>
         </div>
     </div>
+    <div class="container loader"></div>
+    <script src="js/loadingoverlay.min.js"></script>
+    <script src="js/application.js"></script>
 </body>
 </html>
