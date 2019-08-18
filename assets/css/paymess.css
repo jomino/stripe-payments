@@ -1,4 +1,16 @@
 
+.main .detail button {
+    clear: both;
+    display: block;
+    outline: none;
+    font-size: inherit;
+    color: #3B4856 !important;
+}
+
+.main .detail button:hover {
+    color: #006699 !important;
+}
+
 @media (min-width: 768px) {
     .main .content-left .result {
         margin-bottom: 15px;
