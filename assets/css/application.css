@@ -80,6 +80,34 @@ body {
     overflow: hidden;
 }
 
+.main .content .form-group button.btn,
+.main .content .form-group button.btn-sm,
+.main .content .form-group button.btn-default {
+    color: #3B4856;
+    outline: none !important;
+}
+
+.main .content .form-group button.btn:hover,
+.main .content .form-group button.btn-sm:hover,
+.main .content .form-group button.btn-default:hover  {
+    color: #006699 !important;
+}
+
+.main .content input[type="text"].form-control,
+.main .content input[type="email"].form-control,
+.main .content input[type="password"].form-control  {
+    border-color: #3B4856 !important;
+    max-width: 100%;
+}
+
+.main .content input[type="text"].form-control:focus,
+.main .content input[type="email"].form-control:focus,
+.main .content input[type="password"].form-control:focus {
+    border-color: #3B4856 !important;
+    outline: 0 none !important;
+    box-shadow: 0 !important;
+}
+
 @media (min-width: 768px) {
     body {
         font-size: 14px;
@@ -104,26 +132,6 @@ body {
     }
     .main .content .glyphicon {
         font-size: 24px;
-    }
-    .main .content .form-group button.btn {
-        color: #3B4856;
-        outline: none !important;
-    }
-    .main .content .form-group button.btn:hover {
-        color: #006699 !important;
-    }
-    .main .content input[type="text"].form-control,
-    .main .content input[type="email"].form-control,
-    .main .content input[type="password"].form-control  {
-        border-color: #3B4856;
-        max-width: 100%;
-    }
-    .main .content input[type="text"].form-control:focus,
-    .main .content input[type="email"].form-control:focus,
-    .main .content input[type="password"].form-control:focus {
-        border-color: #3B4856;
-        outline: 0 none;
-        box-shadow: 0;
     }
     .main .content .border-right {
         padding-right: 0;
@@ -195,13 +203,6 @@ body {
     }
     .main .content .glyphicon {
         font-size: 20px;
-    }
-    .main .content .form-group button {
-        color: #3B4856;
-        outline: none !important;
-    }
-    .main .content .form-group button.btn-default:hover {
-        color: #006699 !important;
     }
     .main .content .border-right {
         max-width: 100%;
@@ -276,13 +277,6 @@ body {
     }
     .main .content .glyphicon {
         font-size: 20px;
-    }
-    .main .content .form-group button {
-        color: #3B4856;
-        outline: none !important;
-    }
-    .main .content .form-group button.btn-default:hover {
-        color: #006699 !important;
     }
     .main .content .border-right {
         max-width: 100%;
