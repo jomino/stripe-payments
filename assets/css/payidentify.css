@@ -1,16 +1,17 @@
 
+#ideal-bank-element {
+    padding-top: 3px;
+    min-height: 33px;
+    border: 1px solid #3B4856;
+    border-radius: 4px;
+}
+
 @media (min-width: 768px) {
     .main .border-right {
         min-height: 270px !important;
     }
     .main .border-left {
         min-height: 270px !important;
-    }
-    .main .content-right .form-container #ideal-bank-element {
-        padding-top: 3px;
-        min-height: 33px;
-        border: 1px solid #3B4856;
-        border-radius: 4px;
     }
     .main .content-right .form-container {
         margin-top: 5px;
@@ -25,12 +26,6 @@
     }
 }
 @media (min-width: 377px) and  (max-width: 767px) {
-    .main .content-right .form-container #ideal-bank-element {
-        padding-top: 3px;
-        min-height: 33px;
-        border: 1px solid #3B4856;
-        border-radius: 4px;
-    }
     .main .content-right .form-container {
         margin-top: 15px;
     }
@@ -44,12 +39,6 @@
     }
 }
 @media (max-width: 376px) {
-    .main .content-right .form-container #ideal-bank-element {
-        padding-top: 3px;
-        min-height: 33px;
-        border: 1px solid #3B4856;
-        border-radius: 4px;
-    }
     .main .content-right .form-container {
         margin-top: 15px;
     }
