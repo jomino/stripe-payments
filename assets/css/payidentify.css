@@ -46,6 +46,7 @@
     }
     .main .content-right .form-group button {
         margin-top: 20px;
+        margin-bottom: 25px;
     }
 }
 @media (max-width: 376px) {
@@ -64,5 +65,9 @@
     .main .content-right .form-group {
         margin-top: 5px;
         margin-bottom: 5px;
+    }
+    .main .content-right .form-group button {
+        margin-top: 25px;
+        margin-bottom: 25px;
     }
 }
