@@ -5,6 +5,7 @@ $(document).ready(function(){
 
     var defaultLoaderOptions = {
         size: 35,
+        maxSize: 35,
         imageColor: '#9FADBD'
     };
 
