@@ -112,15 +112,15 @@ body {
     .main .content .form-group button.btn:hover {
         color: #006699 !important;
     }
-    .main .content .form-group input[type="text"],
-    .main .content .form-group input[type="email"],
-    .main .content .form-group input[type="password"]  {
+    .main .content input[type="text"].form-control,
+    .main .content input[type="email"].form-control,
+    .main .content input[type="password"].form-control  {
         border-color: #3B4856;
         max-width: 100%;
     }
-    .main .content .form-group input[type="text"]:focus,
-    .main .content .form-group input[type="email"]:focus,
-    .main .content .form-group input[type="password"]:focus {
+    .main .content input[type="text"].form-control:focus,
+    .main .content input[type="email"].form-control:focus,
+    .main .content input[type="password"].form-control:focus {
         border-color: #3B4856;
         outline: 0 none;
         box-shadow: 0;
