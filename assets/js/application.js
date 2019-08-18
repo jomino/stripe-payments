@@ -4,6 +4,7 @@ $(document).ready(function(){
     var $loading_el = $('.container.loader');
 
     var defaultLoaderOptions = {
+        size: 35,
         imageColor: '#9FADBD'
     };
 
