@@ -60,7 +60,7 @@ class RegisterUserController extends \Core\Controller
         try{
             $user = User::findOrFail($user_id);
             if($user->uuid == $token){
-                $dt_max = \Carbon\Carbon::now()->sub('10 days');
+                $dt_max = \Carbon\Carbon::now()->subDay(10);
                 $dt_reg = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $user->updated_at);
                 switch(true){
                     case ($dt_reg->timestamp-$dt_max->timestamp)<0:
