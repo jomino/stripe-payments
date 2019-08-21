@@ -6,9 +6,9 @@ class LoginController extends \Core\Controller
 {
     public function __invoke($request, $response, $args)
     {
-        $parsedBody = $request->getParsedBody();
+        $login = $request->getParsedBodyParam('login');
         $ip = $request->getServerParam('REMOTE_ADDR');
-        if($parsedBody['login']==\App\Parameters::SECURITY['login']){
+        if($login==\App\Parameters::SECURITY['login']){
             $pass_phrase = \App\Parameters::SECURITY['login'].'-'.\App\Parameters::SECURITY['secret'];
             $response = \Dflydev\FigCookies\FigResponseCookies::set($response, \Dflydev\FigCookies\SetCookie::create(\App\Parameters::SECURITY['cookie'])
                 ->withPath('/')
