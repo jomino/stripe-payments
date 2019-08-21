@@ -14,7 +14,7 @@ class HomeController extends \Core\Controller
             if($cookie!='none'){ $response = \Dflydev\FigCookies\FigResponseCookies::remove($response, \App\Parameters::SECURITY['cookie']); }
             return $this->view->render($response, 'Home/login.html.twig');
         }else{
-            $this->logger->info('['.$ip.'] ADMIN_LOGIN_ACCEPTED');
+            $this->logger->info('['.$ip.'] ADMIN_ALREADY_LOGGED');
             return $response->withRedirect($this->router->pathFor('adduser'), 301);
         }
     }
