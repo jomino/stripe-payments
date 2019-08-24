@@ -7,6 +7,8 @@ CREATE TABLE `stripe_events` (
   `name` varchar(128) NOT NULL default '',
   `email` varchar(128) NOT NULL default '',
   `amount` smallint unsigned NOT NULL default 0,
+  `product` varchar(128) NOT NULL default '',
+  `method` varchar(128) NOT NULL default '',
   `token` varchar(256) NOT NULL default '',
   `skey` varchar(256) NOT NULL default '',
   `ckey` varchar(256) NOT NULL default '',
