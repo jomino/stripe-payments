@@ -10,7 +10,11 @@ class RegisterUserController extends \Core\Controller
 
     public function __invoke($request, $response, $args)
     {
-        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
+        if($request->isGet()){
+            $ip = $request->getServerParam('REMOTE_ADDR');
+        }else{
+            $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
+        }
         $uri = $request->getUri();
         $token = (string) ltrim($uri->getQuery(),'?');
         if(empty($token) || strlen($token)<2){ $token = ltrim($args['token'],'?'); }
@@ -37,10 +41,10 @@ class RegisterUserController extends \Core\Controller
                 }else{
                     if($this->register($user,$request->getParsedBody())){
                         $template_name = 'registered';
-                        /* $webhook_url = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor( 'webhook', [
+                        $webhook_url = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor( 'webhook', [
                             'token' => $user->uuid
                         ]);
-                        $this->setupWebhook($user,$webhook_url); */
+                        $this->setupWebhook($user,$webhook_url);
                         $this->logger->info('['.$ip.'] REGISTER_NEWUSER_PROCEEDED -> USER_ID: '.$user->id);
                     }
                 }
