@@ -8,6 +8,9 @@
     .main .content-left .form-group button {
         margin-top: 10px;
     }
+    .main .content-left .form-group input {
+        margin-top: 10px;
+    }
     .main .content-right .img-logo img {
         margin-top: 12px;
         max-height: 160px;
@@ -19,6 +22,9 @@
         margin-bottom: 0;
     }
     .main .content-left .form-group button {
+        margin-top: 25px;
+    }
+    .main .content-left .form-group input {
         margin-top: 25px;
     }
     .main .border-left {
@@ -38,6 +44,9 @@
         margin-bottom: 0;
     }
     .main .content-left .form-group button {
+        margin-top: 25px;
+    }
+    .main .content-left .form-group input {
         margin-top: 25px;
     }
     .main .border-left {
