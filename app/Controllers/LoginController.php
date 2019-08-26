@@ -12,7 +12,7 @@ class LoginController extends \Core\Controller
         $email = $request->getParsedBodyParam('login');
         $pwd = $request->getParsedBodyParam('pwd');
         if($client=$this->getClient($email,$pwd)){
-            $this->session->set(\Util\StripeUtility::SESSION_LOGIN,$client->login);
+            $this->session->set(\Util\StripeUtility::SESSION_LOGIN,$client->email);
             $pass_phrase = $client->email.'-'.\App\Parameters::SECURITY['secret'];
             $response = \Dflydev\FigCookies\FigResponseCookies::set($response, \Dflydev\FigCookies\SetCookie::create(\App\Parameters::SECURITY['cookie'])
                 ->withPath('/')
@@ -22,7 +22,7 @@ class LoginController extends \Core\Controller
                 ->withSecure(true)
                 ->withHttpOnly(true)
             );
-            $this->logger->info('['.$ip.'] ADMIN_LOGIN_SUCCESS -> LOGIN:'.$client->login);
+            $this->logger->info('['.$ip.'] ADMIN_LOGIN_SUCCESS -> LOGIN:'.$client->email);
             return $response->withRedirect($this->router->pathFor('adduser'));
         }
         $this->logger->info('['.$ip.'] ADMIN_LOGIN_ERROR -> ERRORS:'.implode(',',$this->errors));
