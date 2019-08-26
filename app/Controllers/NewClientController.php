@@ -31,18 +31,20 @@ class NewClientController extends \Core\Controller
 
             $token = \Util\UuidGenerator::v4();
 
-            if($client=$this->createNewClient($token,$name,$email,$pwd)){
-                $uri = $request->getUri();
-                $datas['send_at'] = (\Carbon\Carbon::now())->format('H:i:s');
-                $register_link = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor('validate',[
-                    'id' => $client->id,
-                    'token' => '?'.$client->uuid
-                ]);
-                if($this->sendClientMail($register_link,$datas)){
-                    $this->logger->info('['.$ip.'] ADDCLIENT_SUCCESS_EMAIL -> '.$email);
-                    $this->logger->info('['.$ip.'] ADDCLIENT_SUCCESS_EMAIL -> REGISTER_URL:'.$register_link);
-                }else{
-                    $client->delete();
+            if($this->validateClient($email)){
+                if($client=$this->createNewClient($token,$name,$email,$pwd)){
+                    $uri = $request->getUri();
+                    $datas['send_at'] = (\Carbon\Carbon::now())->format('H:i:s');
+                    $register_link = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor('validate',[
+                        'id' => $client->id,
+                        'token' => '?'.$client->uuid
+                    ]);
+                    if($this->sendClientMail($register_link,$datas)){
+                        $this->logger->info('['.$ip.'] ADDCLIENT_SUCCESS_EMAIL -> '.$email);
+                        $this->logger->info('['.$ip.'] ADDCLIENT_SUCCESS_EMAIL -> REGISTER_URL:'.$register_link);
+                    }else{
+                        $client->delete();
+                    }
                 }
             }
 
@@ -54,6 +56,17 @@ class NewClientController extends \Core\Controller
 
             return $this->view->render($response, 'Home/newclient.html.twig', $datas);
 
+        }
+    }
+
+    private function validateClient($email)
+    {
+        try{
+            $client = Client::where('email',$email)->firstOrFail();
+            $this->errors[] = 'Vous êtes déjà enregistrer avec cet e-mail';
+            return false;
+        }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+            return true;
         }
     }
 
