@@ -35,13 +35,13 @@ class NewClientController extends \Core\Controller
                 if($client=$this->createNewClient($token,$name,$email,$pwd)){
                     $uri = $request->getUri();
                     $datas['send_at'] = (\Carbon\Carbon::now())->format('H:i:s');
-                    $register_link = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor('validate',[
+                    $datas['link'] = $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor('validate',[
                         'id' => $client->id,
                         'token' => '?'.$client->uuid
                     ]);
-                    if($this->sendClientMail($register_link,$datas)){
+                    if($this->sendClientMail($datas)){
                         $this->logger->info('['.$ip.'] ADDCLIENT_SUCCESS_EMAIL -> '.$email);
-                        $this->logger->info('['.$ip.'] ADDCLIENT_SUCCESS_EMAIL -> REGISTER_URL:'.$register_link);
+                        $this->logger->info('['.$ip.'] ADDCLIENT_SUCCESS_EMAIL -> REGISTER_URL:'.$datas['link']);
                     }else{
                         $client->delete();
                     }
@@ -86,15 +86,12 @@ class NewClientController extends \Core\Controller
         }
     }
 
-    private function sendClientMail($link,$datas)
+    private function sendClientMail($datas)
     {
         $_tpl = 'Email/email-newclient.html.twig';
         $_subject = 'Inscription au service Stripe-Payments d\'Ipefix';
         
-        $_content = $this->view->fetch( $_tpl, [
-            'name' => $datas['name'],
-            'send_at' => $datas['send_at'],
-        ]);
+        $_content = $this->view->fetch( $_tpl, $datas);
 
         $mailer = new \Util\PhpMailer();
         $sended = $mailer->send($datas['email'],$_subject,$_content);
