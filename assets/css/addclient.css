@@ -8,7 +8,7 @@
         max-width: 300px;
     }
     .main .content-left .form-group input[type="checkbox"] {
-        margin-top: 0 !important;
+        margin-top: 5px !important;
     }
     .main .content-right p {
         max-width: 300px;
@@ -29,7 +29,7 @@
         max-width: 100%;
     }
     .main .content-left .form-group input[type="checkbox"] {
-        margin-top: 0 !important;
+        margin-top: 5px !important;
     }
     .main .content-right p {
         margin-top: 15px;
@@ -51,7 +51,7 @@
         max-width: 100%;
     }
     .main .content-left .form-group input[type="checkbox"] {
-        margin-top: 0 !important;
+        margin-top: 5px !important;
     }
     .main .content-right p {
         margin-top: 15px;
