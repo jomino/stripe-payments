@@ -1,0 +1,60 @@
+
+@media (min-width: 768px) {
+    .main .content-left .form-group button {
+        margin-top: 10px;
+    }
+    .main .content-left .form-group input {
+        margin-top: 10px;
+        max-width: 300px;
+    }
+    .main .content-left .form-group input.checkbox {
+        margin-top: 0;
+    }
+    .main .content-right p {
+        max-width: 300px;
+        text-align: justify;
+    }
+}
+@media (min-width: 377px) and  (max-width: 767px) {
+    .main .content-left .form-group {
+        margin-top: 25px;
+        margin-bottom: 0;
+        max-width: 100%;
+    }
+    .main .content-left .form-group button {
+        margin-top: 25px;
+    }
+    .main .content-left .form-group input {
+        margin-bottom: 15px;
+        max-width: 100%;
+    }
+    .main .content-left .form-group input.checkbox {
+        margin-top: 0;
+    }
+    .main .content-right p {
+        margin-top: 15px;
+        text-align: justify;
+    }
+}
+
+@media (max-width: 376px) {
+    .main .content-left .form-group {
+        margin-top: 25px;
+        margin-bottom: 0;
+        max-width: 100%;
+    }
+    .main .content-left .form-group button {
+        margin-top: 25px;
+    }
+    .main .content-left .form-group input {
+        margin-bottom: 15px;
+        max-width: 100%;
+    }
+    .main .content-left .form-group input.checkbox {
+        margin-top: 0;
+    }
+    .main .content-right p {
+        margin-top: 15px;
+        text-align: justify;
+    }
+}
