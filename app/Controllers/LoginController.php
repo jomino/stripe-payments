@@ -34,10 +34,10 @@ class LoginController extends \Core\Controller
         try{
             $client = \App\Models\Client::where('email',$email)->firstOrFail();
             if($client->pwd==hash('sha256', $pwd)){
-                if($client->activ==1){
+                if($client->active==1){
                     return $client;
                 }else{
-                    $this->errors[] = 'Vous n\'êtes pas un utilisateur enregistrer chez nous';
+                    $this->errors[] = 'Votre compte est suspendu';
                 }
             }else{
                 $this->errors[] = 'Le mot de passe est incorrecte';
