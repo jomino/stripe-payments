@@ -12,16 +12,20 @@ class Routes
         // Login
         $app->get('/', \App\Controllers\HomeController::class)->setName('home');
         $app->post('/login', \App\Controllers\LoginController::class)->setName('login');
+        
+        $app->get('/validate/{id:[0-9]+}/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\RegisterClientController::class)->setName('validate');
 
         // Assets
         $app->get('/{path:js|css|fonts|images}/{file:[^/]+}', \App\Controllers\AssetsController::class);
 
         // Admin
         $app->group( '', function($app){
+            $app->get('/addclient', \App\Controllers\AddClientController::class)->setName('addclient');
             $app->get('/adduser', \App\Controllers\AddUserController::class)->setName('adduser');
+            $app->post('/newclient', \App\Controllers\NewClientController::class)->setName('newclient');
             $app->post('/newuser', \App\Controllers\NewUserController::class)->setName('newuser');
             $app->map(['GET','POST'],'/register/{id:[0-9]+}/{token:\??[0-9a-zA-Z-]*}', \App\Controllers\RegisterUserController::class)->setName('register');
-        })->add($container->get('csrf'))->add(new \App\Middleware\LoginMiddleware());
+        })->add($container->get('csrf'))->add(new \App\Middleware\LoginMiddleware($app));
         
         // Webhook
         $app->post('/1/{token:[0-9a-zA-Z-]*}', \App\Controllers\StripeWebhookController::class)->setName('webhook');
