@@ -1,6 +1,7 @@
 
 @media (min-width: 768px) {
     .main .content-left .loader-container {
+        float: right;
         width: 55px;
         height: 55px;
         margin-top: 5px;
