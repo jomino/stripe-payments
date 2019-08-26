@@ -32,7 +32,7 @@ class LoginController extends \Core\Controller
     private function getClient($login,$pwd)
     {
         try{
-            $client = \App\Models\Client::where('login',$login)->firstOrFail();
+            $client = \App\Models\Client::where('email',$login)->firstOrFail();
             if($client->pwd==hash('sha256', $pwd)){
                 if($client->activ==1){
                     return $client;
