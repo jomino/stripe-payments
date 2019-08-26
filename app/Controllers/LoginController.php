@@ -25,7 +25,7 @@ class LoginController extends \Core\Controller
             $this->logger->info('['.$ip.'] ADMIN_LOGIN_SUCCESS -> LOGIN:'.$client->email);
             return $response->withRedirect($this->router->pathFor('adduser'));
         }
-        $this->logger->info('['.$ip.'] ADMIN_LOGIN_ERROR -> ERRORS:'.implode(',',$this->errors));
+        $this->logger->info('['.$ip.'] ADMIN_LOGIN_ERROR -> ERRORS:'.implode(', ',$this->errors));
         return $response->withRedirect($this->router->pathFor('home'));
     }
 
@@ -38,18 +38,15 @@ class LoginController extends \Core\Controller
                     return $client;
                 }else{
                     $this->errors[] = 'Vous n\'êtes pas un utilisateur enregistrer chez nous';
-                    return null;
                 }
             }else{
                 $this->errors[] = 'Le mot de passe est incorrecte';
-                return null;
             }
         }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
             $this->errors[] = 'Vous n\'êtes pas un utilisateur enregistrer chez nous';
-            return null;
         }catch(\Exception $e){
             $this->errors[] = 'Erreur inattendue';
-            return null;
         }
+        return null;
     }
 }

@@ -8,14 +8,16 @@ class HomeController extends \Core\Controller
     {
         $ip = $request->getServerParam('REMOTE_ADDR');
         $cookie = \Util\Tools::cookieGetValue(\Dflydev\FigCookies\FigRequestCookies::get($request, \App\Parameters::SECURITY['cookie'], 'none'));
-        $pass_phrase = \App\Parameters::SECURITY['login'].'-'.\App\Parameters::SECURITY['secret'];
-        if($cookie!=hash('sha256', $pass_phrase)){
+        if($this->session->exist(\Util\StripeUtility::SESSION_LOGIN)){
+            $pass_phrase = $this->session->get(\Util\StripeUtility::SESSION_LOGIN).'-'.\App\Parameters::SECURITY['secret'];
+        }
+        if(!empty($pass_phrase) && $cookie==hash('sha256', $pass_phrase)){
+            $this->logger->info('['.$ip.'] ADMIN_ALREADY_LOGGED');
+            return $response->withRedirect($this->router->pathFor('adduser'), 301);
+        }else{
             $this->logger->info('['.$ip.'] ADMIN_LOGIN_FAILED');
             if($cookie!='none'){ $response = \Dflydev\FigCookies\FigResponseCookies::remove($response, \App\Parameters::SECURITY['cookie']); }
             return $this->view->render($response, 'Home/login.html.twig');
-        }else{
-            $this->logger->info('['.$ip.'] ADMIN_ALREADY_LOGGED');
-            return $response->withRedirect($this->router->pathFor('adduser'), 301);
         }
     }
 }
