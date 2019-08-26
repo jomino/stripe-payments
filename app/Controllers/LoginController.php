@@ -9,11 +9,11 @@ class LoginController extends \Core\Controller
     public function __invoke($request, $response, $args)
     {
         $ip = $request->getServerParam('REMOTE_ADDR');
-        $login = $request->getParsedBodyParam('login');
+        $email = $request->getParsedBodyParam('login');
         $pwd = $request->getParsedBodyParam('pwd');
-        if($client=$this->getClient($login,$pwd)){
+        if($client=$this->getClient($email,$pwd)){
             $this->session->set(\Util\StripeUtility::SESSION_LOGIN,$client->login);
-            $pass_phrase = $client->login.'-'.\App\Parameters::SECURITY['secret'];
+            $pass_phrase = $client->email.'-'.\App\Parameters::SECURITY['secret'];
             $response = \Dflydev\FigCookies\FigResponseCookies::set($response, \Dflydev\FigCookies\SetCookie::create(\App\Parameters::SECURITY['cookie'])
                 ->withPath('/')
                 ->withValue(hash('sha256', $pass_phrase))
@@ -29,10 +29,10 @@ class LoginController extends \Core\Controller
         return $response->withRedirect($this->router->pathFor('home'));
     }
 
-    private function getClient($login,$pwd)
+    private function getClient($email,$pwd)
     {
         try{
-            $client = \App\Models\Client::where('email',$login)->firstOrFail();
+            $client = \App\Models\Client::where('email',$email)->firstOrFail();
             if($client->pwd==hash('sha256', $pwd)){
                 if($client->activ==1){
                     return $client;
