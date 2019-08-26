@@ -13,7 +13,7 @@ class HomeController extends \Core\Controller
         }
         if(!empty($pass_phrase) && $cookie==hash('sha256', $pass_phrase)){
             $this->logger->info('['.$ip.'] ADMIN_ALREADY_LOGGED');
-            return $response->withRedirect($this->router->pathFor('adduser'), 301);
+            return $response->withRedirect($this->router->pathFor('adduser'));
         }else{
             $this->logger->info('['.$ip.'] ADMIN_LOGIN_FAILED');
             if($cookie!='none'){ $response = \Dflydev\FigCookies\FigResponseCookies::remove($response, \App\Parameters::SECURITY['cookie']); }
