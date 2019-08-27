@@ -25,6 +25,7 @@ class StripeWebhookController extends \Core\Controller
                 'status' => 'failed',
                 'error' => 'wh_not_registered'
             ];
+            $this->logger->info('['.$ip.'] WEBHOOK_ERROR -> UNKNOW_USER -> UUID: '.$token);
             return $response->withJson($result)->withStatus(200);
         }
 
@@ -44,24 +45,24 @@ class StripeWebhookController extends \Core\Controller
                         if($event->status==\Util\StripeUtility::STATUS_PENDING){
                             if($type==\Util\StripeUtility::EVENT_SOURCE_CHARGEABLE){
                                 if($charge=$this->createChargeFromSource($api_key,$object)){
-                                    $this->logger->info('['.$ip.'] EVENT_SOURCE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_CHARGEABLE));
+                                    $this->logger->info('['.$ip.'] EVENT_SOURCE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_CHARGEABLE).' -> USER: '.$user->email);
                                     $event->ckey = $charge->id;
                                     $event->status = \Util\StripeUtility::STATUS_CHARGEABLE;
                                     $event->save();
                                 }else{
-                                    $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR -> CANNOT_CREATE_CHARGE');
+                                    $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR -> CANNOT_CREATE_CHARGE -> USER: '.$user->email);
                                 }
                             }
                             if($type==\Util\StripeUtility::EVENT_SOURCE_CANCELED || $type==\Util\StripeUtility::EVENT_SOURCE_FAILED){
                                 $event->status = \Util\StripeUtility::STATUS_FAILED;
                                 $event->save();
                                 $error = $type==\Util\StripeUtility::EVENT_SOURCE_CANCELED ? 'Payement annulé' : 'Payement rejeté';
-                                $this->logger->info('['.$ip.'] EVENT_SOURCE_PROBLEM -> '.$type);
+                                $this->logger->info('['.$ip.'] EVENT_SOURCE_PROBLEM -> '.$type.' -> USER: '.$user->email);
                                 $send = $this->sendClientMail($event,$user,$error);
                                 if(is_string($send)){
-                                    $this->logger->info('['.$ip.'] ERROR_CLIENT_EMAIL',[$send]);
+                                    $this->logger->info('['.$ip.'] ERROR_CLIENT_EMAIL -> USER: '.$user->email,[$send]);
                                 }else{
-                                    $this->logger->info('['.$ip.'] CLIENT_EMAIL_SENDED: ADDRESS-> '.$event->email);
+                                    $this->logger->info('['.$ip.'] CLIENT_EMAIL_SENDED: ADDRESS -> '.$event->email);
                                 }
                             }
                         }else{
@@ -69,54 +70,54 @@ class StripeWebhookController extends \Core\Controller
                                 'status' => 'failed',
                                 'error' => 'source_already_charged'
                             ];
-                            $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR',[$result]);
+                            $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR -> USER: '.$user->email,[$result]);
                         }
                     }else{
                         $result = [
                             'status' => 'failed',
                             'error' => 'event_not_found'
                         ];
-                        $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR',[$result]);
+                        $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR -> USER: '.$user->email,[$result]);
                     }
                 break;
                 case \Util\StripeUtility::EVENT_OBJECT_CHARGE:
                     if($event=$this->getEventFromCharge($token,$object)){
                         if($event->status==\Util\StripeUtility::STATUS_CHARGEABLE){
                             if($type==\Util\StripeUtility::EVENT_CHARGE_SUCCEEDED){
-                                $this->logger->info('['.$ip.'] EVENT_CHARGE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_SUCCEEDED));
+                                $this->logger->info('['.$ip.'] EVENT_CHARGE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_SUCCEEDED).' -> USER: '.$user->email);
                                 $event->status = \Util\StripeUtility::STATUS_SUCCEEDED;
                                 $event->save();
                                 $send = $this->sendUserMail($event,$user);
                                 if(is_string($send)){
-                                    $this->logger->info('['.$ip.'] ERROR_USER_EMAIL',[$send]);
+                                    $this->logger->info('['.$ip.'] ERROR_USER_EMAIL -> USER: '.$user->email,[$send]);
                                 }else{
-                                    $this->logger->info('['.$ip.'] USER_EMAIL_SENDED: ADDRESS-> '.$user->email);
+                                    $this->logger->info('['.$ip.'] USER_EMAIL_SENDED: ADDRESS -> '.$user->email);
                                 }
                             }
                             if($type==\Util\StripeUtility::EVENT_CHARGE_PENDING){
-                                $this->logger->info('['.$ip.'] EVENT_CHARGE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_WAITING));
+                                $this->logger->info('['.$ip.'] EVENT_CHARGE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_WAITING).' -> USER: '.$user->email);
                                 $event->status = \Util\StripeUtility::STATUS_WAITING;
                                 $event->save();
                             }
                             if($type==\Util\StripeUtility::EVENT_CHARGE_FAILED){
-                                $this->logger->info('['.$ip.'] EVENT_CHARGE_PROBLEM -> STATUS_'.(\Util\StripeUtility::STATUS_FAILED));
+                                $this->logger->info('['.$ip.'] EVENT_CHARGE_PROBLEM -> STATUS_'.(\Util\StripeUtility::STATUS_FAILED).' -> USER: '.$user->email);
                                 $event->status = \Util\StripeUtility::STATUS_FAILED;
                                 $error = 'Payement rejeté';
                                 $event->save();
                             }
                             $send = $this->sendClientMail($event,$user,$error);
                             if(is_string($send)){
-                                $this->logger->info('['.$ip.'] ERROR_CLIENT_EMAIL',[$send]);
+                                $this->logger->info('['.$ip.'] ERROR_CLIENT_EMAIL -> USER: '.$user->email,[$send]);
                             }else{
-                                $this->logger->info('['.$ip.'] CLIENT_EMAIL_SENDED: ADDRESS-> '.$event->email);
+                                $this->logger->info('['.$ip.'] CLIENT_EMAIL_SENDED: ADDRESS -> '.$event->email);
                             }
                         }else{
                             $result = ['status'=>'failed','error'=>'charge_already_succeeded'];
-                            $this->logger->info('['.$ip.'] EVENT_CHARGE_ERROR',[$result]);
+                            $this->logger->info('['.$ip.'] EVENT_CHARGE_ERROR -> USER: '.$user->email,[$result]);
                         }
                     }else{
                         $result = ['status'=>'failed','error'=>'event_not_found'];
-                        $this->logger->info('['.$ip.'] EVENT_CHARGE_ERROR',[$result]);
+                        $this->logger->info('['.$ip.'] EVENT_CHARGE_ERROR -> USER: '.$user->email,[$result]);
                     }
                 break;
                 default:
@@ -130,7 +131,7 @@ class StripeWebhookController extends \Core\Controller
                 'status' => 'failed',
                 'error' => 'invalid_request'
             ];
-            $this->logger->info('['.$ip.'] FATAL_EVENT_ERROR: CANNOT_CREATE_EVENT_RECEPT -> RETURN 403');
+            $this->logger->info('['.$ip.'] FATAL_EVENT_ERROR: CANNOT_CREATE_EVENT_RECEPT -> RETURN 403 -> USER: '.$user->email);
             return $response->withJson($result)->withStatus(403);
         }
     }
