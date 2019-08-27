@@ -31,7 +31,7 @@ class StripePaymentController extends \Core\Controller
 
     public function identify($request, $response, $args)
     {
-        $ip = $request->getServerParam('REMOTE_ADDR');
+        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
         if(false === $request->getAttribute('csrf_status')){
             $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> EXIT_WITH_403');
             return $response->write($this->getSecurityAlert())->withStatus(403);
@@ -53,7 +53,7 @@ class StripePaymentController extends \Core\Controller
 
     public function source($request, $response, $args)
     {
-        $ip = $request->getServerParam('REMOTE_ADDR');
+        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
         if(false === $request->getAttribute('csrf_status')){
             $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> EXIT_WITH_403');
             return $response->write($this->getSecurityAlert())->withStatus(403);
@@ -120,7 +120,7 @@ class StripePaymentController extends \Core\Controller
 
     public function charge($request, $response, $args)
     {
-        $ip = $request->getServerParam('REMOTE_ADDR');
+        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
         if(false === $request->getAttribute('csrf_status')){
             $this->logger->info('['.$ip.'] PAYMENT_CSRF_ERROR -> EXIT_WITH_403');
             return $response->write($this->getSecurityAlert())->withStatus(403);
@@ -154,6 +154,7 @@ class StripePaymentController extends \Core\Controller
 
     public function result($request, $response, $args)
     {
+        $ip = $request->getServerParam('REMOTE_ADDR');
         $event = $this->getCurrentEvent($args['token']);
         $user = $this->getCurrentUser($event->uuid);
         $method = $event->method;
@@ -165,6 +166,7 @@ class StripePaymentController extends \Core\Controller
         $message .= '<strong>Bénéficiaire:</strong> '.$user->name.'<br>';
         $message .= '<strong>Montant:</strong> '.$amount.' &euro;<br>';
         $message .= '<strong>ID transaction:</strong> '.$event->token;
+        $this->logger->info('['.$ip.'] RECEIVE_PAYMENT_RESULT');
         return $this->view->render($response, 'Home/payresult.html.twig',[
             'bank_logo' => $method,
             'message' => $message,
@@ -175,6 +177,7 @@ class StripePaymentController extends \Core\Controller
 
     public function check($request, $response, $args)
     {
+        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
         $event = $this->getCurrentEvent($args['token']);
         $status = $event->status;
         $title = '';
@@ -187,6 +190,7 @@ class StripePaymentController extends \Core\Controller
         if($status==\Util\StripeUtility::STATUS_FAILED){
             $title = 'Désolé, votre payement ne nous est pas parvenu.';
         }
+        $this->logger->info('['.$ip.'] CHECK_PAYMENT_RESPONSE: STATUS -> '.$status);
         return $response->withJson([
             'status' => $title
         ]);
@@ -194,6 +198,8 @@ class StripePaymentController extends \Core\Controller
 
     public function print($request, $response, $args)
     {
+        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
+        $this->logger->info('['.$ip.'] PRINT_PAYMENT_RESULT');
         $event = $this->getCurrentEvent($args['token']);
         $user = $this->getCurrentUser();
         $html = $this->getPrintContent($event,$user);
