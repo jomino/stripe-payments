@@ -15,7 +15,7 @@ class StripePaymentController extends \Core\Controller
         $this->setSessionVar(\Util\StripeUtility::SESSION_REFERRER,$token);
         $this->setSessionVar(\Util\StripeUtility::SESSION_REMOTE,$ip);
         if($this->isValidUser()){
-            $this->logger->info('['.$ip.'] PAYMENT_START_VALIDATE');
+            $this->logger->info('['.$ip.'] PAYMENT_START_SUCCEED');
             $this->setSessionVar(\Util\StripeUtility::SESSION_AMOUNT,$amount);
             $this->setSessionVar(\Util\StripeUtility::SESSION_PRODUCT,$product);
             $display_amount = number_format((float) $amount/100, 2, ',', ' ');
@@ -73,7 +73,7 @@ class StripePaymentController extends \Core\Controller
                 }
                 if($source=$this->getSource($request,$user,$email,$name)){
                     if($source->redirect->status==\Util\StripeUtility::STATUS_PENDING){
-                        $this->logger->info('['.$ip.'] SOURCE_OBJ_SUCCEED -> STATUS_'.(\Util\StripeUtility::STATUS_PENDING));
+                        $this->logger->info('['.$ip.'] SOURCE_OBJ_CREATED -> STATUS_'.(\Util\StripeUtility::STATUS_PENDING));
                         $redir_url = $source->redirect->url;
                         return $this->view->render($response, 'Home/payredir.html.twig',[
                             'redir_url' => $redir_url
