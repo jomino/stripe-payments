@@ -9,6 +9,8 @@ class StripeWebhookController extends \Core\Controller
 {
     public function __invoke($request, $response, $args)
     {
+        $ip = $request->getServerParam('REMOTE_ADDR');
+
         $error = '';
 
         $wh_evt = $request->getBody();
@@ -42,18 +44,24 @@ class StripeWebhookController extends \Core\Controller
                         if($event->status==\Util\StripeUtility::STATUS_PENDING){
                             if($type==\Util\StripeUtility::EVENT_SOURCE_CHARGEABLE){
                                 if($charge=$this->createChargeFromSource($api_key,$object)){
+                                    $this->logger->info('['.$ip.'] EVENT_SOURCE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_CHARGEABLE));
                                     $event->ckey = $charge->id;
                                     $event->status = \Util\StripeUtility::STATUS_CHARGEABLE;
                                     $event->save();
+                                }else{
+                                    $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR -> CANNOT_CREATE_CHARGE');
                                 }
                             }
                             if($type==\Util\StripeUtility::EVENT_SOURCE_CANCELED || $type==\Util\StripeUtility::EVENT_SOURCE_FAILED){
                                 $event->status = \Util\StripeUtility::STATUS_FAILED;
                                 $event->save();
                                 $error = $type==\Util\StripeUtility::EVENT_SOURCE_CANCELED ? 'Payement annulé' : 'Payement rejeté';
+                                $this->logger->info('['.$ip.'] EVENT_SOURCE_PROBLEM -> '.$type);
                                 $send = $this->sendClientMail($event,$user,$error);
                                 if(is_string($send)){
-                                    $this->logger->info('['.(self::class).']',[$send]);
+                                    $this->logger->info('['.$ip.'] ERROR_CLIENT_EMAIL',[$send]);
+                                }else{
+                                    $this->logger->info('['.$ip.'] CLIENT_EMAIL_SENDED: ADDRESS-> '.$event->email);
                                 }
                             }
                         }else{
@@ -61,45 +69,54 @@ class StripeWebhookController extends \Core\Controller
                                 'status' => 'failed',
                                 'error' => 'source_already_charged'
                             ];
+                            $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR',[$result]);
                         }
                     }else{
                         $result = [
                             'status' => 'failed',
                             'error' => 'event_not_found'
                         ];
+                        $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR',[$result]);
                     }
                 break;
                 case \Util\StripeUtility::EVENT_OBJECT_CHARGE:
                     if($event=$this->getEventFromCharge($token,$object)){
                         if($event->status==\Util\StripeUtility::STATUS_CHARGEABLE){
                             if($type==\Util\StripeUtility::EVENT_CHARGE_SUCCEEDED){
+                                $this->logger->info('['.$ip.'] EVENT_CHARGE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_SUCCEEDED));
                                 $event->status = \Util\StripeUtility::STATUS_SUCCEEDED;
                                 $event->save();
                                 $send = $this->sendUserMail($event,$user);
                                 if(is_string($send)){
-                                    $this->logger->info('['.self::class.']',[$send]);
+                                    $this->logger->info('['.$ip.'] ERROR_USER_EMAIL',[$send]);
+                                }else{
+                                    $this->logger->info('['.$ip.'] USER_EMAIL_SENDED: ADDRESS-> '.$user->email);
                                 }
                             }
                             if($type==\Util\StripeUtility::EVENT_CHARGE_PENDING){
+                                $this->logger->info('['.$ip.'] EVENT_CHARGE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_WAITING));
                                 $event->status = \Util\StripeUtility::STATUS_WAITING;
                                 $event->save();
                             }
                             if($type==\Util\StripeUtility::EVENT_CHARGE_FAILED){
+                                $this->logger->info('['.$ip.'] EVENT_CHARGE_PROBLEM -> STATUS_'.(\Util\StripeUtility::STATUS_FAILED));
                                 $event->status = \Util\StripeUtility::STATUS_FAILED;
                                 $error = 'Payement rejeté';
                                 $event->save();
                             }
                             $send = $this->sendClientMail($event,$user,$error);
                             if(is_string($send)){
-                                $this->logger->info('['.self::class.']',[$send]);
+                                $this->logger->info('['.$ip.'] ERROR_CLIENT_EMAIL',[$send]);
+                            }else{
+                                $this->logger->info('['.$ip.'] CLIENT_EMAIL_SENDED: ADDRESS-> '.$event->email);
                             }
                         }else{
                             $result = ['status'=>'failed','error'=>'charge_already_succeeded'];
-                            $this->logger->info('['.self::class.']',$result);
+                            $this->logger->info('['.$ip.'] EVENT_CHARGE_ERROR',[$result]);
                         }
                     }else{
                         $result = ['status'=>'failed','error'=>'event_not_found'];
-                        $this->logger->info('['.self::class.']',$result);
+                        $this->logger->info('['.$ip.'] EVENT_CHARGE_ERROR',[$result]);
                     }
                 break;
                 default:
@@ -113,6 +130,7 @@ class StripeWebhookController extends \Core\Controller
                 'status' => 'failed',
                 'error' => 'invalid_request'
             ];
+            $this->logger->info('['.$ip.'] FATAL_EVENT_ERROR: CANNOT_CREATE_EVENT_RECEPT -> RETURN 403');
             return $response->withJson($result)->withStatus(403);
         }
     }
