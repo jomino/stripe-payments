@@ -61,20 +61,6 @@ class RegisterClientController extends \Core\Controller
         }
     }
 
-    private function setupWebhook($user,$url)
-    {
-        $key = $user->skey;
-        $response = \Util\StripeUtility::createWebhook($key,$url);
-        if(isset($response->status) && $response->status==\Util\StripeUtility::WEBHOOK_STATUS_ENABLED){
-            $user->wkey = $response->secret;
-            $user->save();
-            return true;
-        }else{
-            $this->errors[] = 'Nous sommes dans l\'impossibilité de vous relié à la plateforme stripe-webhook';
-        }
-        return false;
-    }
-
     private function getErrors()
     {
         $error_str = '';
