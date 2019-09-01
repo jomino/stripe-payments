@@ -148,6 +148,7 @@ body {
         min-height: 100%;
     }
     .main .content .content-left p {
+        float: right;
         max-width: 300px;
         margin-top: 5px;
         margin-bottom: 5px;
