@@ -23,25 +23,21 @@
             </div>
         </div>
         <div class="row content">
-            <form action="{{ path_for('payment_source') }}" method="post">
-                <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
-                <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
-                <div class="col-sm-6 col-xs-12 border-right">
-                    <div class="content-left">
-                        <h2 class="dark-blue boldi">Attention</h2>
-                        {{ alert|raw }}
-                        <p>Vous trouverez plus d'explication sur la partie droite de la page.</p>
-                    </div>
+            <div class="col-sm-6 col-xs-12 border-right">
+                <div class="content-left">
+                    <h2 class="dark-blue boldi">Attention</h2>
+                    {{ alert|raw }}
+                    <p>Vous trouverez plus d'explication sur la partie droite de la page.</p>
                 </div>
-                <div class="col-sm-6 col-xs-12 border-left">
-                    <div class="content-right">
-                        <p class="detail">
-                            <strong><u>Détail:</u></strong><br>
-                            {{ message|raw }}
-                        </p>
-                    </div>
+            </div>
+            <div class="col-sm-6 col-xs-12 border-left">
+                <div class="content-right">
+                    <p class="detail">
+                        <strong><u>Détail:</u></strong><br>
+                        {{ message|raw }}
+                    </p>
                 </div>
-            </form>
+            </div>
         </div>
         <div class="row footer">
             <div class="col-sm-4 col-sm-offset-4">
