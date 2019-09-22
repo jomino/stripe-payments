@@ -17,10 +17,10 @@
 
     var setHelpMessage = function(msg=''){
         if (msg!='') {
-            $msg_output.text(msg);
+            $msg_output.html(msg);
             $msg_output.removeClass('hidden');
         } else {
-            $msg_output.text('');
+            $msg_output.html('');
             if(!$msg_output.hasClass('hidden')){ $msg_output.addClass('hidden'); }
         }
     };
