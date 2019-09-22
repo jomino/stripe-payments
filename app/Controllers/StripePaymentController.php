@@ -41,10 +41,12 @@ class StripePaymentController extends \Core\Controller
         $this->logger->info('['.$ip.'] PAYMENT_START_IDENTIFY -> METHOD_TYPE: '.$payment_type);
         switch($payment_type){
             case \Util\StripeUtility::METHOD_CARD:
-                $intent = $this->getIntent();
-                if($intent->client_secret){
-                    $this->setSessionVar(\Util\StripeUtility::SESSION_CLIENT_SECRET,$intent->client_secret);
+                if($intent=$this->getIntent()){
+                    $client_secret = $intent->client_secret;
+                    $this->setSessionVar(\Util\StripeUtility::SESSION_CLIENT_SECRET,$client_secret);
+                    $this->logger->info('['.$ip.'] PAYMENT_START_INTENT -> CLIENT_SECRET: '.$client_secret);
                     $s_token = $this->session->get(\Util\StripeUtility::SESSION_TOKEN);
+                    $this->logger->info('['.$ip.'] PAYMENT_START_INTENT -> SESSION_TOKEN: '.$s_token);
                     $data = [
                         'post_url' => '#',
                         'redir_url' => $this->getReturnUrl($request->getUri(),$s_token)
@@ -350,11 +352,13 @@ class StripePaymentController extends \Core\Controller
             $amount = $this->session->get(\Util\StripeUtility::SESSION_AMOUNT);
             $product = $this->session->get(\Util\StripeUtility::SESSION_PRODUCT);
             $currency = \Util\StripeUtility::DEFAULT_CURRENCY;
-            $intent = \Util\StripeUtility::createIntent($user->skey,$amount,$currency);
-            $intent_id = $intent->id;
-            $intent_status = $intent->status;
-            $this->createNewEvent($intent_status,$user->uuid,'','',$amount,$product,$method,$intent_id,$s_token);
-            return $intent;
+            if($intent=\Util\StripeUtility::createIntent($user->skey,$amount,$currency)){
+                $intent_id = $intent->id;
+                $intent_status = $intent->status;
+                if($this->createNewEvent($intent_status,$user->uuid,'','',$amount,$product,$method,$intent_id,$s_token)){
+                    return $intent;
+                }
+            }
         }
         return null;
     }
@@ -374,7 +378,7 @@ class StripePaymentController extends \Core\Controller
         $route_name = 'payment_result';
         return $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor($route_name,[
             'token' => $token
-        ]).'?l='.$this->language;
+        ]).'/?l='.$this->language;
     }
 
     private function getSourceOptions($bank,$user)
