@@ -51,7 +51,7 @@
                         <p class="help-text small mid-red bold hidden"></p>
                     </div>
                 </div>
-                <div class="col-sm-6 col-xs-12 border-left{%- if session.payment_type in ['ideal','iban'] %} {{ session.payment_type -}}{%- endif -%}">
+                <div class="col-sm-6 col-xs-12 border-left{%- if session.payment_type in ['ideal','iban','card'] %} {{ session.payment_type -}}{%- endif -%}">
                     <div class="content-right">
                         <div class="form-container">
                             <div class="form-group">
@@ -73,8 +73,6 @@
                                 <div class="form-group card">
                                     <label class="mid-blue" for="card-element">Card</label>
                                     <div id="card-number-element"></div>
-                                </div>
-                                <div class="form-group">
                                     <table border="0" role="table">
                                         <tbody>
                                             <tr>
@@ -87,8 +85,6 @@
                                             </tr>
                                         </tbody>
                                     <table>
-                                </div>
-                                <div class="form-group">
                                     <button id="card-button" data-secret="{{- session.client_secret -}}" class="btn btn-default btn-sm btn-block bold">Payer</button>
                                 </div>
                                 <script src="js/card.js"></script>
