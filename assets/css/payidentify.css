@@ -1,5 +1,5 @@
 
-#ideal-bank-element {
+#ideal-bank-element, #card-element {
     padding-top: 3px;
     min-height: 33px;
     border: 1px solid #3B4856;
@@ -11,14 +11,16 @@
         min-height: 225px !important;
     }
     .main .border-right.ideal,
-    .main .border-right.iban {
+    .main .border-right.iban,
+    .main .border-right.card {
         min-height: 270px !important;
     }
     .main .border-left {
         min-height: 225px !important;
     }
     .main .border-left.ideal,
-    .main .border-left.iban {
+    .main .border-left.iban,
+    .main .border-left.card {
         min-height: 270px !important;
     }
     .main .content-right .form-container {

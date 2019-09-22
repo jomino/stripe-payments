@@ -8,6 +8,7 @@ class StripeUtility
     const METHOD_SOFORT = 'sofort';
     const METHOD_IDEAL = 'ideal';
     const METHOD_IBAN = 'iban';
+    const METHOD_CARD = 'card';
 
     const DEFAULT_IDEAL_BANK = 'ing';
 
@@ -23,22 +24,13 @@ class StripeUtility
     const SESSION_PRODUCT = 'product_ref';
     const SESSION_METHOD = 'payment_type';
     const SESSION_TOKEN = 'event_token';
+    const SESSION_CLIENT_SECRET = 'client_secret';
 
     const STATUS_PENDING = 'pending';
     const STATUS_CHARGEABLE = 'chargeable';
     const STATUS_WAITING = 'waiting';
     const STATUS_SUCCEEDED = 'succeeded';
     const STATUS_FAILED = 'failed';
-
-    const EVENT_OBJECT_CHARGE = 'charge';
-    const EVENT_CHARGE_PENDING = 'charge.pending';
-    const EVENT_CHARGE_FAILED = 'charge.failed';
-    const EVENT_CHARGE_SUCCEEDED = 'charge.succeeded';
-
-    const EVENT_OBJECT_SOURCE = 'source';
-    const EVENT_SOURCE_CHARGEABLE = 'source.chargeable';
-    const EVENT_SOURCE_CANCELED = 'source.canceled';
-    const EVENT_SOURCE_FAILED = 'source.failed';
     
     const WEBHOOK_STATUS_ENABLED = 'enabled';
 
@@ -137,6 +129,28 @@ class StripeUtility
 
         try{
             $response = \Stripe\Charge::create($data);
+            return $response;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    public static function createIntent($api_key,$amount,$currency,$options=[])
+    {
+        \Stripe\Stripe::setApiKey($api_key);
+
+        $data = [
+            'amount' => $amount,
+            'currency' => $currency,
+            'payment_method_types' => ['card']
+        ];
+
+        if(!empty($options)){
+            $data = array_merge_recursive($data,$options);
+        }
+
+        try{
+            $response = \Stripe\PaymentIntent::create($data);
             return $response;
         } catch (\Exception $e) {
             return null;

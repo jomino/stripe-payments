@@ -40,10 +40,10 @@ class StripeWebhookController extends \Core\Controller
             $result = ['status' => 'success'];
 
             switch($object['object']){
-                case \Util\StripeUtility::EVENT_OBJECT_SOURCE:
+                case \Stripe\Source::OBJECT_NAME:
                     if($event=$this->getEventFromSource($token,$object)){
                         if($event->status==\Util\StripeUtility::STATUS_PENDING){
-                            if($type==\Util\StripeUtility::EVENT_SOURCE_CHARGEABLE){
+                            if($type==\Stripe\Event::SOURCE_CHARGEABLE){
                                 if($charge=$this->createChargeFromSource($api_key,$object)){
                                     $this->logger->info('['.$ip.'] EVENT_SOURCE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_CHARGEABLE).' -> USER: '.$user->email);
                                     $event->ckey = $charge->id;
@@ -53,10 +53,10 @@ class StripeWebhookController extends \Core\Controller
                                     $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR -> CANNOT_CREATE_CHARGE -> USER: '.$user->email);
                                 }
                             }
-                            if($type==\Util\StripeUtility::EVENT_SOURCE_CANCELED || $type==\Util\StripeUtility::EVENT_SOURCE_FAILED){
+                            if($type==\Stripe\Event::SOURCE_CANCELED || $type==\Stripe\Event::SOURCE_FAILED){
                                 $event->status = \Util\StripeUtility::STATUS_FAILED;
                                 $event->save();
-                                $error = $type==\Util\StripeUtility::EVENT_SOURCE_CANCELED ? 'Payement annulé' : 'Payement rejeté';
+                                $error = $type==\Stripe\Event::SOURCE_CANCELED ? 'Payement annulé' : 'Payement rejeté';
                                 $this->logger->info('['.$ip.'] EVENT_SOURCE_PROBLEM -> '.$type.' -> USER: '.$user->email);
                                 $send = $this->sendClientMail($event,$user,$error);
                                 if(is_string($send)){
@@ -80,10 +80,10 @@ class StripeWebhookController extends \Core\Controller
                         $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR -> USER: '.$user->email,[$result]);
                     }
                 break;
-                case \Util\StripeUtility::EVENT_OBJECT_CHARGE:
+                case \Stripe\Charge::OBJECT_NAME:
                     if($event=$this->getEventFromCharge($token,$object)){
                         if($event->status==\Util\StripeUtility::STATUS_CHARGEABLE){
-                            if($type==\Util\StripeUtility::EVENT_CHARGE_SUCCEEDED){
+                            if($type==\Stripe\Event::CHARGE_SUCCEEDED){
                                 $this->logger->info('['.$ip.'] EVENT_CHARGE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_SUCCEEDED).' -> USER: '.$user->email);
                                 $event->status = \Util\StripeUtility::STATUS_SUCCEEDED;
                                 $event->save();
@@ -94,12 +94,12 @@ class StripeWebhookController extends \Core\Controller
                                     $this->logger->info('['.$ip.'] USER_EMAIL_SENDED: ADDRESS -> '.$user->email);
                                 }
                             }
-                            if($type==\Util\StripeUtility::EVENT_CHARGE_PENDING){
+                            if($type==\Stripe\Event::CHARGE_PENDING){
                                 $this->logger->info('['.$ip.'] EVENT_CHARGE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_WAITING).' -> USER: '.$user->email);
                                 $event->status = \Util\StripeUtility::STATUS_WAITING;
                                 $event->save();
                             }
-                            if($type==\Util\StripeUtility::EVENT_CHARGE_FAILED){
+                            if($type==\Stripe\Event::CHARGE_FAILED || $type==\Stripe\Event::CHARGE_EXPIRED){
                                 $this->logger->info('['.$ip.'] EVENT_CHARGE_PROBLEM -> STATUS_'.(\Util\StripeUtility::STATUS_FAILED).' -> USER: '.$user->email);
                                 $event->status = \Util\StripeUtility::STATUS_FAILED;
                                 $error = 'Payement rejeté';
@@ -121,7 +121,8 @@ class StripeWebhookController extends \Core\Controller
                     }
                 break;
                 default:
-                    $result = ['status'=>'success','message'=>'event_not_registered'];
+                    $this->logger->info('['.$ip.'] EVENT_NOT_REGISTERED: -> OBJECT '.\json_encode($object));
+                    $result = ['status'=>'success','message'=>'event_not_registered: '.$type];
             }
         
             return $response->withJson($result)->withStatus(200);

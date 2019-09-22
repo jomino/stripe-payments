@@ -40,15 +40,26 @@ class StripePaymentController extends \Core\Controller
         $this->setSessionVar(\Util\StripeUtility::SESSION_METHOD,$payment_type);
         $this->logger->info('['.$ip.'] PAYMENT_START_IDENTIFY -> METHOD_TYPE: '.$payment_type);
         switch($payment_type){
+            case \Util\StripeUtility::METHOD_CARD:
+                $intent = $this->getIntent();
+                if($intent->client_secret){
+                    $this->setSessionVar(\Util\StripeUtility::SESSION_CLIENT_SECRET,$intent->client_secret);
+                    $s_token = $this->session->get(\Util\StripeUtility::SESSION_TOKEN);
+                    $data = [
+                        'post_url' => '#',
+                        'redir_url' => $this->getReturnUrl($request->getUri(),$s_token)
+                    ];
+                }else{
+                    return $response->write($this->getSecurityAlert())->withStatus(403);
+                }
+            break;
             case \Util\StripeUtility::METHOD_IBAN:
-                $post_url = $this->router->pathFor('payment_charge');
+                $data = [ 'post_url' => $this->router->pathFor('payment_charge')];
             break;
             default:
-                $post_url = $this->router->pathFor('payment_source');
+                $data = [ 'post_url' => $this->router->pathFor('payment_source')];
         }
-        return $this->view->render($response, 'Home/payidentify.html.twig',[
-            'post_url' => $post_url
-        ]);
+        return $this->view->render($response, 'Home/payidentify.html.twig', $data);
     }
 
     public function source($request, $response, $args)
@@ -143,7 +154,7 @@ class StripePaymentController extends \Core\Controller
                 $event = $this->createNewEvent($status,$uuid,$name,$email,$amount,$product,$method,$method_selection,$s_token);
             }
 
-            $redir_url = $this->getReturnUrl($request->getUri(),$event->uuid);
+            $redir_url = $this->getReturnUrl($request->getUri(),$s_token);
 
             return $this->view->render($response, 'Home/payredir.html.twig',[
                 'redir_url' => $redir_url
@@ -331,6 +342,23 @@ class StripePaymentController extends \Core\Controller
         return null;
     }
 
+    private function getIntent()
+    {
+        if($user=$this->getCurrentUser()){
+            $s_token = \Util\UuidGenerator::v4();
+            $method = $this->session->get(\Util\StripeUtility::SESSION_METHOD);
+            $amount = $this->session->get(\Util\StripeUtility::SESSION_AMOUNT);
+            $product = $this->session->get(\Util\StripeUtility::SESSION_PRODUCT);
+            $currency = \Util\StripeUtility::DEFAULT_CURRENCY;
+            $intent = \Util\StripeUtility::createIntent($user->skey,$amount,$currency);
+            $intent_id = $intent->id;
+            $intent_status = $intent->status;
+            $this->createNewEvent($intent_status,$user->uuid,'','',$amount,$product,$method,$intent_id,$s_token);
+            return $intent;
+        }
+        return null;
+    }
+
     private function getSource($request,$user,$email,$name)
     {
         if($event=$this->getCurrentEvent()){
@@ -341,11 +369,11 @@ class StripePaymentController extends \Core\Controller
         return $source;
     }
 
-    private function getReturnUrl($uri,$evt_uuid)
+    private function getReturnUrl($uri,$token)
     {
         $route_name = 'payment_result';
         return $uri->getScheme().'://'.$uri->getHost().$this->router->pathFor($route_name,[
-            'token' => $evt_uuid
+            'token' => $token
         ]).'?l='.$this->language;
     }
 
@@ -394,7 +422,7 @@ class StripePaymentController extends \Core\Controller
         return $source;
     }
 
-    private function createNewEvent($status,$uuid,$name,$email,$amount,$product,$method,$skey,$s_token)
+    private function createNewEvent($status,$uuid,$name='',$email='',$amount,$product,$method,$skey,$s_token)
     {
         try{
             $event = new \App\Models\Event();

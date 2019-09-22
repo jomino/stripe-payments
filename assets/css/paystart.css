@@ -22,22 +22,25 @@
 }
 
 .main .list-group .list-group-item .img-thumbnail {
-    max-width: 80px !important;
+    max-width: 50px !important;
     max-height: 33px !important;
     line-height: 33px !important;
 }
 
 @media (min-width: 768px) {
     .main .border-right {
-        min-height: 225px !important;
+        min-height: 255px !important;
     }
     .main .border-left {
-        min-height: 225px !important;
+        min-height: 255px !important;
     }
     .main .content-right .form-group {
         max-width: 100%;
         margin-top: 15px;
         margin-bottom: 0;
+    }
+    .main .content .content-right p {
+        margin-top: 12px;
     }
 }
 @media (min-width: 377px) and  (max-width: 767px) {
@@ -51,6 +54,9 @@
         -webkit-box-shadow: 0 0 0 0 !important;
         margin-bottom: 0;
         margin-top: 5px;
+    }
+    .main .content .content-right p {
+        margin-top: 12px;
     }
 }
 @media (max-width: 376px) {

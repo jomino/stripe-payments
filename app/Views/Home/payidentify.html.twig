@@ -29,7 +29,10 @@
         <div class="row content">
             <form action="{{ post_url }}" method="post">
                 {% if session.payment_type in ['ideal'] -%}
-                    <input type="hidden" name="{{ session.payment_type }}-selection" value="">
+                    <input type="hidden" name="{{- session.payment_type -}}-selection" value="">
+                {%- endif %}
+                {% if session.payment_type in ['card'] -%}
+                    <input type="hidden" name="redir-url" value="{{- redir_url -}}">
                 {%- endif %}
                 <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
                 <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
@@ -66,17 +69,28 @@
                                 </div>
                                 <script src="js/ideal.js"></script>
                             {%- endif %}
+                            {% if session.payment_type=='card' -%}
+                                <div class="form-group card">
+                                    <label class="mid-blue" for="card-element">CARD NUMBER</label>
+                                    <div id="card-element"></div>
+                                </div>
+                                <div class="form-group">
+                                    <button id="card-button" data-secret="{{- session.client_secret -}}" class="btn btn-default btn-sm btn-block bold">Payer</button>
+                                </div>
+                                <script src="js/card.js"></script>
+                            {%- endif %}
                             {% if session.payment_type=='iban' -%}
                                 <div class="form-group iban">
                                     <label class="mid-blue" for="iban-element">IBAN</label>
                                     <div id="iban-element"></div>
                                 </div>
-                                <div class="small help-text hidden"></div>
                                 <script src="js/iban.js"></script>
                             {%- endif %}
+                            {% if session.payment_type!='card' -%}
                             <div class="form-group">
                                 <button type="submit" class="btn btn-default btn-sm btn-block bold">Suivant</button>
                             </div>
+                            {%- endif %}
                         </div>
                     </div>
                 </div>
