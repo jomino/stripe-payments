@@ -24,6 +24,14 @@
             if(!$msg_output.hasClass('hidden')){ $msg_output.addClass('hidden'); }
         }
     };
+
+    var cardElementsReport = function(e){
+        if (e.error) {
+            setHelpMessage(e.error.message);
+        } else {
+            setHelpMessage('');
+        }
+    };
     
     var options = {
         style: {
@@ -64,17 +72,16 @@
         });
     });
     
-    var card_element = elements.create('card', options);
-    card_element.mount('#card-element');
-
-    card_element.on( 'change', function(event) {
-        if (event.error) {
-            setHelpMessage(event.error.message);
-        } else {
-            setHelpMessage('');
-        }
-    });
-
-
+    var card_number_element = elements.create('cardNumber', options);
+    card_number_element.mount('#card-number-element');
+    card_number_element.on( 'change', cardElementsReport);
+    
+    var card_expiry_element = elements.create('cardExpiry', options);
+    card_expiry_element.mount('#card-expiry-element');
+    card_expiry_element.on( 'change', cardElementsReport);
+    
+    var card_cvc_element = elements.create('cardCvc', options);
+    card_cvc_element.mount('#card-expiry-element');
+    card_cvc_element.on( 'change', cardElementsReport);
 
 })();

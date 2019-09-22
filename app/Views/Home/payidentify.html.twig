@@ -72,7 +72,23 @@
                             {% if session.payment_type=='card' -%}
                                 <div class="form-group card">
                                     <label class="mid-blue" for="card-element">Card</label>
-                                    <div id="card-element"></div>
+                                    <div id="card-number-element"></div>
+                                </div>
+                                <div class="form-group">
+                                    <table border="0" role="table">
+                                        <tbody>
+                                            <tr>
+                                                <td align="left">
+                                                    <div id="card-expiry-element"></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right">
+                                                    <div id="card-cvc-element"></div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    <table>
                                 </div>
                                 <div class="form-group">
                                     <button id="card-button" data-secret="{{- session.client_secret -}}" class="btn btn-default btn-sm btn-block bold">Payer</button>
