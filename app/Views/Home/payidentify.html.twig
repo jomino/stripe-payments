@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="css/payidentify.css">
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-{% if session.payment_type in ['ideal','iban'] -%}
+{% if session.payment_type in ['ideal','iban','card'] -%}
     <script src="https://js.stripe.com/v3/"></script>
     <script src="js/stripe-pkey.js"></script>
 {%- endif %}
