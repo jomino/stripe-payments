@@ -3,7 +3,7 @@
 #card-number-element,
 #card-expiry-element,
 #card-cvc-element {
-    padding-top: 3px;
+    margin-top: 3px;
     min-height: 33px;
     border: 1px solid #3B4856;
     border-radius: 4px;
@@ -14,17 +14,21 @@
         min-height: 225px !important;
     }
     .main .border-right.ideal,
-    .main .border-right.iban,
-    .main .border-right.card {
+    .main .border-right.iban {
         min-height: 270px !important;
+    }
+    .main .border-right.card {
+        min-height: 600px !important;
     }
     .main .border-left {
         min-height: 225px !important;
     }
     .main .border-left.ideal,
-    .main .border-left.iban,
-    .main .border-left.card {
+    .main .border-left.iban {
         min-height: 270px !important;
+    }
+    .main .border-left.card {
+        min-height: 600px !important;
     }
     .main .content-right .form-container {
         margin-top: 5px;
@@ -36,6 +40,16 @@
     }
     .main .content-right .form-group button {
         margin-top: 20px;
+    }
+    .main .content-right .form-group table {
+        width: 100%;
+        table-layout: fixed;
+    }
+    .main .content-right .form-group table td:first-child {
+        padding-right: 6px;
+    }
+    .main .content-right .form-group table td:last-child {
+        padding-left: 6px;
     }
 }
 @media (min-width: 377px) and  (max-width: 767px) {
@@ -50,6 +64,16 @@
         margin-top: 20px;
         margin-bottom: 25px;
     }
+    .main .content-right .form-group table {
+        width: 100%;
+        table-layout: fixed;
+    }
+    .main .content-right .form-group table td:first-child {
+        padding-right: 6px;
+    }
+    .main .content-right .form-group table td:last-child {
+        padding-left: 6px;
+    }
 }
 @media (max-width: 376px) {
     .main .content-right .form-container {
@@ -62,5 +86,15 @@
     .main .content-right .form-group button {
         margin-top: 25px;
         margin-bottom: 25px;
+    }
+    .main .content-right .form-group table {
+        width: 100%;
+        table-layout: fixed;
+    }
+    .main .content-right .form-group table td:first-child {
+        padding-right: 6px;
+    }
+    .main .content-right .form-group table td:last-child {
+        padding-left: 6px;
     }
 }
