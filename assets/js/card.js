@@ -55,7 +55,9 @@
     $button.on( 'click', function(e) {
         var _name = $name.val()!='', _email = ($email.val()).match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/);
         if(_name && _email){
-            stripe.handleCardPayment( client_secret, card_element, {
+            stripe.handleCardPayment(
+                client_secret,
+                card_number_element, {
                 payment_method_data: {
                     billing_details: {
                         name: $name.val(),
