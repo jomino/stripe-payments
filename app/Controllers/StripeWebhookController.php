@@ -83,11 +83,8 @@ class StripeWebhookController extends \Core\Controller
                     }
                 break;
                 case \Stripe\Charge::OBJECT_NAME:
-                    if($event=$this->getEventFromCharge($token,$object) || $event=$this->getEventFromIntent($token,$object)){
+                    if($event=$this->getEventFromCharge($token,$object)){
                         if($event->status==\Util\StripeUtility::STATUS_CHARGEABLE){
-                            $detail = $object['billing_details']??[];
-                            if($event->name==''){ $event->name = $detail['name']??'unknow'; }
-                            if($event->email==''){ $event->email = $detail['email']??'unknow'; }
                             if($type==\Stripe\Event::CHARGE_SUCCEEDED){
                                 $this->logger->info('['.$ip.'] EVENT_CHARGE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_SUCCEEDED).' -> USER: '.$user->email);
                                 $event->status = \Util\StripeUtility::STATUS_SUCCEEDED;
@@ -119,6 +116,40 @@ class StripeWebhookController extends \Core\Controller
                         }else{
                             $result = ['status'=>'failed','error'=>'charge_already_succeeded'];
                             $this->logger->info('['.$ip.'] EVENT_CHARGE_ERROR -> USER: '.$user->email,[$result]);
+                            $this->logger->info('['.$ip.'] EVENT_CHARGE_ERROR -> EVENT: '.\json_encode($event));
+                        }
+                    }else if($event=$this->getEventFromIntent($token,$object)){
+                        if($event->status==\Util\StripeUtility::STATUS_CHARGEABLE){
+                            $detail = $object['billing_details']??[];
+                            $event->name = $detail['name']??'unknow';
+                            $event->email = $detail['email']??'unknow';
+                            if($type==\Stripe\Event::CHARGE_SUCCEEDED){
+                                $this->logger->info('['.$ip.'] EVENT_CHARGE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_SUCCEEDED).' -> USER: '.$user->email);
+                                $event->status = \Util\StripeUtility::STATUS_SUCCEEDED;
+                                $event->save();
+                                $send = $this->sendUserMail($event,$user);
+                                if(is_string($send)){
+                                    $this->logger->info('['.$ip.'] ERROR_USER_EMAIL -> USER: '.$user->email,[$send]);
+                                }else{
+                                    $this->logger->info('['.$ip.'] USER_EMAIL_SENDED: ADDRESS -> '.$user->email);
+                                }
+                            }
+                            if($type==\Stripe\Event::CHARGE_FAILED || $type==\Stripe\Event::CHARGE_EXPIRED){
+                                $this->logger->info('['.$ip.'] EVENT_CHARGE_PROBLEM -> STATUS_'.(\Util\StripeUtility::STATUS_FAILED).' -> USER: '.$user->email);
+                                $event->status = \Util\StripeUtility::STATUS_FAILED;
+                                $error = 'Payement rejeté';
+                                $event->save();
+                            }
+                            $send = $this->sendClientMail($event,$user,$error);
+                            if(is_string($send)){
+                                $this->logger->info('['.$ip.'] ERROR_CLIENT_EMAIL -> USER: '.$user->email,[$send]);
+                            }else{
+                                $this->logger->info('['.$ip.'] CLIENT_EMAIL_SENDED: ADDRESS -> '.$event->email);
+                            }
+                        }else{
+                            $result = ['status'=>'failed','error'=>'charge_already_succeeded'];
+                            $this->logger->info('['.$ip.'] EVENT_CHARGE_ERROR -> USER: '.$user->email,[$result]);
+                            $this->logger->info('['.$ip.'] EVENT_CHARGE_ERROR -> EVENT: '.\json_encode($event));
                         }
                     }else{
                         $result = ['status'=>'failed','error'=>'event_not_found'];
