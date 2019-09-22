@@ -34,6 +34,8 @@ class StripeWebhookController extends \Core\Controller
 
         if($event_req=\Util\StripeUtility::createEvent($api_key,$wh_skey,$wh_sig,$wh_evt)){
 
+            $this->logger->info('['.$ip.'] EVENT_REQUEST_RECEPT: '.\json_encode($event_req));
+
             $type = $event_req['type'];
             $object = $event_req['data']['object'];
 
@@ -70,14 +72,14 @@ class StripeWebhookController extends \Core\Controller
                                 'status' => 'failed',
                                 'error' => 'source_already_charged'
                             ];
-                            $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR -> USER: '.$user->email,[$result]);
+                            $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR -> USER: '.$user->email,$result);
                         }
                     }else{
                         $result = [
                             'status' => 'failed',
                             'error' => 'event_not_found'
                         ];
-                        $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR -> USER: '.$user->email,[$result]);
+                        $this->logger->info('['.$ip.'] EVENT_SOURCE_ERROR -> USER: '.$user->email,$result);
                     }
                 break;
                 case \Stripe\Charge::OBJECT_NAME:
