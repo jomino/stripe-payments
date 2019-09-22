@@ -55,6 +55,7 @@
     $button.on( 'click', function(e) {
         var _name = $name.val()!='', _email = ($email.val()).match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/);
         if(_name && _email){
+            $(this).attr('disabled','disabled');
             stripe.handleCardPayment(
                 client_secret,
                 card_number_element, {
@@ -68,6 +69,7 @@
             }).then( function(result) {
                 if (result.error) {
                     setHelpMessage(result.error);
+                    $(this).removeAttr('disabled');
                 } else {
                     setHelpMessage('');
                     redirect(redir_url);
