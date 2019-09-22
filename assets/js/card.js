@@ -80,7 +80,7 @@
     card_expiry_element.on( 'change', cardElementsReport);
     
     var card_cvc_element = elements.create('cardCvc', options);
-    card_cvc_element.mount('#card-expiry-element');
+    card_cvc_element.mount('#card-cvc-element');
     card_cvc_element.on( 'change', cardElementsReport);
 
 })();
