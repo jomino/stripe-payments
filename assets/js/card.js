@@ -5,7 +5,7 @@
     var $name = $('input[name="name"]');
     var $email = $('input[name="email"]');
     var $button = $('#card-button');
-    var client_secret = $.data($button,'secret');
+    var client_secret = $button.attr('data-secret');
     var redir_url = $('input[name="redir-url"]').val();
 
     var stripe = Stripe(window.STRIPE_PUBLISHABLE_KEY);
