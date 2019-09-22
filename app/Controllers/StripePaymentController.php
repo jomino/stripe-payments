@@ -363,7 +363,7 @@ class StripePaymentController extends \Core\Controller
                     $this->logger->info('['.$ip.'] PAYMENT_GET_NEW_EVENT -> ERROR');
                 }
             }else{
-                $this->logger->info('['.$ip.'] PAYMENT_GET_INTENT -> ERROR');
+                $this->logger->info('['.$ip.'] PAYMENT_CREATE_INTENT -> ERROR');
             }
         }else{
             $this->logger->info('['.$ip.'] PAYMENT_GET_INTENT -> INVALID_USER');
