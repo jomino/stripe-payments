@@ -27,15 +27,17 @@
             </div>
         </div>
         <div class="row content">
+            {% if session.payment_type not in ['card'] -%}
             <form action="{{ post_url }}" method="post">
+                <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
+                <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
+            {%- endif %}
                 {% if session.payment_type in ['ideal'] -%}
                     <input type="hidden" name="{{- session.payment_type -}}-selection" value="">
                 {%- endif %}
                 {% if session.payment_type in ['card'] -%}
                     <input type="hidden" name="redir-url" value="{{- redir_url -}}">
                 {%- endif %}
-                <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
-                <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
                 <div class="col-sm-6 col-xs-12 border-right{%- if session.payment_type in ['ideal','iban','card'] %} {{ session.payment_type -}}{%- endif -%}">
                     <div class="content-left">
                         <h2 class="dark-blue boldi">Identifiez-vous</h2>
@@ -105,7 +107,9 @@
                         </div>
                     </div>
                 </div>
+            {% if session.payment_type not in ['card'] -%}
             </form>
+            {%- endif %}
         </div>
         <div class="row footer">
             <div class="col-sm-4 col-sm-offset-4">

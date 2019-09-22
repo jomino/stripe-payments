@@ -47,19 +47,16 @@ class StripePaymentController extends \Core\Controller
                     $this->logger->info('['.$ip.'] PAYMENT_START_INTENT -> CLIENT_SECRET: '.$client_secret);
                     $s_token = $this->session->get(\Util\StripeUtility::SESSION_TOKEN);
                     $this->logger->info('['.$ip.'] PAYMENT_START_INTENT -> SESSION_TOKEN: '.$s_token);
-                    $data = [
-                        'post_url' => '#',
-                        'redir_url' => $this->getReturnUrl($request->getUri(),$s_token)
-                    ];
+                    $data = ['redir_url' => $this->getReturnUrl($request->getUri(),$s_token)];
                 }else{
                     return $response->write($this->getSecurityAlert())->withStatus(403);
                 }
             break;
             case \Util\StripeUtility::METHOD_IBAN:
-                $data = [ 'post_url' => $this->router->pathFor('payment_charge')];
+                $data = ['post_url' => $this->router->pathFor('payment_charge')];
             break;
             default:
-                $data = [ 'post_url' => $this->router->pathFor('payment_source')];
+                $data = ['post_url' => $this->router->pathFor('payment_source')];
         }
         return $this->view->render($response, 'Home/payidentify.html.twig', $data);
     }
