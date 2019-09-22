@@ -36,9 +36,8 @@
     var options = {
         style: {
             base: {
-                fontSize: '14px',
+                fontSize: '18px',
                 color: '#3B4856',
-                padding: '5px 6px',
                 fontSmoothing: 'antialiased'
             },
             invalid: {

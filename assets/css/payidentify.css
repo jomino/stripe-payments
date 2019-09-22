@@ -1,8 +1,16 @@
 
-#ideal-bank-element,
+#ideal-bank-element {
+    margin-top: 3px;
+    min-height: 33px;
+    border: 1px solid #3B4856;
+    border-radius: 4px;
+}
+
 #card-number-element,
 #card-expiry-element,
 #card-cvc-element {
+    padding-top: 7px;
+    padding-left: 12px;
     margin-top: 3px;
     min-height: 33px;
     border: 1px solid #3B4856;
