@@ -7,18 +7,21 @@
 }
 
 .main .list-group .list-group-item {
-    border: 0px none;
+    border: 0 none;
     padding: 0;
     margin-bottom: 5px;
 }
 
 .main .list-group .list-group-item table {
+    width: 150px;
     min-width: 150px;
+    max-width: 150px;
 }
 
 .main .list-group .list-group-item table tr td:first-child {
     width: 40%;
     min-width: 40%;
+    max-width: 40%;
 }
 
 .main .list-group .list-group-item .img-thumbnail {
