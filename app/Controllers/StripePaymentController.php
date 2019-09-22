@@ -214,7 +214,7 @@ class StripePaymentController extends \Core\Controller
         $user = $this->getCurrentUser();
         $html = $this->getPrintContent($event,$user);
         return $response->withJson([
-            'html' => \base64_encode($html)
+            'html' => \base64_encode(utf8_decode($html))
         ]);
     }
 
