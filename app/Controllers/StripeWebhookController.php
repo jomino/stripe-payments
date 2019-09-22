@@ -83,8 +83,11 @@ class StripeWebhookController extends \Core\Controller
                     }
                 break;
                 case \Stripe\Charge::OBJECT_NAME:
-                    if($event=$this->getEventFromCharge($token,$object)){
+                    if($event=$this->getEventFromCharge($token,$object) || $event=$this->getEventFromIntent($token,$object)){
                         if($event->status==\Util\StripeUtility::STATUS_CHARGEABLE){
+                            $detail = $object['billing_details']??[];
+                            if($event->name==''){ $event->name = $detail['name']??'unknow'; }
+                            if($event->email==''){ $event->email = $detail['email']??'unknow'; }
                             if($type==\Stripe\Event::CHARGE_SUCCEEDED){
                                 $this->logger->info('['.$ip.'] EVENT_CHARGE_RECEIVE -> STATUS_'.(\Util\StripeUtility::STATUS_SUCCEEDED).' -> USER: '.$user->email);
                                 $event->status = \Util\StripeUtility::STATUS_SUCCEEDED;
@@ -186,6 +189,11 @@ class StripeWebhookController extends \Core\Controller
         return $this->getEvent($token,$obj['payment_method']);
     }
 
+    private function getEventFromIntent($token,$obj)
+    {
+        return $this->getEvent($token,$obj['payment_intent']);
+    }
+
     private function getEvent($token,$skey)
     {
         try{
@@ -236,7 +244,11 @@ class StripeWebhookController extends \Core\Controller
         $content = $this->view->fetch($template,$data);
 
         $mailer = new \Util\PhpMailer();
-        return $mailer->send($event->email,$subject,$content);
+        if($event->email!='unknow'){
+            return $mailer->send($event->email,$subject,$content);
+        }else{
+            return 'unknow_client_email';
+        }
 
     }
 

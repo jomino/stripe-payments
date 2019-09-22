@@ -352,9 +352,9 @@ class StripePaymentController extends \Core\Controller
             $currency = \Util\StripeUtility::DEFAULT_CURRENCY;
             if($intent=\Util\StripeUtility::createIntent($user->skey,$amount,$currency)){
                 $intent_id = $intent->id;
-                $intent_status = $intent->status;
-                $this->logger->info('['.$ip.'] PAYMENT_GET_INTENT:'.\json_encode($intent));
-                if($this->createNewEvent($intent_status,$user->uuid,'','',$amount,$product,$method,$intent_id,$s_token)){
+                $status = \Util\StripeUtility::STATUS_CHARGEABLE;
+                $this->logger->info('['.$ip.'] PAYMENT_GET_NEW_INTENT:'.\json_encode($intent));
+                if($this->createNewEvent($status,$user->uuid,'','',$amount,$product,$method,$intent_id,$s_token)){
                     return $intent;
                 }else{
                     $this->logger->info('['.$ip.'] PAYMENT_GET_NEW_EVENT -> ERROR');
