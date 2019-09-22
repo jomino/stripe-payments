@@ -2,6 +2,7 @@ $(document).ready(function(){
     
     var $main_el = $('.container.main');
     var $loading_el = $('.container.loader');
+    var $form_els = $('form');
 
     var defaultLoaderOptions = {
         size: 35,
@@ -25,5 +26,9 @@ $(document).ready(function(){
     }else{
         $main_el.removeClass('hidden');
     }
+
+    $form_els.on('submit', function (e) {
+        $('[type=submit]',$(this)).attr('disabled','disabled');
+    });
 
 });
