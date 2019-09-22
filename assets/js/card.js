@@ -53,22 +53,30 @@
     $container.addClass('top');
 
     $button.on( 'click', function(e) {
-        stripe.handleCardPayment( client_secret, card_element, {
-            payment_method_data: {
-                billing_details: {
-                    name: $name.val(),
-                    email: $email.val()
+        var _name = $name.val()!='', _email = ($email.val()).match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/);
+        if(_name && _email){
+            stripe.handleCardPayment( client_secret, card_element, {
+                payment_method_data: {
+                    billing_details: {
+                        name: $name.val(),
+                        email: $email.val()
+                    }
+                },
+                receipt_email: $email.val()
+            }).then( function(result) {
+                if (result.error) {
+                    setHelpMessage(result.error);
+                } else {
+                    setHelpMessage('');
+                    redirect(redir_url);
                 }
-            },
-            receipt_email: $email.val()
-        }).then( function(result) {
-            if (result.error) {
-                setHelpMessage(result.error);
-            } else {
-                setHelpMessage('');
-                redirect(redir_url);
-            }
-        });
+            });
+        }else{
+            var message = [];
+            if(!_name){ message.push('Vous avez oublié votre nom !? '); }
+            if(!_email){ message.push('Vous avez oublié votre e-mail !? '); }
+            setHelpMessage(message.join('<br>'));
+        }
     });
     
     var card_number_element = elements.create('cardNumber', options);
