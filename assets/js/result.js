@@ -1,4 +1,6 @@
 $(document).ready(function(){
+
+    var max_retry = 3;
     
     var check_url = $('input[name="check-url"]').val();
     var $loading_el = $('.loader-container');
@@ -9,6 +11,12 @@ $(document).ready(function(){
     var defaultLoaderOptions = {
         background : false,
         minSize: false
+    };
+
+    var setMessage = function(message){
+        $hiden_el.toggleClass('hidden visible').text(message);
+        overlayLoader('hide');
+        $loading_el.toggleClass('hidden');
     };
 
     var getUrl = function(url,callback){
@@ -51,11 +59,13 @@ $(document).ready(function(){
 
     var onChecked = function(response){
         if(response.status && response.status!=''){
-            $hiden_el.toggleClass('hidden visible').text(response.status);
-            overlayLoader('hide');
-            $loading_el.toggleClass('hidden');
+            setMessage(response.status);
         }else{
-            start();
+            if(--max_retry>0){
+                start();
+            }else{
+                setMessage('Un e-mail vous a été envoyé');
+            }
         }
     };
 
@@ -72,7 +82,7 @@ $(document).ready(function(){
     };
 
     var start = function(){
-        window.setTimeout(launch,1000);
+        window.setTimeout(launch,2000);
     };
 
     overlayLoader('show',defaultLoaderOptions);
