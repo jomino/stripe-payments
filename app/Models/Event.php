@@ -28,7 +28,7 @@ class Event extends \Illuminate\Database\Eloquent\Model
         'product' => 'string',
         'method' => 'string',
         'token' => 'string',
-        'skey' => 'string', // token: source.id [src_xxx...]
+        'skey' => 'string', // token: source.id [src_xxx...] or payment_intent.id [pi_xxx...]
         'ckey' => 'string' // token: charge.id [py_xxx...]
     ];
 }
