@@ -436,6 +436,7 @@ class StripePaymentController extends \Core\Controller
 
     private function createNewEvent($status,$uuid,$name='',$email='',$amount,$product,$method,$skey,$s_token)
     {
+        $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
         try{
             $event = new \App\Models\Event();
             $event->status = $status;
@@ -451,6 +452,7 @@ class StripePaymentController extends \Core\Controller
             $this->setSessionVar(\Util\StripeUtility::SESSION_TOKEN,$s_token);
             return true;
         }catch(\Exception $e){
+            $this->logger->info('['.$ip.'] CREATE_NEW_EVENT -> ERROR: '.$e->getMessage());
             return false;
         }
     }
