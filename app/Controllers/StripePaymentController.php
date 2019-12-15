@@ -14,8 +14,9 @@ class StripePaymentController extends \Core\Controller
         $ip = $request->getServerParam('REMOTE_ADDR');
         $this->logger->info('['.$ip.'] PAYMENT_START_FROM: '.$this->session->get(\Util\StripeUtility::SESSION_DOMAIN));
         if(!empty($query_string)){
+            $this->logger->info('['.$ip.'] FOUND_QUERY_STRING: '.$query_string);
             $query_values = \Util\Tools::queryGetValues($query_string);
-            $this->logger->info('['.$ip.'] FOUND_QUERY_VALUES', $query_values);
+            $this->logger->info('['.$ip.'] PARSSED_QUERY_VALUES', $query_values);
             if(isset($query_values['success'])){
                 $this->setSessionVar(\Util\StripeUtility::SESSION_SUCCESS_URL,$query_values['success']);
                 //$this->logger->info('['.$ip.'] FOUND_SUCCESS_URL', [$query_values['success']]);
