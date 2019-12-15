@@ -14,16 +14,14 @@ class StripePaymentController extends \Core\Controller
         $ip = $request->getServerParam('REMOTE_ADDR');
         $this->logger->info('['.$ip.'] PAYMENT_START_FROM: '.$this->session->get(\Util\StripeUtility::SESSION_DOMAIN));
         if(!empty($query_string)){
-            $this->logger->info('['.$ip.'] FOUND_QUERY_STRING: '.$query_string);
             $query_values = \Util\Tools::queryGetValues($query_string);
-            $this->logger->info('['.$ip.'] PARSSED_QUERY_VALUES', $query_values);
             if(isset($query_values['success'])){
                 $this->setSessionVar(\Util\StripeUtility::SESSION_SUCCESS_URL,$query_values['success']);
-                //$this->logger->info('['.$ip.'] FOUND_SUCCESS_URL', [$query_values['success']]);
+                $this->logger->info('['.$ip.'] FOUND_SUCCESS_URL', [$query_values['success']]);
             }
             if(isset($query_values['cancel'])){
                 $this->setSessionVar(\Util\StripeUtility::SESSION_CANCEL_URL,$query_values['cancel']);
-                //$this->logger->info('['.$ip.'] FOUND_CANCEL_URL', [$query_values['cancel']]);
+                $this->logger->info('['.$ip.'] FOUND_CANCEL_URL', [$query_values['cancel']]);
             }
         }
         $this->setSessionVar(\Util\StripeUtility::SESSION_REFERRER,$token);
@@ -303,7 +301,7 @@ class StripePaymentController extends \Core\Controller
     {
         $message = 'Une erreur inattendue est survenue. ';
         $message .= 'Nous sommes actuellement dans l\'incapacité de ';
-        $message .= 'vous redirigé vers la page de votre banque.';
+        $message .= 'vous rediriger vers la page de votre banque.';
         $message .= 'Veuillez ré-essayer plus tard, merci.<br><br>';
         if(!empty($user)){
             $message .= '<a href="//:'.$user->name.'" title="'.$user->name.'">';
