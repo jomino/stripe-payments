@@ -12,15 +12,17 @@ class StripePaymentController extends \Core\Controller
         $token = $args['token'];
         $query_string = (string) ltrim($uri->getQuery(),'?');
         $ip = $request->getServerParam('REMOTE_ADDR');
+        $this->logger->info('['.$ip.'] PAYMENT_START_FROM: '.$this->session->get(\Util\StripeUtility::SESSION_DOMAIN));
         if(!empty($query_string)){
             $query_values = \Util\Tools::queryGetValues($query_string);
+            $this->logger->info('['.$ip.'] FOUND_QUERY_VALUES', $query_values);
             if(isset($query_values['success'])){
                 $this->setSessionVar(\Util\StripeUtility::SESSION_SUCCESS_URL,$query_values['success']);
-                $this->logger->info('['.$ip.'] SESSION_SUCCESS_URL', [$query_values['success']]);
+                //$this->logger->info('['.$ip.'] FOUND_SUCCESS_URL', [$query_values['success']]);
             }
             if(isset($query_values['cancel'])){
                 $this->setSessionVar(\Util\StripeUtility::SESSION_CANCEL_URL,$query_values['cancel']);
-                $this->logger->info('['.$ip.'] SESSION_CANCEL_URL', [$query_values['cancel']]);
+                //$this->logger->info('['.$ip.'] FOUND_CANCEL_URL', [$query_values['cancel']]);
             }
         }
         $this->setSessionVar(\Util\StripeUtility::SESSION_REFERRER,$token);
