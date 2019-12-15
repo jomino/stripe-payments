@@ -9,9 +9,20 @@ class StripePaymentController extends \Core\Controller
         $uri = $request->getUri();
         $amount = $args['amount'];
         $product = $args['product'];
-        $token = (string) ltrim($uri->getQuery(),'?');
+        $token = $args['token'];
+        $query_string = (string) ltrim($uri->getQuery(),'?');
         $ip = $request->getServerParam('REMOTE_ADDR');
-        if(empty($token) || strlen($token)<2){ $token = ltrim($args['token'],'?'); }
+        if(!empty($query_string)){
+            $query_values = \Util\Tools::queryGetValues($query_string);
+            if(isset($query_values['success'])){
+                $this->setSessionVar(\Util\StripeUtility::SESSION_SUCCESS_URL,$query_values['success']);
+                $this->logger->info('['.$ip.'] SESSION_SUCCESS_URL', [$query_values['success']]);
+            }
+            if(isset($query_values['cancel'])){
+                $this->setSessionVar(\Util\StripeUtility::SESSION_CANCEL_URL,$query_values['cancel']);
+                $this->logger->info('['.$ip.'] SESSION_CANCEL_URL', [$query_values['cancel']]);
+            }
+        }
         $this->setSessionVar(\Util\StripeUtility::SESSION_REFERRER,$token);
         $this->setSessionVar(\Util\StripeUtility::SESSION_REMOTE,$ip);
         if($this->isValidUser()){
@@ -151,6 +162,8 @@ class StripePaymentController extends \Core\Controller
                 $amount = $this->session->get(\Util\StripeUtility::SESSION_AMOUNT);
                 $product = $this->session->get(\Util\StripeUtility::SESSION_PRODUCT);
                 $event = $this->createNewEvent($status,$uuid,$name,$email,$amount,$product,$method,$method_selection,$s_token);
+            }else{
+                $s_token = $event->token;
             }
 
             $redir_url = $this->getReturnUrl($request->getUri(),$s_token);
@@ -176,13 +189,27 @@ class StripePaymentController extends \Core\Controller
         $message .= '<strong>Bénéficiaire:</strong> '.$user->name.'<br>';
         $message .= '<strong>Montant:</strong> '.$amount.' &euro;<br>';
         $message .= '<strong>ID transaction:</strong> '.$event->token;
-        $this->logger->info('['.$ip.'] RECEIVE_PAYMENT_RESULT');
-        return $this->view->render($response, 'Home/payresult.html.twig',[
+        $datas = [
             'bank_logo' => $method,
             'message' => $message,
             'status' => $event->status,
             'check_url' => $event->token
-        ]);
+        ];
+        if($this->session->exists(\Util\StripeUtility::SESSION_SUCCESS_URL)){
+            if($event->status==\Util\StripeUtility::STATUS_FAILED){
+                if($this->session->exists(\Util\StripeUtility::SESSION_CANCEL_URL)){
+                    $datas['redirect'] = $this->session->get(\Util\StripeUtility::SESSION_CANCEL_URL);
+                }else{
+                    $datas['redirect'] = $this->session->get(\Util\StripeUtility::SESSION_SUCCESS_URL) . '#canceled';
+                }
+            }else{
+                if($event->status==\Util\StripeUtility::STATUS_SUCCEEDED || $event->status==\Util\StripeUtility::STATUS_WAITING){
+                    $datas['redirect'] = $this->session->get(\Util\StripeUtility::SESSION_SUCCESS_URL);
+                }
+            }
+        }
+        $this->logger->info('['.$ip.'] RECEIVE_PAYMENT_RESULT');
+        return $this->view->render($response, 'Home/payresult.html.twig', $datas);
     }
 
     public function check($request, $response, $args)
@@ -190,20 +217,38 @@ class StripePaymentController extends \Core\Controller
         $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
         $event = $this->getCurrentEvent($args['token']);
         $status = $event->status;
-        $title = '';
         if($status==\Util\StripeUtility::STATUS_SUCCEEDED){
-            $title = 'Merci, votre payement nous est bien arrivé.';
+            $datas = [
+                'status' => $status,
+                'message' => 'Merci, votre payement nous est bien arrivé.'
+            ];
+        }else if($status==\Util\StripeUtility::STATUS_WAITING){
+            $datas = [
+                'status' => $status,
+                'message' => 'Merci, votre payement est en cour de traitement.'
+            ];
+        }else if($status==\Util\StripeUtility::STATUS_FAILED){
+            $datas = [
+                'status' => $status,
+                'message' => 'Désolé, votre payement ne nous est pas parvenu.'
+            ];
+        }else{
+            $datas = [];
         }
-        if($status==\Util\StripeUtility::STATUS_WAITING){
-            $title = 'Merci, votre payement est en cour de traitement.';
-        }
-        if($status==\Util\StripeUtility::STATUS_FAILED){
-            $title = 'Désolé, votre payement ne nous est pas parvenu.';
+        if($this->session->exists(\Util\StripeUtility::SESSION_SUCCESS_URL)){
+            if($status==\Util\StripeUtility::STATUS_FAILED){
+                if($this->session->exists(\Util\StripeUtility::SESSION_CANCEL_URL)){
+                    $datas['redirect'] = $this->session->get(\Util\StripeUtility::SESSION_CANCEL_URL);
+                }else{
+                    $datas['redirect'] = $this->session->get(\Util\StripeUtility::SESSION_SUCCESS_URL) . '#canceled';
+                }
+            }else{
+                if(!empty($datas)){ $datas['redirect'] = $this->session->get(\Util\StripeUtility::SESSION_SUCCESS_URL); }
+            }
         }
         $this->logger->info('['.$ip.'] CHECK_PAYMENT_RESPONSE: STATUS -> '.$status);
-        return $response->withJson([
-            'status' => $title
-        ]);
+        $this->logger->info('['.$ip.'] CHECK_PAYMENT_DATAS:',$datas);
+        return $response->withJson($datas);
     }
 
     public function print($request, $response, $args)

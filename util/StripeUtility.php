@@ -25,6 +25,8 @@ class StripeUtility
     const SESSION_METHOD = 'payment_type';
     const SESSION_TOKEN = 'event_token';
     const SESSION_CLIENT_SECRET = 'client_secret';
+    const SESSION_SUCCESS_URL = 'success_url';
+    const SESSION_CANCEL_URL = 'cancel_url';
 
     const STATUS_PENDING = 'pending';
     const STATUS_CHARGEABLE = 'chargeable';

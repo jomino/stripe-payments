@@ -7,6 +7,7 @@ $(document).ready(function(){
     var $hiden_el = $('.result-text');
     var $print_btn = $('.btn-print');
     var $print_container = $('.print-container');
+    var $redirect_url = $('input[name="redirect-url"]');
 
     var defaultLoaderOptions = {
         background : false,
@@ -58,13 +59,19 @@ $(document).ready(function(){
     });
 
     var onChecked = function(response){
-        if(response.status && response.status!=''){
-            setMessage(response.status);
+        if(response.status){
+            setMessage(response.message);
+            if(response.redirect){
+                window.setTimeout(()=>{window.location=response.redirect;},2000);
+            }
         }else{
             if(--max_retry>0){
                 start();
             }else{
                 setMessage('Un e-mail vous a été envoyé');
+                if($redirect_url.length){
+                    window.setTimeout(()=>{window.location=$redirect_url.val();},2000);
+                }
             }
         }
     };

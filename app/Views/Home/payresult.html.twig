@@ -26,6 +26,9 @@
         <div class="row content">
             <form action="#">
                 <input type="hidden" name="check-url" value="{{- check_url -}}">
+                {% if redirect -%}
+                    <input type="hidden" name="redirect-url" value="{{- redirect -}}">
+                {% endif -%}
                 <div class="col-sm-6 col-xs-12 border-right">
                     <div class="content-left">
                         <h2 class="dark-blue boldi">{%- if status=='failed' -%}Oup's ...{%- else -%}Merci{%- endif -%}</h2>
