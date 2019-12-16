@@ -109,6 +109,11 @@ body {
     box-shadow: 0 !important;
 }
 
+.main .footer .powered {
+    margin-top: 5px;
+    max-height: 25px;
+}
+
 @media (min-width: 768px) {
     body {
         font-size: 14px;
@@ -125,10 +130,6 @@ body {
     }
     .main .header .text-center h1 {
         margin: 0;
-        white-space: nowrap;
-    }
-    .main .copyr {
-        margin-top: 5px;
         white-space: nowrap;
     }
     .main .content .glyphicon {
@@ -202,10 +203,6 @@ body {
     }
     .main .footer {
         display: none;
-    }
-    .main .copyr {
-        white-space: nowrap;
-        margin-bottom: 5px;
     }
     .main .content .glyphicon {
         font-size: 18px;
@@ -282,10 +279,6 @@ body {
     }
     .main .footer {
         display: none;
-    }
-    .main .copyr {
-        white-space: nowrap;
-        margin-bottom: 5px;
     }
     .main .content .glyphicon {
         font-size: 18px;
