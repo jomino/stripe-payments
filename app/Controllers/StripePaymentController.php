@@ -217,7 +217,7 @@ class StripePaymentController extends \Core\Controller
     {
         $ip = $this->session->get(\Util\StripeUtility::SESSION_REMOTE);
         $event = $this->getCurrentEvent($args['token']);
-        $status = $event->status;
+        $status = $event->status??'unknow';
         if($status==\Util\StripeUtility::STATUS_SUCCEEDED){
             $datas = [
                 'status' => $status,
@@ -237,14 +237,15 @@ class StripePaymentController extends \Core\Controller
             $datas = [];
         }
         if($this->session->exists(\Util\StripeUtility::SESSION_SUCCESS_URL)){
+            $event_token = '?'.($event->token??'');
             if($status==\Util\StripeUtility::STATUS_FAILED){
                 if($this->session->exists(\Util\StripeUtility::SESSION_CANCEL_URL)){
-                    $datas['redirect'] = $this->session->get(\Util\StripeUtility::SESSION_CANCEL_URL);
+                    $datas['redirect'] = $this->session->get(\Util\StripeUtility::SESSION_CANCEL_URL) . $event_token;
                 }else{
-                    $datas['redirect'] = $this->session->get(\Util\StripeUtility::SESSION_SUCCESS_URL) . '#canceled';
+                    $datas['redirect'] = $this->session->get(\Util\StripeUtility::SESSION_SUCCESS_URL) . '#canceled' . $event_token;
                 }
             }else{
-                if(!empty($datas)){ $datas['redirect'] = $this->session->get(\Util\StripeUtility::SESSION_SUCCESS_URL); }
+                if(!empty($datas)){ $datas['redirect'] = $this->session->get(\Util\StripeUtility::SESSION_SUCCESS_URL) . $event_token; }
             }
         }
         $this->logger->info('['.$ip.'] CHECK_PAYMENT_RESPONSE: STATUS -> '.$status);
